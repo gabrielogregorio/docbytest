@@ -1,0 +1,5 @@
+{
+  "folderDocs": "./doc",
+  "folderTests": "./example",
+  "ignoreTests": ["*.spec*"]
+}
