@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { casesType, typeExtractDataFromTextType } from './interfaces/extractData';
 
 import {
   getResponseExpected,
@@ -7,37 +8,39 @@ import {
   getSendContent,
   getStatusCodeExpected,
   getContext,
-  getTypeVariable,
+  getUrlParams,
   getContentTest,
   getDescriptionLocal,
+  getBaseRouterRequest,
   getFullDescription,
-} from './helpers';
+  getQueryParams,
+  getHeder,
+} from './helpers/helpers';
 
-export function extractDataFromTests(file: string): unknown[] {
-  const text = fs.readFileSync(file, { encoding: 'utf-8' });
-  const cases: unknown[] = [];
-  const regex = /\\$\\{(.*?)\\}`/gi;
+export function extractDataFromText(text: string): typeExtractDataFromTextType {
+  const cases: casesType[] = [];
   const lines = text.split('\n');
+  const titleDescribe = getContext(text);
+  const descriptionDescribe = getFullDescription(text);
 
   let blockItem = '';
   let existsBlockInAnalyzing = false;
-  let typeMethod = '';
-  let routerRequest = '';
-  let nameTest = '';
-  let descriptionLocal = '';
-
-  const context = getContext(text);
-  const commentGlobal = getFullDescription(text);
+  let method = '';
+  let router = '';
+  let path = '';
+  let title = '';
+  let description = '';
 
   lines.forEach((line) => {
     const startAnalyzeNewTest = line.slice(0, 5) === '  it(' || line.slice(0, 7) === '  test(';
     if (startAnalyzeNewTest) {
       blockItem = '';
       existsBlockInAnalyzing = true;
-      typeMethod = '';
-      routerRequest = '';
-      nameTest = getContentTest(line);
-      descriptionLocal = '';
+      method = '';
+      router = '';
+      path = '';
+      title = getContentTest(line);
+      description = '';
     }
 
     const finishAnalyzeOneTest = line === '  });';
@@ -46,48 +49,45 @@ export function extractDataFromTests(file: string): unknown[] {
       blockItem = `${blockItem}\n  });`;
 
       const sendContent = getSendContent(blockItem);
-      const statusCodeSpect = getStatusCodeExpected(blockItem);
-      const expectResponse = getResponseExpected(blockItem);
-
-      const tags = [];
-
-      while (true) {
-        const regexRouter = regex.exec(routerRequest);
-        if (regexRouter) {
-          const nameTag = regexRouter[1];
-          tags.push({
-            tag: nameTag,
-            type: getTypeVariable(nameTag, text).type,
-            content: getTypeVariable(nameTag, text).content,
-          });
-        }
-
-        if (!regexRouter) {
-          break;
-        }
-      }
+      const statusCode = getStatusCodeExpected(blockItem);
+      const body = getResponseExpected(blockItem);
+      const queryParams = getQueryParams(blockItem);
+      const headers = getHeder(blockItem);
+      const params = getUrlParams(router, text);
 
       cases.push({
-        typeMethod,
-        expectResponse,
+        method,
         sendContent,
-        tags,
-        statusCodeSpect,
-        context,
-        nameTest,
-        descriptionLocal,
-        routerRequest,
-        commentGlobal,
+        params: [...params, ...queryParams],
+        title,
+        description,
+        router,
+        path,
+        headers,
+        response: {
+          statusCode,
+          body,
+        },
       });
     }
 
     if (existsBlockInAnalyzing) {
       blockItem = `${blockItem}\n${line}`;
-      descriptionLocal = descriptionLocal || getDescriptionLocal(line);
-      typeMethod = typeMethod || getTypeMethod(line);
-      routerRequest = routerRequest || getRouterRequest(line);
+      description = description || getDescriptionLocal(line);
+      method = method || getTypeMethod(line);
+      router = router || getRouterRequest(line);
+      path = path || getBaseRouterRequest(line);
     }
   });
 
-  return cases;
+  return {
+    cases,
+    title: titleDescribe,
+    description: descriptionDescribe,
+  };
+}
+
+export function extractDataFromTests(file: string): typeExtractDataFromTextType {
+  const text = fs.readFileSync(file, { encoding: 'utf-8' });
+  return extractDataFromText(text);
 }
