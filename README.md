@@ -9,7 +9,6 @@
 ![Eslint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
 
-<a href="https://www.npmjs.com/package/docbytest" target="blank">docbytest - NPM</a>
 </div>
 
 ## Introduction
