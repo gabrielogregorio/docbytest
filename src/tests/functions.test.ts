@@ -23,7 +23,7 @@ describe('Suite', () => {
     expect(
       getHeder(
         `
-        const response = await request.post('/user').send('token').set({
+        const response = await requestDoc.post('/user').send('token').set({
           Authorization: '3'
         });
         `,
@@ -60,25 +60,27 @@ describe('Suite', () => {
   it('should get send content', () => {
     expect(
       getSendContent(
-        `const response = await request.post(\`/post/comment/11111111\`).set(token).send({ text: 'This is a comment' });\n\n`,
+        `const response = await request_doc.post(\`/post/comment/11111111\`).set(token).send({ text: 'This is a comment' });\n\n`,
       ),
     ).toEqual({ text: 'This is a comment' });
 
     expect(
       getSendContent(
         `
-        const response = await request.post(\`/post/comment/\${variableId}\`).set(token).send({ text: 'this response', replie: 190 });`,
+        const response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(token).send({ text: 'this response', replie: 190 });`,
       ),
     ).toEqual({ text: 'this response', replie: 190 });
 
     expect(
-      getSendContent(`\nconst response = await request.post(\`/post/comment/\${variableId}\`).set(token).send('hi');`),
+      getSendContent(
+        `\nconst response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(token).send('hi');`,
+      ),
     ).toEqual('hi');
 
     expect(
       getSendContent(
         `
-        const response = await request
+        const response = await requestDoc
         .post('/user')
         .send({ code: "codeGenerate", username: "userTest.password", password: "userTest.username" });
       `,
@@ -87,7 +89,7 @@ describe('Suite', () => {
 
     expect(
       getSendContent(
-        `\nconst response = await request(app).post('/user').send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
+        `\nconst response = await requestDoc(app).post('/user').send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
       ),
     ).toEqual({ name: 'greg', email: 'greg@github.com' });
   });
@@ -108,7 +110,7 @@ describe('Suite', () => {
         const branchData = 'data';
         const productId = 123;
 
-        router.get("/myPage?sort=\${orderId}&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
+        routerDoc.get("/myPage?sort=\${orderId}&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
       `),
     ).toEqual([
       { example: 'ASC', in: 'query', required: null, tag: 'sort', type: 'string', variable: 'orderId' },
@@ -120,7 +122,7 @@ describe('Suite', () => {
   });
 
   it('should get url params', () => {
-    expect(getUrlParams(`request.get('/users/\${userId}').send()`, `const userId = 1234`)).toEqual([
+    expect(getUrlParams(`requestdoc.get('/users/\${userId}').send()`, `const userId = 1234`)).toEqual([
       {
         example: '1234',
         in: 'param',
@@ -142,12 +144,12 @@ describe('Suite', () => {
   });
 
   it('should get a router content', () => {
-    expect(getRouterRequest(`request.get('/users').send()`)).toEqual('/users');
-    expect(getRouterRequest(`request\n\n.get('/users').send()`)).toEqual('/users');
-    expect(getRouterRequest(`request(app).get('/users/posts-data').send()`)).toEqual('/users/posts-data');
-    expect(getRouterRequest(`request.get("/users").send()`)).toEqual('/users');
-    expect(getRouterRequest(`request.get(\`/users\`).send()`)).toEqual('/users');
-    expect(getRouterRequest(`request.get(\`/users/\${userId}\`).send()`)).toEqual('/users/${userId}');
+    expect(getRouterRequest(`requestDoc.get('/users').send()`)).toEqual('/users');
+    expect(getRouterRequest(`requestDoc\n\n.get('/users').send()`)).toEqual('/users');
+    expect(getRouterRequest(`requestDoc(app).get('/users/posts-data').send()`)).toEqual('/users/posts-data');
+    expect(getRouterRequest(`requestDoc.get("/users").send()`)).toEqual('/users');
+    expect(getRouterRequest(`requestDoc.get(\`/users\`).send()`)).toEqual('/users');
+    expect(getRouterRequest(`requestDoc.get(\`/users/\${userId}\`).send()`)).toEqual('/users/${userId}');
   });
 
   it('should get a full describe', () => {
