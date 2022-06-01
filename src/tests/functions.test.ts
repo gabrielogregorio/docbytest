@@ -13,8 +13,8 @@ import {
 
 describe('Suite', () => {
   it('should return status code', () => {
-    expect(getStatusCodeExpected('expect(response.statusCode).toBe(200);')).toEqual('200');
-    expect(getStatusCodeExpected('expect(res.statusCode).toBe( 301);')).toEqual('301');
+    expect(getStatusCodeExpected('expect(response.statusCode)\n.toBe(200);')).toEqual('200');
+    expect(getStatusCodeExpected('expect(res.statusCode).toBe(\n 301\n).toTest()')).toEqual('301');
     expect(getStatusCodeExpected('expect(res.statusCode).toBe( 500);')).toEqual('500');
     expect(getStatusCodeExpected('expect(response.statusCode).toEqual(403);')).toEqual('403');
   });
@@ -31,12 +31,37 @@ describe('Suite', () => {
     ).toEqual({
       Authorization: '3',
     });
+
+    expect(
+      getHeder(
+        `
+        const response = await requestDoc.post('/user')
+        .send('token')
+        .set({
+          Authorization: '3',
+          test: [
+            {item: 123}
+          ]
+        });
+        `,
+      ),
+    ).toEqual({
+      Authorization: '3',
+      test: [{ item: 123 }],
+    });
   });
 
   it('should return expected response', () => {
     expect(
       getResponseExpected(
-        `expect(response.body).toMatchObject({ userName: 'Lucas Santos', posts: [{ Name: 'Julia', user_name: 'Santos' }] });`,
+        `expect(response.body).toMatchObject(
+          {
+            userName: 'Lucas Santos',
+            posts: [
+              { Name: 'Julia',
+              user_name: 'Santos'
+            }]
+          });`,
       ),
     ).toEqual({ userName: 'Lucas Santos', posts: [{ Name: 'Julia', user_name: 'Santos' }] });
 
@@ -44,7 +69,7 @@ describe('Suite', () => {
       userName: 'Lucas Santos',
     });
 
-    expect(getResponseExpected(`expect(res__.body).toMatchObject({ userName: 'Lucas Santos' });`)).toEqual({
+    expect(getResponseExpected(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`)).toEqual({
       userName: 'Lucas Santos',
     });
 
@@ -60,20 +85,35 @@ describe('Suite', () => {
   it('should get send content', () => {
     expect(
       getSendContent(
-        `const response = await request_doc.post(\`/post/comment/11111111\`).set(token).send({ text: 'This is a comment' });\n\n`,
+        `const response = await request_doc.post(\`/post/comment/11111111\`)
+        .set(token).send(
+          {
+            text: 'This is a comment',
+            test: [
+              123
+            ]
+          }
+          );\n\n`,
       ),
-    ).toEqual({ text: 'This is a comment' });
+    ).toEqual({ text: 'This is a comment', test: [123] });
 
     expect(
       getSendContent(
         `
-        const response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(token).send({ text: 'this response', replie: 190 });`,
+        const response = await requestDoc.post(\`/post/comment/\${variableId}\`)
+        .set(token)
+        .send({
+          text: 'this response',
+          replie: 190 });`,
       ),
     ).toEqual({ text: 'this response', replie: 190 });
 
     expect(
       getSendContent(
-        `\nconst response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(token).send('hi');`,
+        `\nconst response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(
+          token
+          )
+          .send('hi');`,
       ),
     ).toEqual('hi');
 
@@ -82,14 +122,20 @@ describe('Suite', () => {
         `
         const response = await requestDoc
         .post('/user')
-        .send({ code: "codeGenerate", username: "userTest.password", password: "userTest.username" });
+        .send({
+          code: "codeGenerate",
+          username: "userTest.password",
+          password: "userTest.username"
+        }
+        );
       `,
       ),
     ).toEqual({ code: 'codeGenerate', username: 'userTest.password', password: 'userTest.username' });
 
     expect(
       getSendContent(
-        `\nconst response = await requestDoc(app).post('/user').send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
+        `\nconst response = await requestDoc(app).post('/user')
+          .send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
       ),
     ).toEqual({ name: 'greg', email: 'greg@github.com' });
   });
@@ -114,17 +160,17 @@ describe('Suite', () => {
       `),
     ).toEqual([
       { example: 'ASC', in: 'query', required: null, tag: 'sort', type: 'string', variable: 'orderId' },
-      { example: '13', in: 'query', required: null, tag: 'page', type: 'number', variable: 'pageNumber' },
-      { example: 'true', in: 'query', required: null, tag: 'showDetails', type: 'boolean', variable: 'valueTrue' },
+      { example: 13, in: 'query', required: null, tag: 'page', type: 'number', variable: 'pageNumber' },
+      { example: true, in: 'query', required: null, tag: 'showDetails', type: 'boolean', variable: 'valueTrue' },
       { example: 'data', in: 'query', required: null, tag: 'name', type: 'string', variable: 'branchData' },
-      { example: '123', in: 'query', required: null, tag: 'products', type: 'number', variable: 'productId' },
+      { example: 123, in: 'query', required: null, tag: 'products', type: 'number', variable: 'productId' },
     ]);
   });
 
   it('should get url params', () => {
     expect(getUrlParams(`requestdoc.get('/users/\${userId}').send()`, `const userId = 1234`)).toEqual([
       {
-        example: '1234',
+        example: 1234,
         in: 'param',
         required: null,
         tag: 'userId',
