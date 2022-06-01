@@ -7,7 +7,7 @@ const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 // need created method for get values
 
 export function getResponseExpected(code: string): any {
-  const regex = /expect\([\w]*\.body\)\.(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
+  const regex = /expect\([\w]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
     try {
@@ -20,7 +20,7 @@ export function getResponseExpected(code: string): any {
 }
 
 export function getStatusCodeExpected(code: string): string {
-  const regex = /expect\((.*statusCode.*?)\)\.(.*?)\(\s*([\d]{3})\s*\)/;
+  const regex = /expect\((.*statusCode.*?)\)[\\.\n]*(.*?)\(\s*([\d]{3})\s*\)/;
   const match = regex.exec(code);
   if (match) {
     return match[3];
@@ -29,7 +29,7 @@ export function getStatusCodeExpected(code: string): string {
 }
 
 export function getSendContent(code: string): any {
-  const regex = /.send\((.*?)\)/;
+  const regex = /\.send\(([^(\\))]*)/;
   const match: RegExpExecArray | null = regex.exec(code);
 
   if (match) {
@@ -150,20 +150,20 @@ type getVariable = {
 };
 
 export function getTypeVariable(variable: string, fullCode: string): getVariable {
-  const regexString = new RegExp(`\\s${variable}\\s*\\=\\s*['|"](.*)['|"]`);
+  const regexString = new RegExp(`\\s${variable}\\s*\\=\\s*['"\`](.*)['"\`]`);
   const regexNumber = new RegExp(`\\s${variable}\\s*\\=\\s*(\\d+)`);
   const regexBoolean = new RegExp(`\\s${variable}\\s*\\=\\s*(false|true)`);
 
   if (regexString.exec(fullCode)) {
-    return { type: 'string', content: regexString.exec(fullCode)?.[1] };
+    return { type: 'string', content: regexString.exec(fullCode)?.[1]?.toString() };
   }
 
   if (regexNumber.exec(fullCode)) {
-    return { type: 'number', content: regexNumber.exec(fullCode)?.[1] };
+    return { type: 'number', content: Number(regexNumber.exec(fullCode)?.[1].toString()) };
   }
 
   if (regexBoolean.exec(fullCode)) {
-    return { type: 'boolean', content: regexBoolean.exec(fullCode)?.[1] };
+    return { type: 'boolean', content: regexBoolean.exec(fullCode)?.[1]?.toString() === 'true' };
   }
 
   return { type: 'unknown', content: '' };

@@ -40,7 +40,7 @@ describe('Name suit test', () => {
           sendContent: 'string send',
           params: [
             {
-              example: '10',
+              example: 10,
               in: 'query',
               required: null,
               tag: 'limit',
@@ -65,7 +65,7 @@ describe('Name suit test', () => {
           sendContent: { id: 1 },
           params: [
             {
-              example: '123',
+              example: 123,
               tag: 'userId',
               type: 'number',
               in: 'param',
@@ -73,7 +73,7 @@ describe('Name suit test', () => {
               variable: 'userId',
             },
             {
-              example: 'true',
+              example: true,
               tag: 'reverse',
               type: 'boolean',
               in: 'query',
