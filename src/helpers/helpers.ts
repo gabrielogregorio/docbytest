@@ -1,19 +1,20 @@
 import { paramsType } from 'src/interfaces/extractData';
+import { getStringToObjectUsableInCode } from './getStringToObjectUsableInCode';
+import { transformStringToUsableObject } from './transformStringToUsableObject';
 
-/* eslint-disable no-eval */
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
 // need remove eval
 // need created method for get values
 
-export function getResponseExpected(code: string): any {
+export function getResponseExpected(code: string, text: string): any {
   const regex = /expect\([\w]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
     try {
-      return eval(`(${match[2]?.replaceAll('\n', '')})`);
+      return transformStringToUsableObject(`${match[2]?.replaceAll('\n', '')}`);
     } catch (error) {
-      return '';
+      return getStringToObjectUsableInCode(match[2], text);
     }
   }
   return '';
@@ -28,29 +29,31 @@ export function getStatusCodeExpected(code: string): string {
   return '';
 }
 
-export function getSendContent(code: string): any {
+export function getSendContent(code: string, text: string): any {
   const regex = /\.send\(([^(\\))]*)/;
   const match: RegExpExecArray | null = regex.exec(code);
 
   if (match) {
     try {
-      return eval(`(${match[1]?.replaceAll('\n', '')})`);
+      return transformStringToUsableObject(`${match[1]?.replaceAll('\n', '')}`);
     } catch (error) {
-      return '';
+      return getStringToObjectUsableInCode(`${match[1]?.replaceAll('\n', '')}`, text);
     }
   }
   return '';
 }
 
-export function getHeder(fullBlock: string) {
+export function getHeder(fullBlock: string, text: string) {
   const regex = /\.set\(([^(\\);)]*)/;
   const match: RegExpExecArray | null = regex.exec(fullBlock);
 
   if (match) {
+    const headerContent = match[1]?.replaceAll('\n', '');
+
     try {
-      return eval(`(${match[1]?.replaceAll('\n', '')})`);
+      return transformStringToUsableObject(headerContent);
     } catch (error) {
-      return '';
+      return getStringToObjectUsableInCode(headerContent, text);
     }
   }
   return '';
@@ -84,16 +87,10 @@ export function getBaseRouterRequest(code: string): string {
 }
 
 export function getContentTest(code: string): string {
-  const regex = /it\(['`"](.*?)['`"]/;
+  const regex = /testDoc\(['`"](.*?)['`"]/;
   const match = regex.exec(code);
   if (match) {
     return match[1];
-  }
-
-  const regex3 = /test\(['"](.*?)['"]/;
-  const match2 = regex3.exec(code);
-  if (match2) {
-    return match2[1];
   }
 
   return '';
@@ -136,7 +133,7 @@ export function getFullDescription(contextCode: string): string {
 }
 
 export function getFullDescribe(contextCode: string): { code: string; title: string } {
-  const regex = /describe\(['|"](.*?)['|"].*\n((.*\n)+?)[$\\)};]/;
+  const regex = /describe\(['"](.*?)['"].*\n((.*\n)+?)[$\\)};]/;
   const match = regex.exec(contextCode);
   if (match) {
     return { code: match[2], title: match[1] };

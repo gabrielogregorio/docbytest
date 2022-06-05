@@ -1,4 +1,4 @@
-import { partialMountDocs } from '../index';
+import { mountMdDocs } from '../helpers/mountMdDocs';
 
 const documentation = `
 # Bem vindo a documentação
@@ -30,7 +30,7 @@ const statusCode = {
 
 describe('Suite', () => {
   it('should return status code', () => {
-    expect(partialMountDocs(documentation, statusCode)).toEqual(
+    expect(mountMdDocs(documentation, statusCode)).toEqual(
       `
 # Bem vindo a documentação
 

@@ -7,7 +7,7 @@ describe('Should test e2e application', () => {
 describe('Name suit test', () => {
   // doc.description: "Title suit test"
 
-  it('Name from test', async () => {
+  testDoc('Name from test', async () => {
     // doc.description: "Description from test"
 
     const limit = 10;
@@ -19,7 +19,7 @@ describe('Name suit test', () => {
     expect(response.body).toEqual('example return string body');
   });
 
-  it('Name from test 2', async () => {
+  testDoc('Name from test 2', async () => {
     // doc.description: "Title Suit test 2"
     const userId = 123
     const reverseTrue = true

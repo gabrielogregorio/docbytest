@@ -27,6 +27,7 @@ describe('Suite', () => {
           Authorization: '3'
         });
         `,
+        '',
       ),
     ).toEqual({
       Authorization: '3',
@@ -44,6 +45,27 @@ describe('Suite', () => {
           ]
         });
         `,
+        '',
+      ),
+    ).toEqual({
+      Authorization: '3',
+      test: [{ item: 123 }],
+    });
+
+    expect(
+      getHeder(
+        `const response = await requestDoc.post('/user')
+        .send('token')
+        .set(dataToken);
+        `,
+        `
+
+        const dataToken = {
+          Authorization: '3',
+          test: [
+            {item: 123}
+          ]
+        };`,
       ),
     ).toEqual({
       Authorization: '3',
@@ -62,22 +84,23 @@ describe('Suite', () => {
               user_name: 'Santos'
             }]
           });`,
+        '',
       ),
     ).toEqual({ userName: 'Lucas Santos', posts: [{ Name: 'Julia', user_name: 'Santos' }] });
 
-    expect(getResponseExpected(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`)).toEqual({
+    expect(getResponseExpected(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`, '')).toEqual({
       userName: 'Lucas Santos',
     });
 
-    expect(getResponseExpected(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`)).toEqual({
+    expect(getResponseExpected(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`, '')).toEqual({
       userName: 'Lucas Santos',
     });
 
-    expect(getResponseExpected(`expect(res.body).toStrictEqual({ message: 'Error in data' });`)).toEqual({
+    expect(getResponseExpected(`expect(res.body).toStrictEqual({ message: 'Error in data' });`, '')).toEqual({
       message: 'Error in data',
     });
 
-    expect(getResponseExpected(`expect(res.body).toEqual({ message: 'Error in data' });`)).toEqual({
+    expect(getResponseExpected(`expect(res.body).toEqual({ message: 'Error in data' });`, '')).toEqual({
       message: 'Error in data',
     });
   });
@@ -94,6 +117,7 @@ describe('Suite', () => {
             ]
           }
           );\n\n`,
+        '',
       ),
     ).toEqual({ text: 'This is a comment', test: [123] });
 
@@ -105,6 +129,7 @@ describe('Suite', () => {
         .send({
           text: 'this response',
           replie: 190 });`,
+        '',
       ),
     ).toEqual({ text: 'this response', replie: 190 });
 
@@ -114,6 +139,7 @@ describe('Suite', () => {
           token
           )
           .send('hi');`,
+        '',
       ),
     ).toEqual('hi');
 
@@ -129,6 +155,25 @@ describe('Suite', () => {
         }
         );
       `,
+        '',
+      ),
+    ).toEqual({ code: 'codeGenerate', username: 'userTest.password', password: 'userTest.username' });
+
+    expect(
+      getSendContent(
+        `
+        const response = await requestDoc
+        .post('/user')
+        .send(sendContent);
+      `,
+        `
+
+      const sendContent = {
+        code: "codeGenerate",
+        username: "userTest.password",
+        password: "userTest.username"
+      };
+      `,
       ),
     ).toEqual({ code: 'codeGenerate', username: 'userTest.password', password: 'userTest.username' });
 
@@ -136,6 +181,7 @@ describe('Suite', () => {
       getSendContent(
         `\nconst response = await requestDoc(app).post('/user')
           .send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
+        '',
       ),
     ).toEqual({ name: 'greg', email: 'greg@github.com' });
   });
@@ -202,7 +248,7 @@ describe('Suite', () => {
     expect(
       getFullDescribe(`
 describe('Crud Users', () => {
-  it('Should cadaster one user', async () => {
+  testDoc('Should cadaster one user', async () => {
     const response = await request.post('/user').send({
       code: codeGenerate,
       username: userTest.password,
@@ -212,7 +258,7 @@ describe('Crud Users', () => {
 });
       `),
     ).toEqual({
-      code: `  it('Should cadaster one user', async () => {
+      code: `  testDoc('Should cadaster one user', async () => {
     const response = await request.post('/user').send({
       code: codeGenerate,
       username: userTest.password,

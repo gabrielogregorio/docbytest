@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { casesType, typeExtractDataFromTextType } from './interfaces/extractData';
+import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 
 import {
   getResponseExpected,
@@ -17,11 +17,11 @@ import {
   getHeder,
 } from './helpers/helpers';
 
-export function extractDataFromText(text: string): typeExtractDataFromTextType {
-  const cases: casesType[] = [];
-  const lines = text.split('\n');
-  const titleDescribe = getContext(text);
-  const descriptionDescribe = getFullDescription(text);
+export function extractDataFromText(oneTestText: string): typeExtractDataFromTextType {
+  const cases: caseType[] = [];
+  const lines = oneTestText.split('\n');
+  const titleSuit = getContext(oneTestText);
+  const describeSuit = getFullDescription(oneTestText);
 
   let blockItem = '';
   let existsBlockInAnalyzing = false;
@@ -32,7 +32,7 @@ export function extractDataFromText(text: string): typeExtractDataFromTextType {
   let description = '';
 
   lines.forEach((line) => {
-    const startAnalyzeNewTest = line.slice(0, 5) === '  it(' || line.slice(0, 7) === '  test(';
+    const startAnalyzeNewTest = line.slice(0, 10) === '  testDoc(';
     if (startAnalyzeNewTest) {
       blockItem = '';
       existsBlockInAnalyzing = true;
@@ -44,31 +44,34 @@ export function extractDataFromText(text: string): typeExtractDataFromTextType {
     }
 
     const finishAnalyzeOneTest = line === '  });';
-    if (finishAnalyzeOneTest) {
+    if (finishAnalyzeOneTest && existsBlockInAnalyzing) {
       existsBlockInAnalyzing = false;
       blockItem = `${blockItem}\n  });`;
 
-      const sendContent = getSendContent(blockItem);
+      const sendContent = getSendContent(blockItem, oneTestText);
       const statusCode = getStatusCodeExpected(blockItem);
-      const body = getResponseExpected(blockItem);
+      const body = getResponseExpected(blockItem, oneTestText);
       const queryParams = getQueryParams(blockItem);
-      const headers = getHeder(blockItem);
-      const params = getUrlParams(router, text);
+      const headers = getHeder(blockItem, oneTestText);
+      const params = getUrlParams(router, oneTestText);
 
-      cases.push({
-        method,
-        sendContent,
-        params: [...params, ...queryParams],
-        title,
-        description,
-        router,
-        path,
-        headers,
-        response: {
-          statusCode,
-          body,
-        },
-      });
+      const existsAMethodInAnalyze = method !== '';
+      if (existsAMethodInAnalyze) {
+        cases.push({
+          method,
+          sendContent,
+          params: [...params, ...queryParams],
+          title,
+          description,
+          router,
+          path,
+          headers,
+          response: {
+            statusCode,
+            body,
+          },
+        });
+      }
     }
 
     if (existsBlockInAnalyzing) {
@@ -82,12 +85,12 @@ export function extractDataFromText(text: string): typeExtractDataFromTextType {
 
   return {
     cases,
-    title: titleDescribe,
-    description: descriptionDescribe,
+    title: titleSuit,
+    description: describeSuit,
   };
 }
 
-export function extractDataFromTests(file: string): typeExtractDataFromTextType {
-  const text = fs.readFileSync(file, { encoding: 'utf-8' });
-  return extractDataFromText(text);
+export function extractDataFromTests(fullPathOneTest: string): typeExtractDataFromTextType {
+  const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
+  return extractDataFromText(fullOneTest);
 }
