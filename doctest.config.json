@@ -1,5 +1,5 @@
 {
-  "folderTests": "./src/example/test_example",
+  "folderTests": "./src/example/test",
   "docFile": "./docs/base.md",
   "statusCodeErrorFile": "./src/example/statusCode.ts"
 }

@@ -7,7 +7,7 @@ export type paramsType = {
   variable: string;
 };
 
-export type casesType = {
+export type caseType = {
   method: string;
   sendContent: string;
   params: paramsType[];
@@ -23,7 +23,7 @@ export type casesType = {
 };
 
 export type typeExtractDataFromTextType = {
-  cases: casesType[];
+  cases: caseType[];
   title: string;
   description: string;
 };
