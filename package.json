@@ -25,7 +25,7 @@
     "jest": "jest",
     "jest:watchAll": "jest --watchAll",
     "jest:coverage": "jest --coverage && jest-coverage-badges",
-    "publish": "npm run jest && npm run build && npm publish"
+    "publish-npm": "npm run jest && rm -rf ./build && npm run build && npm publish"
   },
   "engines": {
     "node": ">=8",
