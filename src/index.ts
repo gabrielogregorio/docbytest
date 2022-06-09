@@ -25,7 +25,7 @@ function mountDocByTests(suitCase: typeExtractDataFromTextType) {
     }
   });
 
-  return { ...allCases, description: suitCase.description, title: suitCase.title };
+  return { paths: { ...allCases }, description: suitCase.description, title: suitCase.title };
 }
 
 const mapTestFiles = (folderTests: string) => {
@@ -51,5 +51,5 @@ export default function generateDocs({ statusCode }: { statusCode: unknown }) {
 
   const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests);
 
-  return { paths: fullDocs, docs: docMdFormatted };
+  return { files: fullDocs, docs: docMdFormatted };
 }
