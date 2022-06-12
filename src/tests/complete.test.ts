@@ -52,7 +52,6 @@ describe('Name suit test', () => {
           description: 'Description from test',
           fullPath: '/user',
           router: '/user?limit=${limit}',
-          path: '/user',
           headers: {
             Authorization: 'Bearer',
           },
@@ -86,7 +85,6 @@ describe('Name suit test', () => {
           description: 'Title Suit test 2',
           fullPath: '/user/${userId}',
           router: '/user/${userId}?reverse=${reverseTrue}',
-          path: '/user',
           headers: {
             Authorization: 'Bearer 2',
           },

@@ -86,15 +86,6 @@ export function getRouterParams(code: string): string {
   return '';
 }
 
-export function getBaseRouterRequest(code: string): string {
-  const regex = /\.(get|post|put|delete)\(['"`](\/[\w]+)/;
-  const match = regex.exec(code);
-  if (match) {
-    return match[2];
-  }
-  return '';
-}
-
 export function getContentTest(code: string): string {
   const regex = /(it|test)\(['`"](.*?)['`"]/;
   const match = regex.exec(code);
