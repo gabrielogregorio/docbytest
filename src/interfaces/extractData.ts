@@ -14,7 +14,6 @@ export type caseType = {
   title: string;
   description: string;
   router: string;
-  path: string;
   fullPath: string;
   headers: any;
   response: {

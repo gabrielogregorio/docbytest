@@ -11,7 +11,6 @@ import {
   getUrlParams,
   getContentTest,
   getDescriptionLocal,
-  getBaseRouterRequest,
   getFullDescription,
   getQueryParams,
   getHeder,
@@ -28,7 +27,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
   let existsBlockInAnalyzing = false;
   let method = '';
   let router = '';
-  let path = '';
   let fullPath = '';
   let title = '';
   let description = '';
@@ -43,7 +41,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       method = '';
       router = '';
       fullPath = '';
-      path = '';
       title = getContentTest(line);
       description = '';
     }
@@ -70,7 +67,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
           description,
           fullPath,
           router,
-          path,
           headers,
           response: {
             statusCode,
@@ -86,7 +82,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       method = method || getTypeMethod(line);
       router = router || getRouterRequest(line);
       fullPath = fullPath || getRouterParams(router);
-      path = path || getBaseRouterRequest(line);
     }
   });
 

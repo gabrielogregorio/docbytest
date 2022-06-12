@@ -21,7 +21,6 @@ describe('Complete test', () => {
                     description: '',
                     fullPath: '/user',
                     router: '/user',
-                    path: '/user',
                     headers: '',
                     response: {
                       statusCode: '200',
@@ -39,7 +38,6 @@ describe('Complete test', () => {
                     title: 'Impede o cadastro de um usuário que já existe',
                     description: '',
                     router: '/user',
-                    path: '/user',
                     fullPath: '/user',
                     headers: '',
                     response: {
@@ -60,7 +58,6 @@ describe('Complete test', () => {
                     description: '',
                     fullPath: '/user',
                     router: '/user',
-                    path: '/user',
                     headers: {
                       Authorization: 'Bearer exampleJwt',
                     },
@@ -82,7 +79,6 @@ describe('Complete test', () => {
                     description: '',
                     fullPath: '/user',
                     router: '/user',
-                    path: '/user',
                     headers: {
                       Authorization: 'Bearer exampleJwt',
                     },
@@ -114,7 +110,6 @@ describe('Complete test', () => {
                     title: 'Edita um user',
                     description: '',
                     router: '/user/${userId}',
-                    path: '/user',
                     fullPath: '/user/${userId}',
                     headers: {
                       Authorization: 'Bearer exampleJwt',
@@ -169,7 +164,6 @@ describe('Complete test', () => {
                       },
                     ],
                     fullPath: '/post/${postId}',
-                    path: '/post',
                     response: {
                       body: {
                         item: '4321',
