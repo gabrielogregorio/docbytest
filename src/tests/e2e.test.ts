@@ -19,6 +19,7 @@ describe('Complete test', () => {
                     params: [],
                     title: 'Cadastrar um usuário',
                     description: '',
+                    fullPath: '/user',
                     router: '/user',
                     path: '/user',
                     headers: '',
@@ -39,6 +40,7 @@ describe('Complete test', () => {
                     description: '',
                     router: '/user',
                     path: '/user',
+                    fullPath: '/user',
                     headers: '',
                     response: {
                       statusCode: '409',
@@ -56,6 +58,7 @@ describe('Complete test', () => {
                     params: [],
                     title: 'obtém os dados do próprio usuário',
                     description: '',
+                    fullPath: '/user',
                     router: '/user',
                     path: '/user',
                     headers: {
@@ -68,6 +71,31 @@ describe('Complete test', () => {
                   },
                 ],
               },
+
+              delete: {
+                tests: [
+                  {
+                    method: 'delete',
+                    sendContent: '',
+                    params: [],
+                    title: 'deletar a si mesmo',
+                    description: '',
+                    fullPath: '/user',
+                    router: '/user',
+                    path: '/user',
+                    headers: {
+                      Authorization: 'Bearer exampleJwt',
+                    },
+                    response: {
+                      statusCode: '200',
+                      body: '',
+                    },
+                  },
+                ],
+              },
+            },
+
+            '/user/${userId}': {
               put: {
                 tests: [
                   {
@@ -87,26 +115,7 @@ describe('Complete test', () => {
                     description: '',
                     router: '/user/${userId}',
                     path: '/user',
-                    headers: {
-                      Authorization: 'Bearer exampleJwt',
-                    },
-                    response: {
-                      statusCode: '200',
-                      body: '',
-                    },
-                  },
-                ],
-              },
-              delete: {
-                tests: [
-                  {
-                    method: 'delete',
-                    sendContent: '',
-                    params: [],
-                    title: 'deletar a si mesmo',
-                    description: '',
-                    router: '/user',
-                    path: '/user',
+                    fullPath: '/user/${userId}',
                     headers: {
                       Authorization: 'Bearer exampleJwt',
                     },
@@ -124,7 +133,7 @@ describe('Complete test', () => {
         },
         {
           paths: {
-            '/post': {
+            '/post/${postId}': {
               get: {
                 tests: [
                   {
@@ -159,6 +168,7 @@ describe('Complete test', () => {
                         variable: 'offsetPost',
                       },
                     ],
+                    fullPath: '/post/${postId}',
                     path: '/post',
                     response: {
                       body: {

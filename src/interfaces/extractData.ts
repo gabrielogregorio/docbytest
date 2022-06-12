@@ -15,6 +15,7 @@ export type caseType = {
   description: string;
   router: string;
   path: string;
+  fullPath: string;
   headers: any;
   response: {
     statusCode: string;

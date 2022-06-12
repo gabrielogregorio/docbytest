@@ -15,6 +15,7 @@ import {
   getFullDescription,
   getQueryParams,
   getHeder,
+  getRouterParams,
 } from './helpers/helpers';
 
 export function extractDataFromText(oneTestText: string): typeExtractDataFromTextType {
@@ -28,6 +29,7 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
   let method = '';
   let router = '';
   let path = '';
+  let fullPath = '';
   let title = '';
   let description = '';
 
@@ -38,6 +40,7 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       existsBlockInAnalyzing = true;
       method = '';
       router = '';
+      fullPath = '';
       path = '';
       title = getContentTest(line);
       description = '';
@@ -63,6 +66,7 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
           params: [...params, ...queryParams],
           title,
           description,
+          fullPath,
           router,
           path,
           headers,
@@ -79,6 +83,7 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       description = description || getDescriptionLocal(line);
       method = method || getTypeMethod(line);
       router = router || getRouterRequest(line);
+      fullPath = fullPath || getRouterParams(router);
       path = path || getBaseRouterRequest(line);
     }
   });
