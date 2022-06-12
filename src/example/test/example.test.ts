@@ -10,7 +10,7 @@ const token = {
 };
 
 describe('Gerenciamento de usuários', () => {
-  // doc.description: "O cadastro de usuário precisa ser solicitada aos desenvolvedores"
+  /* doc: O cadastro de usuário precisa ser solicitada aos desenvolvedores */
 
   it('[doc]: Cadastrar um usuário', async () => {
     const response = await request.post('/user').send(userTest);

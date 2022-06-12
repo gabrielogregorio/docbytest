@@ -86,11 +86,15 @@ export function getRouterParams(code: string): string {
   return '';
 }
 
+function removeDocPrefix(content: string): string {
+  return content.replace(/^\s*\[doc\]\s*[:-]\s*/, '');
+}
+
 export function getContentTest(code: string): string {
   const regex = /(it|test)\(['`"](.*?)['`"]/;
   const match = regex.exec(code);
   if (match) {
-    return match[2].replace(/^\s*\[doc\]\s*[:-]\s*/, '');
+    return removeDocPrefix(match[2]);
   }
 
   return '';
@@ -115,30 +119,21 @@ function getBaseToQueryParams(fullCode: string): string {
 }
 
 export function getDescriptionLocal(contextCode: string): string {
-  const regex = /\/\/\s*doc.description:\s*"([^"]+)/;
+  const regex = /(it|test).*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
   const match = regex.exec(contextCode);
   if (match) {
-    return match[1];
+    return match[2].trim();
   }
   return '';
 }
 
 export function getFullDescription(contextCode: string): string {
-  const regex = /describe\(['|"].*?['|"]\s*,\s*\(\)\s*=>\s*\{\n\s*\/\/\s*doc.description:\s*"([^"]+)/;
+  const regex = /describe.*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
   const match = regex.exec(contextCode);
   if (match) {
-    return match[1];
+    return match[1].trim();
   }
   return '';
-}
-
-export function getFullDescribe(contextCode: string): { code: string; title: string } {
-  const regex = /describe\(['"](.*?)['"].*\n((.*\n)+?)[$\\)};]/;
-  const match = regex.exec(contextCode);
-  if (match) {
-    return { code: match[2], title: match[1] };
-  }
-  return { code: '', title: '' };
 }
 
 type getVariable = {
