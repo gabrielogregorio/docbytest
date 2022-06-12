@@ -4,9 +4,11 @@
 .eslintignore
 .editorconfig
 .github
+.vscode
 tsconfig.json
 jest.config.js
 doctest.config.json
 babel.config.js
 src
 docs
+

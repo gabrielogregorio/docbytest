@@ -50,6 +50,7 @@ describe('Name suit test', () => {
           ],
           title: 'Name from test',
           description: 'Description from test',
+          fullPath: '/user',
           router: '/user?limit=${limit}',
           path: '/user',
           headers: {
@@ -83,6 +84,7 @@ describe('Name suit test', () => {
           ],
           title: 'Name from test 2',
           description: 'Title Suit test 2',
+          fullPath: '/user/${userId}',
           router: '/user/${userId}?reverse=${reverseTrue}',
           path: '/user',
           headers: {

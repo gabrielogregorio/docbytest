@@ -4,7 +4,6 @@ import { transformStringToUsableObject } from './transformStringToUsableObject';
 
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
-// need remove eval
 // need created method for get values
 
 export function getResponseExpected(code: string, text: string): any {
@@ -12,7 +11,7 @@ export function getResponseExpected(code: string, text: string): any {
   const match = regex.exec(code);
   if (match) {
     try {
-      return transformStringToUsableObject(`${match[2]?.replaceAll('\n', '')}`);
+      return transformStringToUsableObject(`${match[2]}`);
     } catch (error) {
       return getStringToObjectUsableInCode(match[2], text);
     }
@@ -35,9 +34,9 @@ export function getSendContent(code: string, text: string): any {
 
   if (match) {
     try {
-      return transformStringToUsableObject(`${match[1]?.replaceAll('\n', '')}`);
+      return transformStringToUsableObject(`${match[1]}`);
     } catch (error) {
-      return getStringToObjectUsableInCode(`${match[1]?.replaceAll('\n', '')}`, text);
+      return getStringToObjectUsableInCode(`${match[1]}`, text);
     }
   }
   return '';
@@ -48,7 +47,7 @@ export function getHeder(fullBlock: string, text: string) {
   const match: RegExpExecArray | null = regex.exec(fullBlock);
 
   if (match) {
-    const headerContent = match[1]?.replaceAll('\n', '');
+    const headerContent = match[1];
 
     try {
       return transformStringToUsableObject(headerContent);
@@ -74,6 +73,16 @@ export function getRouterRequest(code: string): string {
   if (match) {
     return match[2];
   }
+  return '';
+}
+
+export function getRouterParams(code: string): string {
+  const regex = /([/\w/{}$]+)*/;
+  const match = regex.exec(code);
+  if (match) {
+    return match[1];
+  }
+
   return '';
 }
 

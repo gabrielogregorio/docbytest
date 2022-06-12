@@ -10,7 +10,7 @@ import { mountMdDocs } from './helpers/mountMdDocs';
 function mountDocByTests(suitCase: typeExtractDataFromTextType) {
   const allCases = [];
   suitCase?.cases?.forEach((test: caseType) => {
-    const testPath = test.path;
+    const testPath = test.fullPath;
     const testMethod = test.method;
 
     try {
