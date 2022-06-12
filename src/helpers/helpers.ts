@@ -96,10 +96,10 @@ export function getBaseRouterRequest(code: string): string {
 }
 
 export function getContentTest(code: string): string {
-  const regex = /testDoc\(['`"](.*?)['`"]/;
+  const regex = /(it|test)\(['`"](.*?)['`"]/;
   const match = regex.exec(code);
   if (match) {
-    return match[1];
+    return match[2].replace(/^\s*\[doc\]\s*[:-]\s*/, '');
   }
 
   return '';

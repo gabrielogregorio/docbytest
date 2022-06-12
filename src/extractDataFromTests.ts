@@ -34,7 +34,9 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
   let description = '';
 
   lines.forEach((line) => {
-    const startAnalyzeNewTest = line.slice(0, 10) === '  testDoc(';
+    const reHasStartedNewTest = /^\s*(it|test)\(['"`](\s*\[doc\]\s*[:-]\s*)/;
+    const startAnalyzeNewTest = reHasStartedNewTest.exec(line);
+
     if (startAnalyzeNewTest) {
       blockItem = '';
       existsBlockInAnalyzing = true;

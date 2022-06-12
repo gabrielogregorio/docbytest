@@ -9,18 +9,16 @@ const token = {
   Authorization: 'Bearer exampleJwt',
 };
 
-const testDoc = it;
-
 describe('Gerenciamento de usuários', () => {
   // doc.description: "O cadastro de usuário precisa ser solicitada aos desenvolvedores"
 
-  testDoc('Cadastrar um usuário', async () => {
+  it('[doc]: Cadastrar um usuário', async () => {
     const response = await request.post('/user').send(userTest);
 
     expect(response.statusCode).toEqual(200);
   });
 
-  testDoc('Impede o cadastro de um usuário que já existe', async () => {
+  it('[doc]: Impede o cadastro de um usuário que já existe', async () => {
     const response = await request.post('/user').send({
       code: '123',
       username: 'username',
@@ -39,7 +37,7 @@ describe('Gerenciamento de usuários', () => {
     expect(response.statusCode).toEqual(200);
   });
 
-  testDoc('obtém os dados do próprio usuário', async () => {
+  it('[doc]: obtém os dados do próprio usuário', async () => {
     const response = await request.get(`/user`).set(token);
 
     expect(response.statusCode).toEqual(200);
@@ -48,7 +46,7 @@ describe('Gerenciamento de usuários', () => {
     expect(response.body.password).toBeUndefined();
   });
 
-  testDoc('Edita um user', async () => {
+  it('[doc]: Edita um user', async () => {
     const userId = 213;
     const res = await request.put(`/user/${userId}`).set(token).send({
       test: '132',
@@ -58,7 +56,7 @@ describe('Gerenciamento de usuários', () => {
     expect(res.body.title).toEqual('acss');
   });
 
-  testDoc('deletar a si mesmo', async () => {
+  it('[doc]: deletar a si mesmo', async () => {
     const response = await request.delete(`/user`).set(token);
 
     expect(response.statusCode).toEqual(200);
