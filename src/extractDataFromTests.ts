@@ -29,7 +29,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
   let router = '';
   let fullPath = '';
   let title = '';
-  let description = '';
 
   lines.forEach((line) => {
     const reHasStartedNewTest = /^\s*(it|test)\(['"`](\s*\[doc\]\s*[:-]\s*)/;
@@ -42,7 +41,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       router = '';
       fullPath = '';
       title = getContentTest(line);
-      description = '';
     }
 
     const finishAnalyzeOneTest = line === '  });';
@@ -56,6 +54,7 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
       const queryParams = getQueryParams(blockItem);
       const headers = getHeder(blockItem, oneTestText);
       const params = getUrlParams(router, oneTestText);
+      const description = getDescriptionLocal(blockItem);
 
       const existsAMethodInAnalyze = method !== '';
       if (existsAMethodInAnalyze) {
@@ -78,7 +77,6 @@ export function extractDataFromText(oneTestText: string): typeExtractDataFromTex
 
     if (existsBlockInAnalyzing) {
       blockItem = `${blockItem}\n${line}`;
-      description = description || getDescriptionLocal(line);
       method = method || getTypeMethod(line);
       router = router || getRouterRequest(line);
       fullPath = fullPath || getRouterParams(router);

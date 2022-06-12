@@ -5,10 +5,10 @@ describe('Should test e2e application', () => {
     expect(
       extractDataFromText(`
 describe('Name suit test', () => {
-  // doc.description: "Title suit test"
+  /* doc: Title suit test */
 
   it(" [doc]  - Name from test", async () => {
-    // doc.description: "Description from test"
+    /* doc: Description from test */
 
     const limit = 10;
     const response = await request.post('/user?limit=\${limit}').send('string send').set({
@@ -20,7 +20,7 @@ describe('Name suit test', () => {
   });
 
   test('[doc]:Name from test 2', async () => {
-    // doc.description: "Title Suit test 2"
+    /* doc: Title Suit test 2 */
     const userId = 123
     const reverseTrue = true
 

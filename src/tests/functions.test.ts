@@ -5,7 +5,6 @@ import {
   getDescriptionLocal,
   getRouterRequest,
   getFullDescription,
-  getFullDescribe,
   getHeder,
   getQueryParams,
   getUrlParams,
@@ -187,23 +186,31 @@ describe('Suite', () => {
   });
 
   it('should get description in it or test', () => {
-    expect(getDescriptionLocal(`// doc.description: "Handle magic users"`)).toEqual('Handle magic users');
-    expect(getDescriptionLocal(`// doc.description: "This is a comment"`)).toEqual('This is a comment');
-    expect(getDescriptionLocal(`// doc.description: "a big description"`)).toEqual('a big description');
-    expect(getDescriptionLocal(`// doc.description:"a lower description?"`)).toEqual('a lower description?');
+    expect(getDescriptionLocal(`it("any content", () => { \n /* doc: Handle magic users */`)).toEqual(
+      'Handle magic users',
+    );
+    expect(getDescriptionLocal(`it("http://* content", () => { \n /* doc: This is a comment  */`)).toEqual(
+      'This is a comment',
+    );
+    expect(getDescriptionLocal(`test("any ABC 123", () => { \n /* doc: a big description \n\n */`)).toEqual(
+      'a big description',
+    );
+    expect(getDescriptionLocal(`it("any content", () => { \n /* doc- a lower description? */`)).toEqual(
+      'a lower description?',
+    );
   });
 
   it('should get query params', () => {
     expect(
       getQueryParams(`
-        const orderId = "ASC";
-        let pageNumber = 13;
-        var valueTrue = true;
-        const branchData = 'data';
-        const productId = 123;
+          const orderId = "ASC";
+          let pageNumber = 13;
+          var valueTrue = true;
+          const branchData = 'data';
+          const productId = 123;
 
-        routerDoc.get("/myPage?sort=\${orderId}&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
-      `),
+          routerDoc.get("/myPage?sort=\${orderId}&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
+        `),
     ).toEqual([
       { example: 'ASC', in: 'query', required: null, tag: 'sort', type: 'string', variable: 'orderId' },
       { example: 13, in: 'query', required: null, tag: 'page', type: 'number', variable: 'pageNumber' },
@@ -229,10 +236,34 @@ describe('Suite', () => {
   it('should get send content', () => {
     expect(
       getFullDescription(`
-        describe('Any', () => {
-        // doc.description: "Description Full Description"
-    `),
+          describe('Any', () => {
+          /* doc: Description Full Description */
+      `),
     ).toEqual('Description Full Description');
+
+    expect(
+      getFullDescription(`
+describe('Any with Markdow http://',  (  ) => {
+/* doc:
+# Title
+## Subtitle
+ this is a comment
+Description Full Description
+\`\`\`
+  code example
+\`\`\`
+
+*/
+
+No Here
+      `),
+    ).toEqual(`# Title
+## Subtitle
+ this is a comment
+Description Full Description
+\`\`\`
+  code example
+\`\`\``);
   });
 
   it('should get a router content', () => {
@@ -242,31 +273,5 @@ describe('Suite', () => {
     expect(getRouterRequest(`requestDoc.get("/users").send()`)).toEqual('/users');
     expect(getRouterRequest(`requestDoc.get(\`/users\`).send()`)).toEqual('/users');
     expect(getRouterRequest(`requestDoc.get(\`/users/\${userId}\`).send()`)).toEqual('/users/${userId}');
-  });
-
-  it('should get a full describe', () => {
-    expect(
-      getFullDescribe(`
-describe('Crud Users', () => {
-  testDoc('Should cadaster one user', async () => {
-    const response = await request.post('/user').send({
-      code: codeGenerate,
-      username: userTest.password,
-      password: userTest.username,
-    });
-  });
-});
-      `),
-    ).toEqual({
-      code: `  testDoc('Should cadaster one user', async () => {
-    const response = await request.post('/user').send({
-      code: codeGenerate,
-      username: userTest.password,
-      password: userTest.username,
-    });
-  });
-`,
-      title: 'Crud Users',
-    });
   });
 });

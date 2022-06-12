@@ -1,7 +1,7 @@
 const request: any = {};
 
 describe('Gerenciamento de posts', () => {
-  // doc.description: "O cadastro de posts precisa ser solicitada aos desenvolvedores"
+  /* doc: O cadastro de posts precisa ser solicitada aos desenvolvedores */
 
   test('[doc]: obtém os dados de um post', async () => {
     const postId = 123;
