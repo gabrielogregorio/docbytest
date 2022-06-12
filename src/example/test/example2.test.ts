@@ -1,11 +1,9 @@
 const request: any = {};
 
-const testDoc = it;
-
 describe('Gerenciamento de posts', () => {
   // doc.description: "O cadastro de posts precisa ser solicitada aos desenvolvedores"
 
-  testDoc('obtém os dados de um post', async () => {
+  test('[doc]: obtém os dados de um post', async () => {
     const postId = 123;
     const limitPost = 4;
     const offsetPost = 30;
