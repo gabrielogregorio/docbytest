@@ -7,7 +7,7 @@
 .vscode
 tsconfig.json
 jest.config.js
-doctest.config.json
+docbytest.config.json
 babel.config.js
 src
 docs
