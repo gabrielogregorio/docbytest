@@ -1,1 +1,1 @@
-export const configFileName = './doctest.config.json';
+export const configFileName = './docbytest.config.json';

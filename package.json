@@ -1,7 +1,7 @@
 {
   "name": "docbytest",
-  "version": "0.1.3",
-  "description": "Alpha - Generate docs by test",
+  "version": "0.2.0",
+  "description": "Generate documentation from tests",
   "author": "Gabriel Gregorio da Silva",
   "license": "ISC",
   "repository": {
@@ -11,6 +11,9 @@
   "keywords": [
     "documentation",
     "tests",
+    "test",
+    "supertest",
+    "jest",
     "generate"
   ],
   "bugs": {
