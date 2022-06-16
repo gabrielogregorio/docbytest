@@ -11,6 +11,11 @@
 <a href="https://backend-valorant.herokuapp.com/docs" target="blank">Example in api valorant tips </a>
 </div>
 
+![version 0.2](/docs/v0.2.png)
+<p align="center">
+  This is a beta version
+</p>
+
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
 
@@ -23,7 +28,7 @@ npm i docbytest-ui
 ```
 
 Create docbytest file with keys
-```json
+```js
 // docbytest.config.json
 {
   "folderTests": "./src/example/test",
@@ -51,10 +56,25 @@ This is erros
 
 [Table of errors](errors_status_table)
 
-### Example
 
-This is a code, use "`" for render code, similar github readme
-```
+## Example Table
+
+| Extension | Description | Author |
+|-----------|--------|---------|
+| Eslint  | For linting code | Microsoft |
+| Prettier - Code formatter | For beautifully formate code | Prettier |
+| Prettier Eslint  | Integration prettier and eslint | Rebecca Vest |
+
+
+### Example code
+
+This is a code, use "`" for render code, similar github readme, view more in colors to comments
+
+## Example comment
+
+> orange # 💡 What is docbytest
+> [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
+
 
 Create status code file
 ```ts
@@ -162,9 +182,43 @@ describe('🙋 Suggestions', () => {
 });
 ```
 
-## Tips
-Use icons 🆗 👍 📂 👉 🤏 🔒 🤷 🤦‍♀️ 👨‍🔧 👀 ✅ 👤 🚫 🙋 💻 📔 🔑 🧑‍💻 🔐
+### Use Icons
+🆗 👍 📂 ⚙ 🛡 🛠 🌍 💡 🤓 🚀 ✈ 🛰 🛸 🕛 🎉 👏 🥳 💵 📚 💳 👩‍🚀 ☢ ⚠ ❌ 🔴 🟠 🟡 🟢 🔵 🟣 🟤 ⚫ ⚪ 🏁 👈 👉 🤏 🔒 🔓 🤷 🤦‍♀️ 👨‍🔧 👀 ✅ 👤 🚫 🙋 💻 📔 🔑 🧑‍💻 🔐 ✏ 📬 🗓 ▶ ⏩ ⏭ ⏯ 🔼 🔽 ⏹ 📶
 
 More icons in [https://unicode.org](https://unicode.org/emoji/charts/full-emoji-list.html)
 
-This is experimental!
+
+### Colors to comments
+
+Do you can comments using colors or no, example
+```md
+> orange # 💡 What is docbytest
+> [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
+```
+
+or
+
+```md
+> # 💡 What is docbytest
+> [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
+```
+Do you can choose those colors
+
+* purple
+* orange
+* red
+* yellow
+* green
+* emerald
+* teal
+* cyan
+* sky
+* blue
+* indigo
+* violet
+* purple
+* pink
+* lime
+
+
+This is experimental, OK!
