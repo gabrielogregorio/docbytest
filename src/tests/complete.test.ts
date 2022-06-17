@@ -1,9 +1,9 @@
-import { extractDataFromText } from '../extractDataFromTests';
+import { extractDataFromTestFile } from '../extractDataFromTestFile';
 
 describe('Should test e2e application', () => {
   it('should return expected response', () => {
     expect(
-      extractDataFromText(`
+      extractDataFromTestFile(`
 describe('Name suit test', () => {
   /* doc: Title suit test */
 

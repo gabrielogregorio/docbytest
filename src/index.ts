@@ -3,7 +3,7 @@ import fs from 'fs';
 import { configFileType } from './interfaces/configFile';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 import { loadConfigFile } from './helpers/loadConfigFile';
-import { extractDataFromTests } from './extractDataFromTests';
+import { extractDataFromTestFile } from './extractDataFromTestFile';
 import { configFileName } from './constants/folders';
 import { mountMdDocs } from './helpers/mountMdDocs';
 
@@ -32,7 +32,10 @@ const mapTestFiles = (folderTests: string) => {
   const fullDocs: typeExtractDataFromTextType[] = [];
   fs.readdirSync(folderTests).forEach((file) => {
     const fullPathOneTest = path.join(folderTests, file);
-    const testsOneFile: typeExtractDataFromTextType = extractDataFromTests(fullPathOneTest);
+
+    const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
+    const testsOneFile = extractDataFromTestFile(fullOneTest);
+
     const existsTestCases = testsOneFile.cases.length !== 0;
 
     if (existsTestCases) {
