@@ -31,6 +31,12 @@ describe('Name suit test', () => {
     expect(response.body).toEqual({message: "success"});
     expect(response.statusCode).toEqual(200);
   });
+
+  it("[dev] - Name test dev", async () => {
+    const response = await request.get('/user').send('string send')
+
+    expect(response.statusCode).toEqual(300);
+  });
 });
         `),
     ).toEqual({
@@ -97,6 +103,65 @@ describe('Name suit test', () => {
       order: 999,
       title: 'Name suit test',
       description: 'Title suit test',
+    });
+  });
+
+  it('should return expected response', () => {
+    const returnDev = true;
+    expect(
+      extractDataFromTestFile(
+        `
+describe('Name suit test', () => {
+  it("[doc] - Name from test", async () => {
+    const response = await request.post('/user').send('string send')
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual('example return string body');
+  });
+
+  it("[dev] - Name test dev", async () => {
+    const response = await request.get('/user').send('string send')
+
+    expect(response.statusCode).toEqual(300);
+  });
+});
+        `,
+        returnDev,
+      ),
+    ).toEqual({
+      cases: [
+        {
+          method: 'post',
+          sendContent: 'string send',
+          params: [],
+          title: 'Name from test',
+          description: '',
+          fullPath: '/user',
+          router: '/user',
+          headers: '',
+          response: {
+            statusCode: '200',
+            body: 'example return string body',
+          },
+        },
+        {
+          method: 'get',
+          sendContent: 'string send',
+          params: [],
+          title: 'Name test dev',
+          description: '',
+          fullPath: '/user',
+          router: '/user',
+          headers: '',
+          response: {
+            statusCode: '300',
+            body: '',
+          },
+        },
+      ],
+      order: 999,
+      title: 'Name suit test',
+      description: '',
     });
   });
 });
