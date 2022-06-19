@@ -1,3 +1,4 @@
+import { BIG_SORT_NUMBER } from '../constants/variables';
 import { extractDataFromTestFile } from '../extractDataFromTestFile';
 
 describe('Should test e2e application', () => {
@@ -100,7 +101,7 @@ describe('Name suit test', () => {
           },
         },
       ],
-      order: 999,
+      order: BIG_SORT_NUMBER,
       title: 'Name suit test',
       description: 'Title suit test',
     });
@@ -159,7 +160,7 @@ describe('Name suit test', () => {
           },
         },
       ],
-      order: 999,
+      order: BIG_SORT_NUMBER,
       title: 'Name suit test',
       description: '',
     });

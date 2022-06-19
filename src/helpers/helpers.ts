@@ -1,4 +1,5 @@
-import { paramsType } from 'src/interfaces/extractData';
+import { BIG_SORT_NUMBER } from '../constants/variables';
+import { paramsType } from '../interfaces/extractData';
 import { getStringToObjectUsableInCode } from './getStringToObjectUsableInCode';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
 
@@ -103,12 +104,11 @@ export function getContentTest(code: string): string {
 
 export function getContext(fullCode: string): { text: string; order: number } {
   const regex = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}[:]?)?\s{0,12}(.*)['"`]/;
-  const BIG_NUMBER_ORDER = 999;
   const match = regex.exec(fullCode);
   if (match) {
-    return { text: match[3], order: Number(match[2]) || BIG_NUMBER_ORDER };
+    return { text: match[3], order: Number(match[2]) || BIG_SORT_NUMBER };
   }
-  return { text: '', order: BIG_NUMBER_ORDER };
+  return { text: '', order: BIG_SORT_NUMBER };
 }
 
 function getBaseToQueryParams(fullCode: string): string {

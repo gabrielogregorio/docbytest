@@ -1,4 +1,4 @@
-export function sortOrderSuits(tests) {
+export function sortOrder(tests) {
   return tests.sort((a, b) => {
     const first = Number(a.order);
     const second = Number(b.order);

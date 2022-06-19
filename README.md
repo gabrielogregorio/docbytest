@@ -102,14 +102,18 @@ import statusCode from './config/statusCode';
 
 export const app = express();
 
-// config doc-json
-app.get('/docs-json', (req, res) =>
-  res.json(
-    docbytest({
+app.get('/docs-json', async (req, res) => {
+  const authToken = req.body.authorization; // optional
+  const returnDev = isAuthenticate(authToken); // optional => false to hidden dev docs
+
+  return res.json(
+    await docbytest({
       statusCode,
+      returnDev,
     }),
-  ),
-);
+  );
+});
+
 
 // configure docbytest-ui
 app.get('/docs', (_req, res) => {
@@ -124,8 +128,6 @@ app.use(
 );
 
 app.use('/docs/favicon.ico', express.static(path.join(__dirname, '../node_modules/docbytest-ui/build/favicon.ico')));
-
-app.use('/docs/logo.png', express.static(path.join(__dirname, '../node_modules/docbytest-ui/build/docs/logo.png')));
 
 // Start your server
 app.listen(3333);

@@ -1,12 +1,13 @@
 import path from 'path';
 import fs from 'fs';
-import { sortOrderSuits } from './helpers/sortOrderSuits';
 import { configFileType } from './interfaces/configFile';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 import { loadConfigFile } from './helpers/loadConfigFile';
 import { extractDataFromTestFile } from './extractDataFromTestFile';
 import { configFileName } from './constants/folders';
-import { mountMdDocs } from './helpers/mountMdDocs';
+import { getDocsType } from './interfaces/docs';
+import { sortOrder } from './helpers/sortOrder';
+import { getDocs } from './handleDocs';
 
 function mountDocByTests(suitCase: typeExtractDataFromTextType) {
   const allCases = [];
@@ -29,10 +30,10 @@ function mountDocByTests(suitCase: typeExtractDataFromTextType) {
   return { paths: { ...allCases }, description: suitCase.description, title: suitCase.title, order: suitCase.order };
 }
 
-const mapTestFiles = (folderTests: string, returnDev: boolean) => {
+const mapTestFiles = (directoryTests: string, returnDev: boolean) => {
   const fullDocs: typeExtractDataFromTextType[] = [];
-  fs.readdirSync(folderTests).forEach((file) => {
-    const fullPathOneTest = path.join(folderTests, file);
+  fs.readdirSync(directoryTests).forEach((file) => {
+    const fullPathOneTest = path.join(directoryTests, file);
 
     const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
     const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev);
@@ -47,17 +48,15 @@ const mapTestFiles = (folderTests: string, returnDev: boolean) => {
   return fullDocs;
 };
 
-export default function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
+export default async function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
   const configs: configFileType = loadConfigFile(configFileName);
-  const docMd: string = fs.readFileSync(configs.docFile, { encoding: 'utf-8' });
-
-  const docMdFormatted = mountMdDocs(docMd, statusCode);
 
   const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests, returnDev);
+  const fullDocsSorted = sortOrder(fullDocs);
 
-  const fullDocsSorted = sortOrderSuits(fullDocs);
+  const docs: getDocsType[] = await getDocs(configs.docFile, statusCode);
 
-  return { files: fullDocsSorted, docs: docMdFormatted };
+  return { files: fullDocsSorted, docs };
 }
 
 generateDocs.defaultProps = {
