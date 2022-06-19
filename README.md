@@ -19,7 +19,73 @@
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
 
-## How use
+## Summary
+- [For devs](#For-devs)
+- [How use in develop mode](#How-use-in-develop-mode)
+- [How integrated with docbytest-ui](#How-integrated-with-docbytest-ui)
+- [Contributing with project](#Contributing-with-project)
+- [Avaliable Scripts](#Avaliable-Scripts)
+- [For NPM users](#For-NPM-users)
+- [Write your tests](#Write-your-tests)
+- [Use Icons](#Use-Icons)
+- [Colors to comments](#Colors-to-comments)
+
+
+## For devs
+### How use in develop mode
+1. First, access this root dir from docbytest, and run
+```bash
+npm install
+npm run build
+npm link
+```
+
+2. Clone [docbytest-example-api](https://github.com/gabrielogregorio/docbytest-example-api)
+3. Access **docbytest-example-api** in root dir, install packages and link docbytest
+```bash
+npm install
+npm link docbytest
+```
+5. Start docbytest-example-api, with command
+```bash
+npm run dev
+```
+6. Access [http://127.0.0.1:3333/docs-json](http://127.0.0.1:3333/docs-json) to see json docs
+
+### How integrated with docbytest-ui
+1. Clone [docbytest-ui](https://github.com/gabrielogregorio/docbytest-ui)
+3. Access **docbytest-ui** and install packages
+```bash
+npm install
+```
+5. Start docbytest-ui, with command
+```bash
+npm run dev
+```
+6. Update "./docbytest-ui/src/core/hooks/useGetUrlApi.ts" to
+```typescript
+export const useGetUrlApi = () => {
+  const currentUrlAPi = 'http://127.0.0.1:3333/docs'; // window.location.href;
+  const currentUrlOrigin = 'http://127.0.0.1:3333'; // window.location.origin;
+
+  return {
+    currentUrlAPi,
+    currentUrlOrigin,
+  };
+};
+```
+6. Access [http://127.0.0.1:3000/docs](http://127.0.0.1:3000/docs) to see docbytest-ui
+### Contributing with project
+
+Read [Contributing.md](CONTRIBUTING.md)
+### Avaliable Scripts
+
+```bash
+npm run dev
+npm run jest:watchAll
+```
+
+## For NPM users
 Do you need install docbytest and docbytest-ui
 
 ```bash
@@ -32,14 +98,14 @@ Create docbytest file with keys
 // docbytest.config.json
 {
   "folderTests": "./src/example/test",
-  "docFile": "./docs/base.md",
+  "docFile": "./docs/",
   "statusCodeErrorFile": "./src/example/statusCode.ts"
 }
 ```
 
 Create docs file
 ```md
-// ./docs/base.md
+// ./docs/introduction/example.md
 # 💻 API docbytest
 
 This is a documentation [types valorant](https://valorant-tips.vercel.app/).
@@ -99,6 +165,7 @@ configure server in your express api
 import express from 'express';
 import docbytest from 'docbytest';
 import statusCode from './config/statusCode';
+import path from 'path'
 
 export const app = express();
 
@@ -135,7 +202,7 @@ app.listen(3333);
 
 Access your api in "/docs"
 
-## Write your tests
+### Write your tests
 Create tests, use folder configured in docbytest.config.json from save your specs or tests.
 > use 2 spaces in your code!!!
 
