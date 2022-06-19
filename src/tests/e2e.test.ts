@@ -1,9 +1,10 @@
 import statusCode from '@/example/statusCode';
+import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs from '../index';
 
 describe('Complete test', () => {
-  it('any test', () => {
-    expect(generateDocs({ statusCode })).toEqual({
+  it('any test', async () => {
+    expect(await generateDocs({ statusCode })).toEqual({
       files: [
         {
           paths: {
@@ -182,12 +183,40 @@ describe('Complete test', () => {
               },
             },
           },
-          order: 999,
+          order: BIG_SORT_NUMBER,
           description: 'O cadastro de posts precisa ser solicitada aos desenvolvedores',
           title: 'Gerenciamento de posts',
         },
       ],
-      docs: '# Bem vindo a documentação da API do blog Valorant tips\n\nEstá documentação contém toda a parte técnica relacionada a API do blog [dicas de valorant](https://valorant-tips.vercel.app/), sendo a primeira usando a bibliteca doctbytest\n\n',
+      docs: [
+        {
+          order: 1,
+          title: '🚀 GETTING STARTED',
+          docs: [
+            {
+              title: 'Introduction',
+              order: 1,
+              text: '# Introduction\nexample\n\n',
+            },
+            {
+              title: '❌ Errors',
+              order: 3,
+              text: '# ❌ Errors\nExample Errors\n\n| statusCode | description |\n|---------|----------|\n| 200 | Ok |\n| 204 | no content |\n| 401 | not permission |\n\ntest\n\n',
+            },
+          ],
+        },
+        {
+          order: 999,
+          title: '💻 EXAMPLES',
+          docs: [
+            {
+              title: '📀 Examples',
+              order: 999,
+              text: '# 📀 Examples\nExample of example\n\n',
+            },
+          ],
+        },
+      ],
     });
   });
 });
