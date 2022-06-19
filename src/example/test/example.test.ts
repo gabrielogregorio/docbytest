@@ -9,7 +9,7 @@ const token = {
   Authorization: 'Bearer exampleJwt',
 };
 
-describe('Gerenciamento de usuários', () => {
+describe('[35]: Gerenciamento de usuários', () => {
   /* doc: O cadastro de usuário precisa ser solicitada aos desenvolvedores */
 
   it('[doc]: Cadastrar um usuário', async () => {

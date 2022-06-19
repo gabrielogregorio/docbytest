@@ -18,10 +18,10 @@ import {
 
 const replaceToMatch = (content: string, fullMatch: RegExpExecArray) => content.replace(fullMatch[0], '');
 
-const getTests = (fullData2) => {
+const getTests = (fullData2: string, returnDev: boolean) => {
   let content = `\n${fullData2}\n`;
 
-  const arrayTry = Array.from(Array(fullData2.split('\n').length).keys());
+  const arrayTry = Array.from(Array(content.split('\n').length).keys());
   const fullList = arrayTry.map(() => {
     const testesThreeLines =
       /^\s{2}(it|test)\(['"`]\s{0,10}\[doc\]\s{0,10}[:-].{2,300}(\n\s{0,50}.{1,999}){0,50}?\n\s{2}\}\);\n/;
@@ -29,6 +29,14 @@ const getTests = (fullData2) => {
     if (contentThreeLines) {
       content = replaceToMatch(content, contentThreeLines);
       return contentThreeLines[0];
+    }
+
+    const testesThreeLinesDev =
+      /^\s{2}(it|test)\(['"`]\s{0,10}\[dev\]\s{0,10}[:-].{2,300}(\n\s{0,50}.{1,999}){0,50}?\n\s{2}\}\);\n/;
+    const contentThreeLinesDev = testesThreeLinesDev.exec(content);
+    if (contentThreeLinesDev && returnDev) {
+      content = replaceToMatch(content, contentThreeLinesDev);
+      return contentThreeLinesDev[0];
     }
 
     content = content.replace(/^.{0,300}\n/, '');
@@ -41,10 +49,10 @@ const getTests = (fullData2) => {
   return fullList.filter((item) => !!item === true);
 };
 
-export function extractDataFromTestFile(oneTestText: string): typeExtractDataFromTextType {
+export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean): typeExtractDataFromTextType {
   const cases: caseType[] = [];
 
-  getTests(oneTestText).forEach((test) => {
+  getTests(oneTestText, returnDev).forEach((test) => {
     const title = getContentTest(test);
     const sendContent = getSendContent(test, oneTestText);
     const statusCode = getStatusCodeExpected(test);
@@ -78,7 +86,8 @@ export function extractDataFromTestFile(oneTestText: string): typeExtractDataFro
 
   return {
     cases,
-    title: titleSuit,
+    title: titleSuit.text,
+    order: titleSuit.order,
     description: describeSuit,
   };
 }
