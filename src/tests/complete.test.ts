@@ -94,6 +94,7 @@ describe('Name suit test', () => {
           },
         },
       ],
+      order: 999,
       title: 'Name suit test',
       description: 'Title suit test',
     });

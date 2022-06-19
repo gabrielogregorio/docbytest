@@ -100,13 +100,14 @@ export function getContentTest(code: string): string {
   return '';
 }
 
-export function getContext(fullCode: string): string {
-  const regex = /describe\('(.*)'/;
+export function getContext(fullCode: string): { text: string; order: number } {
+  const regex = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}[:]?)?\s{0,12}(.*)['"`]/;
+  const BIG_NUMBER_ORDER = 999;
   const match = regex.exec(fullCode);
   if (match) {
-    return match[1];
+    return { text: match[3], order: Number(match[2]) || BIG_NUMBER_ORDER };
   }
-  return '';
+  return { text: '', order: BIG_NUMBER_ORDER };
 }
 
 function getBaseToQueryParams(fullCode: string): string {

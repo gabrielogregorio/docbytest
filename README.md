@@ -138,7 +138,8 @@ Create tests, use folder configured in docbytest.config.json from save your spec
 > use 2 spaces in your code!!!
 
 ```js
-describe('🙋 Suggestions', () => {
+/* 1 is order show cases*/
+describe('[1] 🙋 Suggestions', () => {
   /* doc:
     your comments from suit
   */

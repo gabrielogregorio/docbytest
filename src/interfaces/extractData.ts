@@ -25,5 +25,6 @@ export type caseType = {
 export type typeExtractDataFromTextType = {
   cases: caseType[];
   title: string;
+  order: number;
   description: string;
 };

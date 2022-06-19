@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { sortOrderSuits } from './helpers/sortOrderSuits';
 import { configFileType } from './interfaces/configFile';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 import { loadConfigFile } from './helpers/loadConfigFile';
@@ -25,16 +26,16 @@ function mountDocByTests(suitCase: typeExtractDataFromTextType) {
     }
   });
 
-  return { paths: { ...allCases }, description: suitCase.description, title: suitCase.title };
+  return { paths: { ...allCases }, description: suitCase.description, title: suitCase.title, order: suitCase.order };
 }
 
-const mapTestFiles = (folderTests: string) => {
+const mapTestFiles = (folderTests: string, returnDev: boolean) => {
   const fullDocs: typeExtractDataFromTextType[] = [];
   fs.readdirSync(folderTests).forEach((file) => {
     const fullPathOneTest = path.join(folderTests, file);
 
     const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
-    const testsOneFile = extractDataFromTestFile(fullOneTest);
+    const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev);
 
     const existsTestCases = testsOneFile.cases.length !== 0;
 
@@ -46,13 +47,19 @@ const mapTestFiles = (folderTests: string) => {
   return fullDocs;
 };
 
-export default function generateDocs({ statusCode }: { statusCode: unknown }) {
+export default function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
   const configs: configFileType = loadConfigFile(configFileName);
   const docMd: string = fs.readFileSync(configs.docFile, { encoding: 'utf-8' });
 
   const docMdFormatted = mountMdDocs(docMd, statusCode);
 
-  const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests);
+  const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests, returnDev);
 
-  return { files: fullDocs, docs: docMdFormatted };
+  const fullDocsSorted = sortOrderSuits(fullDocs);
+
+  return { files: fullDocsSorted, docs: docMdFormatted };
 }
+
+generateDocs.defaultProps = {
+  returnDev: false,
+};
