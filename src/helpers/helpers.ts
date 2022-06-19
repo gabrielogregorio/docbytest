@@ -87,7 +87,8 @@ export function getRouterParams(code: string): string {
 }
 
 function removeDocPrefix(content: string): string {
-  return content.replace(/^\s*\[doc\]\s*[:-]\s*/, '');
+  const contentLocal = content.replace(/^\s*\[doc\]\s*[:-]\s*/, '');
+  return contentLocal.replace(/^\s*\[dev\]\s*[:-]\s*/, '');
 }
 
 export function getContentTest(code: string): string {
