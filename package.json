@@ -1,6 +1,6 @@
 {
   "name": "docbytest",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generate documentation from tests",
   "author": "Gabriel Gregorio da Silva",
   "license": "ISC",
