@@ -140,7 +140,7 @@ This is a code, use "`" for render code, similar github readme, view more in col
 
 > orange # 💡 What is docbytest
 > [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
-
+```
 
 Create status code file
 ```ts
@@ -164,7 +164,7 @@ configure server in your express api
 ```ts
 import express from 'express';
 import docbytest from 'docbytest';
-import statusCode from './config/statusCode';
+import statusCode from './example /statusCode';
 import path from 'path'
 
 export const app = express();
@@ -200,7 +200,7 @@ app.use('/docs/favicon.ico', express.static(path.join(__dirname, '../node_module
 app.listen(3333);
 ```
 
-Access your api in "/docs"
+Access **your api in "/docs"**
 
 ### Write your tests
 Create tests, use folder configured in docbytest.config.json from save your specs or tests.

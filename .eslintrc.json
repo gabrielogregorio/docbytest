@@ -10,13 +10,13 @@
       "typescript": {}
     }
   },
-  "extends": ["standard", "airbnb-base", "prettier"],
+  "extends": ["standard", "airbnb-base", "prettier", "plugin:sonarjs/recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
     "tsconfigRootDir": "./"
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import", "sonarjs"],
   "rules": {
     "import/extensions": "off",
     "import/prefer-default-export": "off",
