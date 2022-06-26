@@ -43,6 +43,7 @@ describe('[35]: Gerenciamento de usuários', () => {
     expect(response.statusCode).toEqual(200);
 
     expect(response.body.username).toEqual('testSystemAfk37812-++aks22');
+    expect(response.body.length).toEqual(6);
     expect(response.body.password).toBeUndefined();
   });
 
@@ -54,6 +55,8 @@ describe('[35]: Gerenciamento de usuários', () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.title).toEqual('acss');
+    expect(res.body.document.items[1].id).toEqual('K45AS134G35343');
+    expect(res.body.document.items[0].name).toEqual('maria');
   });
 
   it('[doc]: deletar a si mesmo', async () => {

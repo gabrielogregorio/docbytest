@@ -1,4 +1,6 @@
-import { BIG_SORT_NUMBER } from '../constants/variables';
+import { dynamicAssembly } from './dynamicAssembly';
+import { mergeRecursive } from './mergeRecursive';
+import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
 import { paramsType } from '../interfaces/extractData';
 import { getStringToObjectUsableInCode } from './getStringToObjectUsableInCode';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
@@ -18,6 +20,38 @@ export function getResponseExpected(code: string, text: string): any {
     }
   }
   return '';
+}
+
+const regexDynamicBody = /expect\(\w{1,300}\.(body[^\\)]{3,})\)\.toEqual\(([^\\)]{1,9999})/gi;
+
+export function getResponseExpectedMountBody(code: string, text: string, object): any {
+  let response = null;
+
+  let preventLoop = 0;
+  while (true) {
+    preventLoop += 1;
+    if (LIMIT_PREVENT_INFINITE_LOOPS === preventLoop) {
+      break;
+    }
+
+    const regexRouter = regexDynamicBody.exec(code);
+
+    if (regexRouter) {
+      const nameTag = regexRouter[1];
+      const valueVarTag = regexRouter[2];
+
+      if (!nameTag.endsWith('length')) {
+        const transform = dynamicAssembly(nameTag, valueVarTag.replace(/'/gi, '"'));
+        response = mergeRecursive(object, JSON.parse(transform.replace(/'/, '"')));
+      }
+    }
+
+    if (!regexRouter) {
+      break;
+    }
+  }
+
+  return response;
 }
 
 export function getStatusCodeExpected(code: string): string {
@@ -169,8 +203,13 @@ export function getQueryParams(fullCode: string): paramsType[] {
   if (queries) {
     const params: paramsType[] = [];
 
-    // remove this trash loop
+    let preventLoop = 0;
     while (true) {
+      preventLoop += 1;
+      if (LIMIT_PREVENT_INFINITE_LOOPS === preventLoop) {
+        break;
+      }
+
       const regexRouter = regex2.exec(queries);
 
       if (regexRouter) {
@@ -201,8 +240,13 @@ export function getUrlParams(router: string, text: string): any[] {
   const params = [];
   const regex = /\/\$\{([\w]*)\}/gi;
 
-  // remove this while, please
+  let preventLoop = 0;
   while (true) {
+    preventLoop += 1;
+    if (LIMIT_PREVENT_INFINITE_LOOPS === preventLoop) {
+      break;
+    }
+
     const regexRouter = regex.exec(router);
 
     if (regexRouter) {

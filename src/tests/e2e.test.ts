@@ -25,7 +25,7 @@ describe('Complete test', () => {
                     headers: '',
                     response: {
                       statusCode: '200',
-                      body: '',
+                      body: null,
                     },
                   },
                   {
@@ -43,7 +43,7 @@ describe('Complete test', () => {
                     headers: '',
                     response: {
                       statusCode: '409',
-                      body: '',
+                      body: null,
                     },
                   },
                 ],
@@ -64,7 +64,9 @@ describe('Complete test', () => {
                     },
                     response: {
                       statusCode: '200',
-                      body: '',
+                      body: {
+                        username: 'testSystemAfk37812-++aks22',
+                      },
                     },
                   },
                 ],
@@ -85,7 +87,7 @@ describe('Complete test', () => {
                     },
                     response: {
                       statusCode: '200',
-                      body: '',
+                      body: null,
                     },
                   },
                 ],
@@ -117,7 +119,19 @@ describe('Complete test', () => {
                     },
                     response: {
                       statusCode: '200',
-                      body: '',
+                      body: {
+                        document: {
+                          items: [
+                            {
+                              name: 'maria',
+                            },
+                            {
+                              id: 'K45AS134G35343',
+                            },
+                          ],
+                        },
+                        title: 'acss',
+                      },
                     },
                   },
                 ],

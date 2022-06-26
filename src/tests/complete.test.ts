@@ -156,7 +156,7 @@ describe('Name suit test', () => {
           headers: '',
           response: {
             statusCode: '300',
-            body: '',
+            body: null,
           },
         },
       ],

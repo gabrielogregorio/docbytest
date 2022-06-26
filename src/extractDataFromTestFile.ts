@@ -1,3 +1,4 @@
+import { mergeRecursive } from './helpers/mergeRecursive';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 
 import {
@@ -14,6 +15,7 @@ import {
   getQueryParams,
   getHeder,
   getRouterParams,
+  getResponseExpectedMountBody,
 } from './helpers/helpers';
 
 const replaceToMatch = (content: string, fullMatch: RegExpExecArray) => content.replace(fullMatch[0], '');
@@ -56,7 +58,7 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
     const title = getContentTest(test);
     const sendContent = getSendContent(test, oneTestText);
     const statusCode = getStatusCodeExpected(test);
-    const body = getResponseExpected(test, oneTestText);
+    let body = getResponseExpectedMountBody(test, oneTestText, {});
     const queryParams = getQueryParams(test);
     const headers = getHeder(test, oneTestText);
     const params = getUrlParams(test, oneTestText);
@@ -64,6 +66,15 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
     const method = getTypeMethod(test);
     const router = getRouterRequest(test);
     const fullPath = getRouterParams(router);
+
+    const fullBody = getResponseExpected(test, oneTestText);
+    try {
+      body = mergeRecursive(JSON.parse(body || {}), fullBody);
+    } catch (error) {
+      if (fullBody) {
+        body = fullBody;
+      }
+    }
 
     cases.push({
       method,
