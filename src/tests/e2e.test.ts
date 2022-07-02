@@ -201,7 +201,205 @@ describe('Complete test', () => {
           description: 'O cadastro de posts precisa ser solicitada aos desenvolvedores',
           title: 'Gerenciamento de posts',
         },
+        {
+          description: '',
+          order: 999,
+          paths: {
+            '/user/${idUsuarioValido}': {
+              get: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/user/${idUsuarioValido}',
+                    headers: {},
+                    method: 'get',
+                    params: [
+                      {
+                        example: '981C513A511',
+                        in: 'param',
+                        required: null,
+                        tag: 'idUsuarioValido',
+                        type: 'string',
+                        variable: 'idUsuarioValido',
+                      },
+                    ],
+                    response: {
+                      body: null,
+                      statusCode: '200',
+                    },
+                    router: '/user/${idUsuarioValido}',
+                    sendContent: '',
+                    title: 'Deve retornar um Usuário',
+                  },
+                ],
+              },
+              put: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/user/${idUsuarioValido}',
+                    headers: {},
+                    method: 'put',
+                    params: [
+                      {
+                        example: '981C513A511',
+                        in: 'param',
+                        required: null,
+                        tag: 'idUsuarioValido',
+                        type: 'string',
+                        variable: 'idUsuarioValido',
+                      },
+                    ],
+                    response: {
+                      body: {
+                        bio: `Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes`,
+                        itemBio: [
+                          {
+                            text: '',
+                          },
+                        ],
+                        motivational: 'Loremmmmmmm snsadnadlaldjsaddssasdaad',
+                        name: 'alterado',
+                      },
+                      statusCode: '',
+                    },
+                    router: '/user/${idUsuarioValido}',
+                    sendContent: {
+                      bio: `Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes`,
+                      itemBio: [
+                        ['school', 'Graduou em análise e desenvolvimento de Sistemas na Fatec Araçatuba'],
+                        ['status', 'Solteiro'],
+                        ['work', 'Desenvolvedor web'],
+                        ['film', 'Interestelar'],
+                      ],
+                      motivational: 'Loremmmmmmm snsadnadlaldjsaddssasdaad',
+                      name: 'alterado',
+                      password: 'gabriel',
+                      username: 'alterado2',
+                    },
+                    title: 'Deve permitir a edição de um usuario!',
+                  },
+                ],
+              },
+            },
+            '/user/follow/${idUser2Valido}': {
+              post: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/user/follow/${idUser2Valido}',
+                    headers: {},
+                    method: 'post',
+                    params: [
+                      {
+                        example: '981C513A511',
+                        in: 'param',
+                        required: null,
+                        tag: 'idUser2Valido',
+                        type: 'string',
+                        variable: 'idUser2Valido',
+                      },
+                    ],
+                    response: {
+                      body: {
+                        followed: true,
+                        msg: 'User cannot follow himself!',
+                      },
+                      statusCode: '200',
+                    },
+                    router: '/user/follow/${idUser2Valido}',
+                    sendContent: '',
+                    title: 'Usuário 1 deve seguir o usuário 2',
+                  },
+                ],
+              },
+            },
+            '/me': {
+              get: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/me',
+                    headers: {},
+                    method: 'get',
+                    params: [],
+                    response: {
+                      body: [
+                        {
+                          email: 'no-valid-email@fakemail.com',
+                          followers: undefined,
+                          following: [
+                            {
+                              _id: '981C513A511',
+                            },
+                            2,
+                          ],
+
+                          name: 'lilian',
+                          username: 'sherek',
+                        },
+                      ],
+                      statusCode: '200',
+                    },
+                    router: '/me',
+                    sendContent: '',
+                    title: 'Obter os dados de si mesmo e verificar que está seguindo o usuario 2',
+                  },
+                ],
+              },
+            },
+          },
+          title: 'Testes gerais',
+        },
+        {
+          description: '',
+          order: 999,
+          paths: {
+            '/user': {
+              delete: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/user',
+                    headers: '',
+                    method: 'delete',
+                    params: [],
+                    response: {
+                      body: null,
+                      statusCode: '200',
+                    },
+                    router: '/user',
+                    sendContent: '',
+                    title: 'Deve deletar um usuário',
+                  },
+                ],
+              },
+            },
+            '/users': {
+              get: {
+                tests: [
+                  {
+                    description: '',
+                    fullPath: '/users',
+                    headers: '',
+                    method: 'get',
+                    params: [],
+                    response: {
+                      body: null,
+                      statusCode: '200',
+                    },
+                    router: '/users',
+                    sendContent: '',
+                    title: 'Deve retornar uma lista de usuários',
+                  },
+                ],
+              },
+            },
+          },
+          title: 'Catastrofic Example',
+        },
       ],
+
       docs: [
         {
           order: 1,

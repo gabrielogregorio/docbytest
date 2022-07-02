@@ -8,6 +8,7 @@ import {
   getHeder,
   getQueryParams,
   getUrlParams,
+  getResponseExpectedMountBody,
 } from '../helpers/helpers';
 
 describe('Suite', () => {
@@ -273,5 +274,23 @@ Description Full Description
     expect(getRouterRequest(`requestDoc.get("/users").send()`)).toEqual('/users');
     expect(getRouterRequest(`requestDoc.get(\`/users\`).send()`)).toEqual('/users');
     expect(getRouterRequest(`requestDoc.get(\`/users/\${userId}\`).send()`)).toEqual('/users/${userId}');
+  });
+
+  it('should get a router content', () => {
+    const response = getResponseExpectedMountBody(
+      `
+    expect(response.body[0].follow).toEqual(1);
+    expect(response.body[0].name).toEqual("Name");
+    expect(response.body[0].boolean).toEqual(true);
+    expect(response.body[0].object).toEqual({ name: 'abc'});
+    expect(response.body[0].following).toEqual([1, 2]);
+
+    `,
+      ``,
+      {},
+    );
+    expect(response).toEqual({
+      body: [{ boolean: true, object: { name: 'abc' }, follow: 1, name: 'Name', following: [1, 2] }],
+    });
   });
 });

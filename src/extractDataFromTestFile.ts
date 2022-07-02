@@ -17,6 +17,7 @@ import {
   getRouterParams,
   getResponseExpectedMountBody,
 } from './helpers/helpers';
+import { getFirstKeyObject } from './helpers/getFirstKeyObject';
 
 const replaceToMatch = (content: string, fullMatch: RegExpExecArray) => content.replace(fullMatch[0], '');
 
@@ -25,9 +26,10 @@ const getTests = (fullData2: string, returnDev: boolean) => {
 
   const arrayTry = Array.from(Array(content.split('\n').length).keys());
   const fullList = arrayTry.map(() => {
-    const testesThreeLines =
-      /^\s{2}(it|test)\(['"`]\s{0,10}\[doc\]\s{0,10}[:-].{2,300}(\n\s{0,50}.{1,999}){0,50}?\n\s{2}\}\);\n/;
+    const testesThreeLines = /^^\s{2}(it|test)\(['"`]\s{0,10}\[doc\]\s{0,10}[:-][\s\S]+?\n\s{2}\}\);\n/;
+
     const contentThreeLines = testesThreeLines.exec(content);
+
     if (contentThreeLines) {
       content = replaceToMatch(content, contentThreeLines);
       return contentThreeLines[0];
@@ -45,6 +47,7 @@ const getTests = (fullData2: string, returnDev: boolean) => {
     if (content === '') {
       return '';
     }
+
     return '';
   });
 
@@ -58,7 +61,6 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
     const title = getContentTest(test);
     const sendContent = getSendContent(test, oneTestText);
     const statusCode = getStatusCodeExpected(test);
-    let body = getResponseExpectedMountBody(test, oneTestText, {});
     const queryParams = getQueryParams(test);
     const headers = getHeder(test, oneTestText);
     const params = getUrlParams(test, oneTestText);
@@ -66,14 +68,17 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
     const method = getTypeMethod(test);
     const router = getRouterRequest(test);
     const fullPath = getRouterParams(router);
+    let body = getResponseExpectedMountBody(test, oneTestText, {});
+
+    try {
+      body = getFirstKeyObject(body);
+    } catch (error) {
+      //
+    }
 
     const fullBody = getResponseExpected(test, oneTestText);
-    try {
-      body = mergeRecursive(JSON.parse(body || {}), fullBody);
-    } catch (error) {
-      if (fullBody) {
-        body = fullBody;
-      }
+    if (fullBody) {
+      body = fullBody;
     }
 
     cases.push({
@@ -94,7 +99,6 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
 
   const titleSuit = getContext(oneTestText);
   const describeSuit = getFullDescription(oneTestText);
-
   return {
     cases,
     title: titleSuit.text,
