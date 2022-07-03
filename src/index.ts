@@ -4,13 +4,15 @@ import { configFileType } from './interfaces/configFile';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 import { loadConfigFile } from './helpers/loadConfigFile';
 import { extractDataFromTestFile } from './extractDataFromTestFile';
-import { configFileName } from './constants/folders';
 import { getDocsType } from './interfaces/docs';
 import { sortOrder } from './helpers/sortOrder';
 import { getDocs } from './handleDocs';
 
+export const CONFIG_FILE_NAME = './docbytest.config.json';
+
 function mountDocByTests(suitCase: typeExtractDataFromTextType) {
   const allCases = [];
+
   suitCase?.cases?.forEach((test: caseType) => {
     const testPath = test.fullPath;
     const testMethod = test.method;
@@ -49,7 +51,7 @@ const mapTestFiles = (directoryTests: string, returnDev: boolean) => {
 };
 
 export default async function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
-  const configs: configFileType = loadConfigFile(configFileName);
+  const configs: configFileType = loadConfigFile(CONFIG_FILE_NAME);
 
   const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests, returnDev);
   const fullDocsSorted = sortOrder(fullDocs);

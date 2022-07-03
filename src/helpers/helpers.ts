@@ -2,59 +2,44 @@ import { dynamicAssembly } from './dynamicAssembly';
 import { mergeRecursive } from './mergeRecursive';
 import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
 import { paramsType } from '../interfaces/extractData';
-import { getStringToObjectUsableInCode } from './getStringToObjectUsableInCode';
-import { transformStringToUsableObject } from './transformStringToUsableObject';
+import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
-export function extractValueFromCode(value: string, fullCode: string) {
-  const isStringWithDoubleQuotation = value.trim().startsWith('"') && value.trim().endsWith('"');
-  if (isStringWithDoubleQuotation) {
-    return value;
-  }
-
-  try {
-    return transformStringToUsableObject(`${value}`);
-  } catch (error) {
-    return getStringToObjectUsableInCode(`${value}`, fullCode);
-  }
-}
-export function getResponseExpected(code: string, text: string): any {
+export function getExpectedResponse(code: string, text: string): any {
   const regex = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
-    return extractValueFromCode(match[2], text);
+    return findValueInCode(match[2], text);
   }
   return '';
 }
 
-const regexDynamicBody = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
+function mountDynamicObject(expectedResponse: string, command: string, completeObject, oneTestText) {
+  let valueExtracted = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText);
+  if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
+    valueExtracted = `"${valueExtracted}"`;
+  }
+  const transform = dynamicAssembly(command, valueExtracted);
 
-export function getResponseExpectedMountBody(code: string, oneTestText: string, object): any {
-  let response = null;
+  return mergeRecursive(completeObject, JSON.parse(transform.replace(/'/g, '"')));
+}
 
-  let preventLoop = 0;
-  while (true) {
-    preventLoop += 1;
-    if (LIMIT_PREVENT_INFINITE_LOOPS === preventLoop) {
-      break;
-    }
+export function getExpectedResponseDynamically(code: string, oneTestText: string, object): any {
+  let completeObject = object;
+  const regexDynamicBody = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
+  for (let x = 0; x <= LIMIT_PREVENT_INFINITE_LOOPS; x += 1) {
     const regexRouter = regexDynamicBody.exec(code);
 
     if (regexRouter) {
-      const nameTag = regexRouter[1];
-      const valueVarTag = regexRouter[2];
+      const command = regexRouter[1];
+      const expectedResponse = regexRouter[2];
 
-      if (!nameTag.endsWith('length')) {
+      const isFunctionFromObject = !command.endsWith('length');
+      if (isFunctionFromObject) {
         try {
-          let valueExtracted = extractValueFromCode(valueVarTag.replace(/'/gi, '"'), oneTestText);
-          if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
-            valueExtracted = `"${valueExtracted}"`;
-          }
-          const transform = dynamicAssembly(nameTag, valueExtracted);
-
-          response = mergeRecursive(object, JSON.parse(transform.replace(/'/g, '"')));
+          completeObject = mountDynamicObject(expectedResponse, command, completeObject, oneTestText);
         } catch (error) {
           //
         }
@@ -66,45 +51,45 @@ export function getResponseExpectedMountBody(code: string, oneTestText: string, 
     }
   }
 
-  return response;
+  return completeObject;
 }
 
-export function getStatusCodeExpected(code: string): string {
-  const regex = /expect\((.*statusCode.*?)\)[\\.\n]*(.*?)\(\s*([\d]{3})\s*\)/;
-  const match = regex.exec(code);
-  if (match) {
-    return match[3];
+export function getExpectedStatusCode(code: string): number {
+  const RE_EXPECTED_STATUS_CODE =
+    /expect\(([\w\d]{1,50}\.statusCode)\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject|toBe)\(\s{0,20}(\d{3})\s{0,20}\)/;
+
+  const matchExpectedStatusCode = RE_EXPECTED_STATUS_CODE.exec(code);
+  if (matchExpectedStatusCode) {
+    return Number(matchExpectedStatusCode[3]);
+  }
+  return 0;
+}
+
+export function getContentSend(code: string, text: string): any {
+  const RE_CONTENT_SEND = /\.send\(([^))]{1,9999})[\S\s]{0,500}\)[\S\s]{0,500}[;\\.]/;
+  const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(code);
+
+  if (contentSend) {
+    return findValueInCode(contentSend[1], text);
   }
   return '';
 }
 
-export function getSendContent(code: string, text: string): any {
-  const regex = /\.send\(([^))]{1,9999})[\n\s]{0,100}\)[\n\s]{0,100}[;\\.]{0,1}/;
-  const match: RegExpExecArray | null = regex.exec(code);
+export function getSentHeader(fullBlock: string, text: string) {
+  const RE_SEND_HEADER = /\.set\(([^(\\);)]*)/;
+  const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(fullBlock);
 
-  if (match) {
-    return extractValueFromCode(match[1], text);
+  if (sendHeader) {
+    return findValueInCode(sendHeader[1], text);
   }
   return '';
 }
 
-export function getHeder(fullBlock: string, text: string) {
-  const regex = /\.set\(([^(\\);)]*)/;
-  const match: RegExpExecArray | null = regex.exec(fullBlock);
-
-  if (match) {
-    const headerContent = match[1];
-
-    return extractValueFromCode(headerContent, text);
-  }
-  return '';
-}
-
-export function getTypeMethod(code: string): string {
-  const regex = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const match = regex.exec(code);
-  if (match) {
-    return match[1];
+export function getRequestMethod(code: string): string {
+  const RE_REQUEST_METHOD = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
+  const requestMethod = RE_REQUEST_METHOD.exec(code);
+  if (requestMethod) {
+    return requestMethod[1];
   }
   return '';
 }
@@ -144,7 +129,7 @@ export function getContentTest(code: string): string {
 }
 
 export function getContext(fullCode: string): { text: string; order: number } {
-  const regex = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}[:]?)?\s{0,12}(.*)['"`]/;
+  const regex = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}:?)?\s{0,12}(.*)['"`]/;
   const match = regex.exec(fullCode);
   if (match) {
     return { text: match[3], order: Number(match[2]) || BIG_SORT_NUMBER };
@@ -153,7 +138,7 @@ export function getContext(fullCode: string): { text: string; order: number } {
 }
 
 function getBaseToQueryParams(fullCode: string): string {
-  const regex = /\(['"`](.*)\?(.{3,})['"`]\)/;
+  const regex = /\(['"`](.{0,450})\?(.{3,450})['"`]\)/;
   const match = regex.exec(fullCode);
   if (match) {
     return match[2];
@@ -210,13 +195,7 @@ export function getQueryParams(fullCode: string): paramsType[] {
   if (queries) {
     const params: paramsType[] = [];
 
-    let preventLoop = 0;
-    while (true) {
-      preventLoop += 1;
-      if (LIMIT_PREVENT_INFINITE_LOOPS === preventLoop) {
-        break;
-      }
-
+    for (let x = 0; x <= LIMIT_PREVENT_INFINITE_LOOPS; x += 1) {
       const regexRouter = regex2.exec(queries);
 
       if (regexRouter) {
@@ -245,7 +224,7 @@ export function getQueryParams(fullCode: string): paramsType[] {
 
 export function getUrlParams(router: string, text: string): any[] {
   const params = [];
-  const regex = /\/\$\{([\w]*)\}/gi;
+  const regex = /\/\$\{(\w*)\}/gi;
 
   let preventLoop = 0;
   while (true) {

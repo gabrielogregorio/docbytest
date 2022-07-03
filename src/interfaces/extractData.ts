@@ -17,7 +17,7 @@ export type caseType = {
   fullPath: string;
   headers: any;
   response: {
-    statusCode: string;
+    statusCode: number;
     body: string;
   };
 };

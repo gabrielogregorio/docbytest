@@ -1,27 +1,29 @@
 import {
-  getStatusCodeExpected,
-  getResponseExpected,
-  getSendContent,
+  getExpectedStatusCode,
+  getExpectedResponse,
+  getContentSend,
   getDescriptionLocal,
   getRouterRequest,
   getFullDescription,
-  getHeder,
+  getSentHeader,
   getQueryParams,
   getUrlParams,
-  getResponseExpectedMountBody,
+  getExpectedResponseDynamically,
 } from '../helpers/helpers';
+
+const usernameTest = 'Lucas Santos';
 
 describe('Suite', () => {
   it('should return status code', () => {
-    expect(getStatusCodeExpected('expect(response.statusCode)\n.toBe(200);')).toEqual('200');
-    expect(getStatusCodeExpected('expect(res.statusCode).toBe(\n 301\n).toTest()')).toEqual('301');
-    expect(getStatusCodeExpected('expect(res.statusCode).toBe( 500);')).toEqual('500');
-    expect(getStatusCodeExpected('expect(response.statusCode).toEqual(403);')).toEqual('403');
+    expect(getExpectedStatusCode('expect(response.statusCode)\n.toBe(200);')).toEqual(200);
+    expect(getExpectedStatusCode('expect(res.statusCode).toBe(\n 301\n).toTest()')).toEqual(301);
+    expect(getExpectedStatusCode('expect(res.statusCode).toBe( 500);')).toEqual(500);
+    expect(getExpectedStatusCode('expect(response.statusCode).toEqual(403);')).toEqual(403);
   });
 
   it('should return expected response', () => {
     expect(
-      getHeder(
+      getSentHeader(
         `
         const response = await requestDoc.post('/user').send('token').set({
           Authorization: '3'
@@ -34,7 +36,7 @@ describe('Suite', () => {
     });
 
     expect(
-      getHeder(
+      getSentHeader(
         `
         const response = await requestDoc.post('/user')
         .send('token')
@@ -53,7 +55,7 @@ describe('Suite', () => {
     });
 
     expect(
-      getHeder(
+      getSentHeader(
         `const response = await requestDoc.post('/user')
         .send('token')
         .set(dataToken);
@@ -75,7 +77,7 @@ describe('Suite', () => {
 
   it('should return expected response', () => {
     expect(
-      getResponseExpected(
+      getExpectedResponse(
         `expect(response.body).toMatchObject(
           {
             userName: 'Lucas Santos',
@@ -86,28 +88,28 @@ describe('Suite', () => {
           });`,
         '',
       ),
-    ).toEqual({ userName: 'Lucas Santos', posts: [{ Name: 'Julia', user_name: 'Santos' }] });
+    ).toEqual({ userName: usernameTest, posts: [{ Name: 'Julia', user_name: 'Santos' }] });
 
-    expect(getResponseExpected(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`, '')).toEqual({
-      userName: 'Lucas Santos',
+    expect(getExpectedResponse(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`, '')).toEqual({
+      userName: usernameTest,
     });
 
-    expect(getResponseExpected(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`, '')).toEqual({
-      userName: 'Lucas Santos',
+    expect(getExpectedResponse(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`, '')).toEqual({
+      userName: usernameTest,
     });
 
-    expect(getResponseExpected(`expect(res.body).toStrictEqual({ message: 'Error in data' });`, '')).toEqual({
+    expect(getExpectedResponse(`expect(res.body).toStrictEqual({ message: 'Error in data' });`, '')).toEqual({
       message: 'Error in data',
     });
 
-    expect(getResponseExpected(`expect(res.body).toEqual({ message: 'Error in data' });`, '')).toEqual({
+    expect(getExpectedResponse(`expect(res.body).toEqual({ message: 'Error in data' });`, '')).toEqual({
       message: 'Error in data',
     });
   });
 
   it('should get send content', () => {
     expect(
-      getSendContent(
+      getContentSend(
         `const response = await request_doc.post(\`/post/comment/11111111\`)
         .set(token).send(
           {
@@ -122,7 +124,7 @@ describe('Suite', () => {
     ).toEqual({ text: 'This is a comment', test: [123] });
 
     expect(
-      getSendContent(
+      getContentSend(
         `
         const response = await requestDoc.post(\`/post/comment/\${variableId}\`)
         .set(token)
@@ -134,7 +136,7 @@ describe('Suite', () => {
     ).toEqual({ text: 'this response', replie: 190 });
 
     expect(
-      getSendContent(
+      getContentSend(
         `\nconst response = await requestDoc.post(\`/post/comment/\${variableId}\`).set(
           token
           )
@@ -144,23 +146,23 @@ describe('Suite', () => {
     ).toEqual('hi');
 
     expect(
-      getSendContent(
+      getContentSend(
         `
         const response = await requestDoc
         .post('/user')
         .send({
           code: "codeGenerate",
-          username: "userTest.password",
-          password: "userTest.username"
+          username: "usernameTest",
+          itemSecret: "nameSecret"
         }
         );
       `,
         '',
       ),
-    ).toEqual({ code: 'codeGenerate', username: 'userTest.password', password: 'userTest.username' });
+    ).toEqual({ code: 'codeGenerate', username: 'usernameTest', itemSecret: 'nameSecret' });
 
     expect(
-      getSendContent(
+      getContentSend(
         `
         const response = await requestDoc
         .post('/user')
@@ -170,15 +172,15 @@ describe('Suite', () => {
 
       const sendContent = {
         code: "codeGenerate",
-        username: "userTest.password",
-        password: "userTest.username"
+        username: "usernameTest",
+        itemSecret: "nameSecret"
       };
       `,
       ),
-    ).toEqual({ code: 'codeGenerate', username: 'userTest.password', password: 'userTest.username' });
+    ).toEqual({ code: 'codeGenerate', username: 'usernameTest', itemSecret: 'nameSecret' });
 
     expect(
-      getSendContent(
+      getContentSend(
         `\nconst response = await requestDoc(app).post('/user')
           .send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
         '',
@@ -277,7 +279,7 @@ Description Full Description
   });
 
   it('should get a router content', () => {
-    const response = getResponseExpectedMountBody(
+    const response = getExpectedResponseDynamically(
       `
     expect(response.body[0].follow).toEqual(1);
     expect(response.body[0].name).toEqual("Name");

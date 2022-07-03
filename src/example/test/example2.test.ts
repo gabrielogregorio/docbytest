@@ -1,14 +1,14 @@
-const request: any = {};
+const requestExample2: any = {};
 
-describe('Gerenciamento de posts', () => {
-  /* doc: O cadastro de posts precisa ser solicitada aos desenvolvedores */
+describe('Posts', () => {
+  /* doc: The registration of posts must be requested from the developers */
 
-  test('[doc]: obtém os dados de um post', async () => {
+  test('[doc]: Get posts', async () => {
     const postId = 123;
     const limitPost = 4;
     const offsetPost = 30;
 
-    const response = await request
+    const response = await requestExample2
       .get(`/post/${postId}?limit=${limitPost}&offset=${offsetPost}`)
       .set({
         token: '1234',

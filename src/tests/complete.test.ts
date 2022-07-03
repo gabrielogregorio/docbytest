@@ -1,6 +1,8 @@
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import { extractDataFromTestFile } from '../extractDataFromTestFile';
 
+const stringSend = 'string send';
+
 describe('Should test e2e application', () => {
   it('should return expected response', () => {
     expect(
@@ -44,7 +46,7 @@ describe('Name suit test', () => {
       cases: [
         {
           method: 'post',
-          sendContent: 'string send',
+          sendContent: stringSend,
           params: [
             {
               example: 10,
@@ -63,7 +65,7 @@ describe('Name suit test', () => {
             Authorization: 'Bearer',
           },
           response: {
-            statusCode: '200',
+            statusCode: 200,
             body: 'example return string body',
           },
         },
@@ -96,7 +98,7 @@ describe('Name suit test', () => {
             Authorization: 'Bearer 2',
           },
           response: {
-            statusCode: '200',
+            statusCode: 200,
             body: { message: 'success' },
           },
         },
@@ -133,7 +135,7 @@ describe('Name suit test', () => {
       cases: [
         {
           method: 'post',
-          sendContent: 'string send',
+          sendContent: stringSend,
           params: [],
           title: 'Name from test',
           description: '',
@@ -141,13 +143,13 @@ describe('Name suit test', () => {
           router: '/user',
           headers: '',
           response: {
-            statusCode: '200',
+            statusCode: 200,
             body: 'example return string body',
           },
         },
         {
           method: 'get',
-          sendContent: 'string send',
+          sendContent: stringSend,
           params: [],
           title: 'Name test dev',
           description: '',
@@ -155,8 +157,8 @@ describe('Name suit test', () => {
           router: '/user',
           headers: '',
           response: {
-            statusCode: '300',
-            body: null,
+            statusCode: 300,
+            body: {},
           },
         },
       ],
