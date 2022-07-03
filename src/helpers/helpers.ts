@@ -7,24 +7,30 @@ import { transformStringToUsableObject } from './transformStringToUsableObject';
 
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
-// need created method for get values
+export function extractValueFromCode(value: string, fullCode: string) {
+  const isStringWithDoubleQuotation = value.trim().startsWith('"') && value.trim().endsWith('"');
+  if (isStringWithDoubleQuotation) {
+    return value;
+  }
 
+  try {
+    return transformStringToUsableObject(`${value}`);
+  } catch (error) {
+    return getStringToObjectUsableInCode(`${value}`, fullCode);
+  }
+}
 export function getResponseExpected(code: string, text: string): any {
-  const regex = /expect\([\w]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
+  const regex = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
-    try {
-      return transformStringToUsableObject(`${match[2]}`);
-    } catch (error) {
-      return getStringToObjectUsableInCode(match[2], text);
-    }
+    return extractValueFromCode(match[2], text);
   }
   return '';
 }
 
-const regexDynamicBody = /expect\(\w{1,300}\.(body[^\\)]{3,})\)\.toEqual\(([^\\)]{1,9999})/gi;
+const regexDynamicBody = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
-export function getResponseExpectedMountBody(code: string, text: string, object): any {
+export function getResponseExpectedMountBody(code: string, oneTestText: string, object): any {
   let response = null;
 
   let preventLoop = 0;
@@ -41,8 +47,17 @@ export function getResponseExpectedMountBody(code: string, text: string, object)
       const valueVarTag = regexRouter[2];
 
       if (!nameTag.endsWith('length')) {
-        const transform = dynamicAssembly(nameTag, valueVarTag.replace(/'/gi, '"'));
-        response = mergeRecursive(object, JSON.parse(transform.replace(/'/, '"')));
+        try {
+          let valueExtracted = extractValueFromCode(valueVarTag.replace(/'/gi, '"'), oneTestText);
+          if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
+            valueExtracted = `"${valueExtracted}"`;
+          }
+          const transform = dynamicAssembly(nameTag, valueExtracted);
+
+          response = mergeRecursive(object, JSON.parse(transform.replace(/'/g, '"')));
+        } catch (error) {
+          //
+        }
       }
     }
 
@@ -64,15 +79,11 @@ export function getStatusCodeExpected(code: string): string {
 }
 
 export function getSendContent(code: string, text: string): any {
-  const regex = /\.send\(([^(\\))]*)/;
+  const regex = /\.send\(([^))]{1,9999})[\n\s]{0,100}\)[\n\s]{0,100}[;\\.]{0,1}/;
   const match: RegExpExecArray | null = regex.exec(code);
 
   if (match) {
-    try {
-      return transformStringToUsableObject(`${match[1]}`);
-    } catch (error) {
-      return getStringToObjectUsableInCode(`${match[1]}`, text);
-    }
+    return extractValueFromCode(match[1], text);
   }
   return '';
 }
@@ -84,11 +95,7 @@ export function getHeder(fullBlock: string, text: string) {
   if (match) {
     const headerContent = match[1];
 
-    try {
-      return transformStringToUsableObject(headerContent);
-    } catch (error) {
-      return getStringToObjectUsableInCode(headerContent, text);
-    }
+    return extractValueFromCode(headerContent, text);
   }
   return '';
 }

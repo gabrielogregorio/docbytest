@@ -1,0 +1,42 @@
+{
+    "username": "AJSKEW34FDAGS@AJSKEW34FDAGS.com",
+    "password": "AJSKEW34FDAGS@AJSKEW34FDAGS.com",
+
+    "username2": "LPODHUIOQWNF@LPODHUIOQWNF.com",
+    "password2": "LPODHUIOQWNF@LPODHUIOQWNF.com",
+
+    "username3": "testUserPost@testUserPost.com",
+    "password3": "testUserPost@testUserPost.com",
+
+    "username4": "testUserPost2@testUserPost2.com",
+    "password4": "testUserPost2@testUserPost2.com",
+
+    "createUser": {
+      "name": "sherek",
+      "username": "sherek",
+      "email": "no-valid-email@fakemail.com",
+      "itemBio": [
+        ["school", "Graduou em análise e desenvolvimento de Sistemas na Fatec Araçatuba"],
+        ["status", "Solteiro"],
+        ["work", "Desenvolvedor web"],
+        ["film", "Interestelar"]
+      ],
+      "bio": "Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes",
+      "motivational": "Loremmmmmmm snsadnadlaldjsaddssasdaad",
+      "password": "asdmkaksasdas"
+    },
+    "createUser2": {
+      "name": "TTTTTTT",
+      "username": "TTTTTTTTT",
+      "email": "TTTTT@mail.com",
+      "itemBio": [
+        ["school", "9d591724044b57d9b3607bbef28"],
+        ["status", "9d591724044b57d9b3607bbef28"],
+        ["work", "9d591724044b57d9b3607bbef28"],
+        ["film", "9d591724044b57d9b3607bbef28"]
+      ],
+      "bio": "🌻🏠\n\n@9d591724044b57d9b3607bbef28",
+      "motivational": "9d591724044b57d9b3607bbe",
+      "password": "9d591724044b57d9b3607bbef285"
+    }
+  }
