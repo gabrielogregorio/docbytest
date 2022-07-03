@@ -1,7 +1,7 @@
 const request: any = {};
 
-describe('Gerenciamento de sugestões', () => {
-  test('[dev]: obtém os dados de um post', async () => {
+describe('Suggestions', () => {
+  test('[dev]: Get suggestion', async () => {
     const response = await request
       .get(`/suggestions`)
       .set({

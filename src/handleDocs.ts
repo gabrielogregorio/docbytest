@@ -14,7 +14,6 @@ type getOrderTitleAndFolderDocsType = {
   docs: string[];
 };
 
-// fixme: update function to more async and remove loop for
 async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitleAndFolderDocsType[]> {
   const firstLevelDocFilesOrDirectory: string[] = await fsPromises.readdir(docFile);
   const docFilesWithTitle: getOrderTitleAndFolderDocsType[] = [];

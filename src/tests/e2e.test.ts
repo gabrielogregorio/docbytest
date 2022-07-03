@@ -2,6 +2,9 @@ import statusCode from '@/example/statusCode';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs from '../index';
 
+const Authorization = 'Bearer exampleJwt';
+const userWithValidId = '/user/${userIdValid2}';
+
 describe('Complete test', () => {
   it('any test', async () => {
     expect(await generateDocs({ statusCode })).toEqual({
@@ -14,18 +17,18 @@ describe('Complete test', () => {
                   {
                     method: 'post',
                     sendContent: {
-                      username: 'abc',
-                      password: '123',
+                      username: 'username mock',
+                      itemSecret: 'item secret mock',
                     },
                     params: [],
-                    title: 'Cadastrar um usuário',
+                    title: 'Create user',
                     description: '',
                     fullPath: '/user',
                     router: '/user',
                     headers: '',
                     response: {
-                      statusCode: '200',
-                      body: null,
+                      statusCode: 200,
+                      body: {},
                     },
                   },
                   {
@@ -33,17 +36,17 @@ describe('Complete test', () => {
                     sendContent: {
                       code: '123',
                       username: 'username',
-                      password: 'password',
+                      itemSecret: 'password',
                     },
                     params: [],
-                    title: 'Impede o cadastro de um usuário que já existe',
+                    title: 'Prevents the registration of a user that already exists',
                     description: '',
                     router: '/user',
                     fullPath: '/user',
                     headers: '',
                     response: {
-                      statusCode: '409',
-                      body: null,
+                      statusCode: 409,
+                      body: {},
                     },
                   },
                 ],
@@ -55,17 +58,17 @@ describe('Complete test', () => {
                     method: 'get',
                     sendContent: '',
                     params: [],
-                    title: 'obtém os dados do próprio usuário',
+                    title: 'Get the data of the logged in user',
                     description: '',
                     fullPath: '/user',
                     router: '/user',
                     headers: {
-                      Authorization: 'Bearer exampleJwt',
+                      Authorization,
                     },
                     response: {
-                      statusCode: '200',
+                      statusCode: 200,
                       body: {
-                        username: 'testSystemAfk37812-++aks22',
+                        username: 'username test',
                       },
                     },
                   },
@@ -78,16 +81,16 @@ describe('Complete test', () => {
                     method: 'delete',
                     sendContent: '',
                     params: [],
-                    title: 'deletar a si mesmo',
+                    title: 'Delete yourself',
                     description: '',
                     fullPath: '/user',
                     router: '/user',
                     headers: {
-                      Authorization: 'Bearer exampleJwt',
+                      Authorization,
                     },
                     response: {
-                      statusCode: '200',
-                      body: null,
+                      statusCode: 200,
+                      body: {},
                     },
                   },
                 ],
@@ -99,7 +102,7 @@ describe('Complete test', () => {
                 tests: [
                   {
                     method: 'put',
-                    sendContent: { test: '132' },
+                    sendContent: { test: 'isTest' },
                     params: [
                       {
                         example: 213,
@@ -110,15 +113,15 @@ describe('Complete test', () => {
                         variable: 'userId',
                       },
                     ],
-                    title: 'Edita um user',
+                    title: 'Update a user',
                     description: '',
                     router: '/user/${userId}',
                     fullPath: '/user/${userId}',
                     headers: {
-                      Authorization: 'Bearer exampleJwt',
+                      Authorization,
                     },
                     response: {
-                      statusCode: '200',
+                      statusCode: 200,
                       body: {
                         document: {
                           items: [
@@ -126,11 +129,11 @@ describe('Complete test', () => {
                               name: 'maria',
                             },
                             {
-                              id: 'K45AS134G35343',
+                              id: '1234',
                             },
                           ],
                         },
-                        title: 'acss',
+                        title: 'example title',
                       },
                     },
                   },
@@ -139,8 +142,8 @@ describe('Complete test', () => {
             },
           },
           order: 35,
-          description: 'O cadastro de usuário precisa ser solicitada aos desenvolvedores',
-          title: 'Gerenciamento de usuários',
+          description: 'User management system',
+          title: 'User',
         },
         {
           paths: {
@@ -184,33 +187,34 @@ describe('Complete test', () => {
                       body: {
                         item: '4321',
                       },
-                      statusCode: '200',
+                      statusCode: 200,
                     },
                     router: '/post/${postId}?limit=${limitPost}&offset=${offsetPost}',
                     sendContent: {
                       _user_id: 123,
                       item: '123',
                     },
-                    title: 'obtém os dados de um post',
+                    title: 'Get posts',
                   },
                 ],
               },
             },
           },
           order: BIG_SORT_NUMBER,
-          description: 'O cadastro de posts precisa ser solicitada aos desenvolvedores',
-          title: 'Gerenciamento de posts',
+          description: 'The registration of posts must be requested from the developers',
+          title: 'Posts',
         },
+
         {
           description: '',
           order: 999,
           paths: {
-            '/user/${idUsuarioValido}': {
+            '/user/${userIdValid2}': {
               get: {
                 tests: [
                   {
                     description: '',
-                    fullPath: '/user/${idUsuarioValido}',
+                    fullPath: userWithValidId,
                     headers: {},
                     method: 'get',
                     params: [
@@ -218,18 +222,18 @@ describe('Complete test', () => {
                         example: '981C513A511',
                         in: 'param',
                         required: null,
-                        tag: 'idUsuarioValido',
+                        tag: 'userIdValid2',
                         type: 'string',
-                        variable: 'idUsuarioValido',
+                        variable: 'userIdValid2',
                       },
                     ],
                     response: {
-                      body: null,
-                      statusCode: '200',
+                      body: {},
+                      statusCode: 200,
                     },
-                    router: '/user/${idUsuarioValido}',
+                    router: userWithValidId,
                     sendContent: '',
-                    title: 'Deve retornar um Usuário',
+                    title: 'Get user',
                   },
                 ],
               },
@@ -237,7 +241,7 @@ describe('Complete test', () => {
                 tests: [
                   {
                     description: '',
-                    fullPath: '/user/${idUsuarioValido}',
+                    fullPath: userWithValidId,
                     headers: {},
                     method: 'put',
                     params: [
@@ -245,49 +249,44 @@ describe('Complete test', () => {
                         example: '981C513A511',
                         in: 'param',
                         required: null,
-                        tag: 'idUsuarioValido',
+                        tag: 'userIdValid2',
                         type: 'string',
-                        variable: 'idUsuarioValido',
+                        variable: 'userIdValid2',
                       },
                     ],
                     response: {
                       body: {
                         bio: `Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes`,
-                        itemBio: [
-                          {
-                            text: '',
-                          },
-                        ],
-                        motivational: 'Loremmmmmmm snsadnadlaldjsaddssasdaad',
-                        name: 'alterado',
+                        motivational: 'motivationalMock',
+                        name: 'updated',
                       },
-                      statusCode: '',
+                      statusCode: 0,
                     },
-                    router: '/user/${idUsuarioValido}',
+                    router: userWithValidId,
                     sendContent: {
                       bio: `Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes`,
                       itemBio: [
-                        ['school', 'Graduou em análise e desenvolvimento de Sistemas na Fatec Araçatuba'],
-                        ['status', 'Solteiro'],
-                        ['work', 'Desenvolvedor web'],
-                        ['film', 'Interestelar'],
+                        ['school', 'Graduation in Systems Analysis and Development at'],
+                        ['status', 'unmarried'],
+                        ['work', 'Web develop'],
+                        ['film', 'Interstellar'],
                       ],
-                      motivational: 'Loremmmmmmm snsadnadlaldjsaddssasdaad',
-                      name: 'alterado',
-                      password: 'gabriel',
-                      username: 'alterado2',
+                      motivational: 'motivationalMock',
+                      name: 'updated',
+                      itemSecret: 'gabriel',
+                      username: 'updated2',
                     },
-                    title: 'Deve permitir a edição de um usuario!',
+                    title: 'Update self',
                   },
                 ],
               },
             },
-            '/user/follow/${idUser2Valido}': {
+            '/user/follow/${userIdValid}': {
               post: {
                 tests: [
                   {
                     description: '',
-                    fullPath: '/user/follow/${idUser2Valido}',
+                    fullPath: '/user/follow/${userIdValid}',
                     headers: {},
                     method: 'post',
                     params: [
@@ -295,9 +294,9 @@ describe('Complete test', () => {
                         example: '981C513A511',
                         in: 'param',
                         required: null,
-                        tag: 'idUser2Valido',
+                        tag: 'userIdValid',
                         type: 'string',
-                        variable: 'idUser2Valido',
+                        variable: 'userIdValid',
                       },
                     ],
                     response: {
@@ -305,11 +304,11 @@ describe('Complete test', () => {
                         followed: true,
                         msg: 'User cannot follow himself!',
                       },
-                      statusCode: '200',
+                      statusCode: 200,
                     },
-                    router: '/user/follow/${idUser2Valido}',
+                    router: '/user/follow/${userIdValid}',
                     sendContent: '',
-                    title: 'Usuário 1 deve seguir o usuário 2',
+                    title: 'User 1 follow user 2',
                   },
                 ],
               },
@@ -326,7 +325,7 @@ describe('Complete test', () => {
                     response: {
                       body: [
                         {
-                          email: 'no-valid-email@fakemail.com',
+                          email: 'any@mail.com',
                           followers: undefined,
                           following: [
                             {
@@ -336,20 +335,20 @@ describe('Complete test', () => {
                           ],
 
                           name: 'lilian',
-                          username: 'sherek',
+                          username: 'bond, super bond',
                         },
                       ],
-                      statusCode: '200',
+                      statusCode: 200,
                     },
                     router: '/me',
                     sendContent: '',
-                    title: 'Obter os dados de si mesmo e verificar que está seguindo o usuario 2',
+                    title: 'Get self, and verify if following user 2',
                   },
                 ],
               },
             },
           },
-          title: 'Testes gerais',
+          title: 'User',
         },
         {
           description: '',
@@ -365,8 +364,8 @@ describe('Complete test', () => {
                     method: 'delete',
                     params: [],
                     response: {
-                      body: null,
-                      statusCode: '200',
+                      body: {},
+                      statusCode: 200,
                     },
                     router: '/user',
                     sendContent: '',
@@ -385,8 +384,8 @@ describe('Complete test', () => {
                     method: 'get',
                     params: [],
                     response: {
-                      body: null,
-                      statusCode: '200',
+                      body: {},
+                      statusCode: 200,
                     },
                     router: '/users',
                     sendContent: '',

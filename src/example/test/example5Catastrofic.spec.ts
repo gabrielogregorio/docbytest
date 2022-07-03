@@ -1,6 +1,13 @@
+const requestExample5: any = {
+  get: () => null,
+};
+
+const tokenValido = '';
+const token2Valido = '';
+
 describe('Catastrofic Example', () => {
   test('[doc]: Deve retornar uma lista de usuários', async () => {
-    const response = await request.get('/users').set(tokenValido);
+    const response = await requestExample5.get('/users').set(tokenValido);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBeGreaterThan(0);
@@ -85,7 +92,7 @@ describe('Catastrofic Example', () => {
   });
 
   test('[doc]: Deve deletar um usuário', async () => {
-    const response = await request.delete('/user').set(token2Valido);
+    const response = await requestExample5.delete('/user').set(token2Valido);
 
     expect(response.statusCode).toEqual(200);
   });

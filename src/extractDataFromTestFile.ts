@@ -1,21 +1,20 @@
-import { mergeRecursive } from './helpers/mergeRecursive';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 
 import {
-  getResponseExpected,
+  getExpectedResponse,
   getRouterRequest,
-  getTypeMethod,
-  getSendContent,
-  getStatusCodeExpected,
+  getRequestMethod,
+  getContentSend,
+  getExpectedStatusCode,
   getContext,
   getUrlParams,
   getContentTest,
   getDescriptionLocal,
   getFullDescription,
   getQueryParams,
-  getHeder,
+  getSentHeader,
   getRouterParams,
-  getResponseExpectedMountBody,
+  getExpectedResponseDynamically,
 } from './helpers/helpers';
 import { getFirstKeyObject } from './helpers/getFirstKeyObject';
 
@@ -59,16 +58,16 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
 
   getTests(oneTestText, returnDev).forEach((test) => {
     const title = getContentTest(test);
-    const sendContent = getSendContent(test, oneTestText);
-    const statusCode = getStatusCodeExpected(test);
+    const sendContent = getContentSend(test, oneTestText);
+    const statusCode = getExpectedStatusCode(test);
     const queryParams = getQueryParams(test);
-    const headers = getHeder(test, oneTestText);
+    const headers = getSentHeader(test, oneTestText);
     const params = getUrlParams(test, oneTestText);
     const description = getDescriptionLocal(test);
-    const method = getTypeMethod(test);
+    const method = getRequestMethod(test);
     const router = getRouterRequest(test);
     const fullPath = getRouterParams(router);
-    let body = getResponseExpectedMountBody(test, oneTestText, {});
+    let body = getExpectedResponseDynamically(test, oneTestText, {});
 
     try {
       body = getFirstKeyObject(body);
@@ -76,7 +75,7 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
       //
     }
 
-    const fullBody = getResponseExpected(test, oneTestText);
+    const fullBody = getExpectedResponse(test, oneTestText);
     if (fullBody) {
       body = fullBody;
     }
