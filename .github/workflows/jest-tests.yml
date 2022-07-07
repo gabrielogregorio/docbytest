@@ -8,7 +8,11 @@ on:
 
 jobs:
   build:
+    environment: tests
     runs-on: ubuntu-latest
+
+    env:
+      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     strategy:
       matrix:
@@ -23,3 +27,5 @@ jobs:
       - name: Install dependencies
         run: npm install --frozen-lockfile
       - run: npm run jest
+      - name: up coverage to codacy
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
