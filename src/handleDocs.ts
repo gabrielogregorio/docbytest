@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import path from 'path';
 import { mountMdDocs } from './helpers/mountMdDocs';
@@ -16,9 +14,8 @@ type getOrderTitleAndFolderDocsType = {
 
 async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitleAndFolderDocsType[]> {
   const firstLevelDocFilesOrDirectory: string[] = await fsPromises.readdir(docFile);
-  const docFilesWithTitle: getOrderTitleAndFolderDocsType[] = [];
 
-  for (const fileOrDirectory of firstLevelDocFilesOrDirectory) {
+  const promises = firstLevelDocFilesOrDirectory.map(async (fileOrDirectory) => {
     const pathTitleDocs = path.join(docFile, fileOrDirectory);
     const isFolderTitleDocs = fs.lstatSync(pathTitleDocs).isDirectory();
 
@@ -35,14 +32,18 @@ async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitl
         }
       });
 
-      docFilesWithTitle.push({
+      return {
         title: fileOrDirectory,
         docs: docFiles,
-      });
+      };
     }
-  }
 
-  return docFilesWithTitle;
+    return null;
+  });
+
+  const docs = await Promise.all(promises);
+
+  return docs.filter((item) => item !== null);
 }
 
 function extractContentDocFiles(docFiles: string[], statusCode: unknown): dataDocsType[] {
