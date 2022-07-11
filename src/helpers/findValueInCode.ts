@@ -1,7 +1,14 @@
-import { getStringToObjectUsableInCode } from './getStringToObjectUsableInCode';
+import { resolverJsonFiles } from './resolvers';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
 
-export const findValueInCode = (value: string, fullCode: string) => {
+export const getStringToObjectUsableInCode = (variable: string, fullCode: string) => {
+  const regexItems = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
+  const matchItems: RegExpExecArray | null = regexItems.exec(fullCode);
+
+  return transformStringToUsableObject(`${matchItems[3]}`);
+};
+
+export const findValueInCode = (value: string, fullCode: string, pathFull: string) => {
   const isStringWithDoubleQuotation = value.trim().startsWith('"') && value.trim().endsWith('"');
   if (isStringWithDoubleQuotation) {
     return value;
@@ -10,6 +17,20 @@ export const findValueInCode = (value: string, fullCode: string) => {
   try {
     return transformStringToUsableObject(`${value}`);
   } catch (error) {
-    return getStringToObjectUsableInCode(`${value}`, fullCode);
+    //
   }
+
+  try {
+    return getStringToObjectUsableInCode(`${value}`, fullCode);
+  } catch (error2) {
+    //
+  }
+
+  try {
+    return resolverJsonFiles(fullCode, value, pathFull).content;
+  } catch (error) {
+    //
+  }
+
+  return '';
 };

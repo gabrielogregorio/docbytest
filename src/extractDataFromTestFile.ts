@@ -53,21 +53,25 @@ const getTests = (fullData2: string, returnDev: boolean) => {
   return fullList.filter((item) => !!item === true);
 };
 
-export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean): typeExtractDataFromTextType {
+export function extractDataFromTestFile(
+  oneTestText: string,
+  returnDev: boolean,
+  pathFull: string,
+): typeExtractDataFromTextType {
   const cases: caseType[] = [];
 
   getTests(oneTestText, returnDev).forEach((test) => {
     const title = getContentTest(test);
-    const sendContent = getContentSend(test, oneTestText);
+    const sendContent = getContentSend(test, oneTestText, pathFull);
     const statusCode = getExpectedStatusCode(test);
     const queryParams = getQueryParams(test);
-    const headers = getSentHeader(test, oneTestText);
+    const headers = getSentHeader(test, oneTestText, pathFull);
     const params = getUrlParams(test, oneTestText);
     const description = getDescriptionLocal(test);
     const method = getRequestMethod(test);
     const router = getRouterRequest(test);
     const fullPath = getRouterParams(router);
-    let body = getExpectedResponseDynamically(test, oneTestText, {});
+    let body = getExpectedResponseDynamically(test, oneTestText, {}, pathFull);
 
     try {
       body = getFirstKeyObject(body);
@@ -75,7 +79,7 @@ export function extractDataFromTestFile(oneTestText: string, returnDev?: boolean
       //
     }
 
-    const fullBody = getExpectedResponse(test, oneTestText);
+    const fullBody = getExpectedResponse(test, oneTestText, pathFull);
     if (fullBody) {
       body = fullBody;
     }

@@ -38,7 +38,7 @@ const mapTestFiles = (directoryTests: string, returnDev: boolean) => {
     const fullPathOneTest = path.join(directoryTests, file);
 
     const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
-    const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev);
+    const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev, directoryTests);
 
     const existsTestCases = testsOneFile.cases.length !== 0;
 

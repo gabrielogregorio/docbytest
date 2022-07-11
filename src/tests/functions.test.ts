@@ -30,6 +30,7 @@ describe('Suite', () => {
         });
         `,
         '',
+        '../',
       ),
     ).toEqual({
       Authorization: '3',
@@ -48,6 +49,7 @@ describe('Suite', () => {
         });
         `,
         '',
+        '../',
       ),
     ).toEqual({
       Authorization: '3',
@@ -68,6 +70,7 @@ describe('Suite', () => {
             {item: 123}
           ]
         };`,
+        '../',
       ),
     ).toEqual({
       Authorization: '3',
@@ -87,22 +90,25 @@ describe('Suite', () => {
             }]
           });`,
         '',
+        '../',
       ),
     ).toEqual({ userName: usernameTest, posts: [{ Name: 'Julia', user_name: 'Santos' }] });
 
-    expect(getExpectedResponse(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`, '')).toEqual({
+    expect(getExpectedResponse(`expect(res.body).toMatchObject({ userName: 'Lucas Santos' });`, '', '../')).toEqual({
       userName: usernameTest,
     });
 
-    expect(getExpectedResponse(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`, '')).toEqual({
+    expect(
+      getExpectedResponse(`expect(res__.body)\n.toMatchObject({\n\nuserName: 'Lucas Santos' });`, '', '../'),
+    ).toEqual({
       userName: usernameTest,
     });
 
-    expect(getExpectedResponse(`expect(res.body).toStrictEqual({ message: 'Error in data' });`, '')).toEqual({
+    expect(getExpectedResponse(`expect(res.body).toStrictEqual({ message: 'Error in data' });`, '', '../')).toEqual({
       message: 'Error in data',
     });
 
-    expect(getExpectedResponse(`expect(res.body).toEqual({ message: 'Error in data' });`, '')).toEqual({
+    expect(getExpectedResponse(`expect(res.body).toEqual({ message: 'Error in data' });`, '', '../')).toEqual({
       message: 'Error in data',
     });
   });
@@ -120,6 +126,7 @@ describe('Suite', () => {
           }
           );\n\n`,
         '',
+        '../',
       ),
     ).toEqual({ text: 'This is a comment', test: [123] });
 
@@ -132,6 +139,7 @@ describe('Suite', () => {
           text: 'this response',
           replie: 190 });`,
         '',
+        '../',
       ),
     ).toEqual({ text: 'this response', replie: 190 });
 
@@ -142,6 +150,7 @@ describe('Suite', () => {
           )
           .send('hi');`,
         '',
+        '../',
       ),
     ).toEqual('hi');
 
@@ -158,6 +167,7 @@ describe('Suite', () => {
         );
       `,
         '',
+        '../',
       ),
     ).toEqual({ code: 'codeGenerate', username: 'usernameTest', itemSecret: 'nameSecret' });
 
@@ -176,6 +186,7 @@ describe('Suite', () => {
         itemSecret: "nameSecret"
       };
       `,
+        '../',
       ),
     ).toEqual({ code: 'codeGenerate', username: 'usernameTest', itemSecret: 'nameSecret' });
 
@@ -184,6 +195,7 @@ describe('Suite', () => {
         `\nconst response = await requestDoc(app).post('/user')
           .send({ name: 'greg', email: 'greg@github.com' }).expect(400);`,
         '',
+        '../',
       ),
     ).toEqual({ name: 'greg', email: 'greg@github.com' });
   });
@@ -290,6 +302,7 @@ Description Full Description
     `,
       ``,
       {},
+      '../',
     );
     expect(response).toEqual({
       body: [{ boolean: true, object: { name: 'abc' }, follow: 1, name: 'Name', following: [1, 2] }],

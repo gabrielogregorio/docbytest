@@ -1,3 +1,7 @@
+import objectMockJsonExample from '@/mocksExample/folder/example.json';
+import mockTitle from 'mocksExample/folder/example2.json';
+import mockJsonExample from '../../mocksExample/index.json';
+
 const requestExample1: any = {};
 
 const userTest = {
@@ -19,11 +23,7 @@ describe('[35]: User', () => {
   });
 
   it('[doc]: Prevents the registration of a user that already exists', async () => {
-    const response = await requestExample1.post('/user').send({
-      code: '123',
-      username: 'username',
-      itemSecret: 'password',
-    });
+    const response = await requestExample1.post('/user').send(mockJsonExample);
 
     expect(response.statusCode).toEqual(409);
   });
@@ -54,13 +54,14 @@ describe('[35]: User', () => {
     });
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body.title).toEqual('example title');
+    expect(res.body.title).toEqual(mockTitle);
     expect(res.body.document.items[1].id).toEqual('1234');
     expect(res.body.document.items[0].name).toEqual('maria');
   });
 
   it('[doc]: Delete yourself', async () => {
     const response = await requestExample1.delete(`/user`).set(token);
+    expect(response.body).toEqual(objectMockJsonExample);
 
     expect(response.statusCode).toEqual(200);
   });
