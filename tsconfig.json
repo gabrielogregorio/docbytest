@@ -16,7 +16,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/example/*": ["src/example/*"]
+      "@/example/*": ["src/example/*"],
+      "@/mocksExample/*": ["src/mocksExample/*"],
+      "mocksExample/*": ["src/mocksExample/*"]
     }
   },
   "include": ["src/**/*"]

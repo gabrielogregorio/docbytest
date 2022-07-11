@@ -6,7 +6,8 @@ const stringSend = 'string send';
 describe('Should test e2e application', () => {
   it('should return expected response', () => {
     expect(
-      extractDataFromTestFile(`
+      extractDataFromTestFile(
+        `
 describe('Name suit test', () => {
   /* doc: Title suit test */
 
@@ -41,7 +42,10 @@ describe('Name suit test', () => {
     expect(response.statusCode).toEqual(300);
   });
 });
-        `),
+        `,
+        false,
+        '../',
+      ),
     ).toEqual({
       cases: [
         {
@@ -130,6 +134,7 @@ describe('Name suit test', () => {
 });
         `,
         returnDev,
+        '../',
       ),
     ).toEqual({
       cases: [

@@ -6,17 +6,17 @@ import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
-export function getExpectedResponse(code: string, text: string): any {
+export function getExpectedResponse(code: string, text: string, pathFull: string): any {
   const regex = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
-    return findValueInCode(match[2], text);
+    return findValueInCode(match[2], text, pathFull);
   }
   return '';
 }
 
-function mountDynamicObject(expectedResponse: string, command: string, completeObject, oneTestText) {
-  let valueExtracted = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText);
+function mountDynamicObject(expectedResponse: string, command: string, completeObject, oneTestText, pathFull: string) {
+  let valueExtracted = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
     valueExtracted = `"${valueExtracted}"`;
   }
@@ -25,7 +25,7 @@ function mountDynamicObject(expectedResponse: string, command: string, completeO
   return mergeRecursive(completeObject, JSON.parse(transform.replace(/'/g, '"')));
 }
 
-export function getExpectedResponseDynamically(code: string, oneTestText: string, object): any {
+export function getExpectedResponseDynamically(code: string, oneTestText: string, object, pathFull: string): any {
   let completeObject = object;
   const regexDynamicBody = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
@@ -39,7 +39,7 @@ export function getExpectedResponseDynamically(code: string, oneTestText: string
       const isFunctionFromObject = !command.endsWith('length');
       if (isFunctionFromObject) {
         try {
-          completeObject = mountDynamicObject(expectedResponse, command, completeObject, oneTestText);
+          completeObject = mountDynamicObject(expectedResponse, command, completeObject, oneTestText, pathFull);
         } catch (error) {
           //
         }
@@ -65,22 +65,21 @@ export function getExpectedStatusCode(code: string): number {
   return 0;
 }
 
-export function getContentSend(code: string, text: string): any {
+export function getContentSend(code: string, text: string, pathFull: string): any {
   const RE_CONTENT_SEND = /\.send\(([^))]{1,9999})[\S\s]{0,500}\)[\S\s]{0,500}[;\\.]/;
   const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(code);
-
   if (contentSend) {
-    return findValueInCode(contentSend[1], text);
+    return findValueInCode(contentSend[1], text, pathFull);
   }
   return '';
 }
 
-export function getSentHeader(fullBlock: string, text: string) {
+export function getSentHeader(fullBlock: string, text: string, pathFull: string) {
   const RE_SEND_HEADER = /\.set\(([^(\\);)]*)/;
   const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(fullBlock);
 
   if (sendHeader) {
-    return findValueInCode(sendHeader[1], text);
+    return findValueInCode(sendHeader[1], text, pathFull);
   }
   return '';
 }

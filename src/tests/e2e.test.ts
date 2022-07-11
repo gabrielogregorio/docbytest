@@ -90,7 +90,10 @@ describe('Complete test', () => {
                     },
                     response: {
                       statusCode: 200,
-                      body: {},
+                      body: {
+                        username: 'username',
+                        itemSecret: 'password',
+                      },
                     },
                   },
                 ],
@@ -133,7 +136,9 @@ describe('Complete test', () => {
                             },
                           ],
                         },
-                        title: 'example title',
+                        title: {
+                          titleExample: 'example title',
+                        },
                       },
                     },
                   },
