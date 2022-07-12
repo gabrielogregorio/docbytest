@@ -57,8 +57,15 @@ export default async function generateDocs({ statusCode, returnDev }: { statusCo
   const fullDocsSorted = sortOrder(fullDocs);
 
   const docs: getDocsType[] = await getDocs(configs.docFile, statusCode);
+  const responseGenerateDocs = { files: fullDocsSorted, docs };
 
-  return { files: fullDocsSorted, docs };
+  try {
+    fs.writeFileSync('../docbytest.docs.json', JSON.stringify(responseGenerateDocs, null, 2));
+    return true;
+  } catch (error) {
+    console.log(`Error creating documentation file: ${error}`);
+    return false;
+  }
 }
 
 generateDocs.defaultProps = {
