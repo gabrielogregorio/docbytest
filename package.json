@@ -28,7 +28,8 @@
     "jest": "jest --coverage",
     "jest:watchAll": "jest --watchAll",
     "jest:coverage": "jest --coverage && jest-coverage-badges",
-    "publish-npm": "npm run jest && rm -rf ./build && npm run build && npm publish"
+    "publish-npm": "npm run jest && rm -rf ./build && npm run build && npm publish",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=8",
@@ -40,6 +41,8 @@
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-typescript": "^7.17.12",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.1",
     "@types/mime-types": "^2.1.1",
@@ -59,6 +62,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-sonarjs": "^0.13.0",
+    "husky": "^8.0.1",
     "jest": "^28.1.0",
     "prettier": "^2.6.2",
     "supertest": "^6.2.3",
