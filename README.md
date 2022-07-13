@@ -58,7 +58,7 @@ Create docbytest
 }
 ```
 
-1. Create docs file
+1.  Create docs file
 ```md
 // ./docs/introduction/example.md
 
@@ -98,7 +98,7 @@ For coding use "`" , similar github readme
 
 ```
 
-2. Create status code file, use this example for start your project
+2.  Create status code file, use this example for start your project
 ```ts
 // ./src/example/statusCode.ts
 const statusCode = {
@@ -115,7 +115,7 @@ const statusCode = {
 export default statusCode
 ```
 
-3. Configure server in your express api
+3.  Configure server in your express api
 
 ```ts
 import express from 'express';
@@ -209,7 +209,7 @@ describe('[1] 🙋 Suggestions', () => {
 ```
 
 ### Example CI in Github
-* [ci - tests with mongoose db](https://github.com/gabrielogregorio/docbytest-example-api/blob/main/CI/ci-mongodb.yml)
+*   [ci tests with mongoose db](https://github.com/gabrielogregorio/docbytest-example-api/blob/main/CI/ci-mongodb.yml)
 
 ### Use Icons
 🆗 👍 📂 ⚙ 🛡 🛠 🌍 💡 🤓 🚀 ✈ 🛰 🛸 🕛 🎉 👏 🥳 💵 📚 💳 👩‍🚀 ☢ ⚠ ❌ 🔴 🟠 🟡 🟢 🔵 🟣 🟤 ⚫ ⚪ 🏁 👈 👉 🤏 🔒 🔓 🤷 🤦‍♀️ 👨‍🔧 👀 ✅ 👤 🚫 🙋 💻 📔 🔑 🧑‍💻 🔐 ✏ 📬 🗓 ▶ ⏩ ⏭ ⏯ 🔼 🔽 ⏹ 📶

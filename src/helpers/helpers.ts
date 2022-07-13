@@ -181,25 +181,27 @@ export function getTypeVariable(variable: string, fullCode: string): getVariable
 
 const RE_GET_FULL_URL = /\(['"`](.{3,600}?)['"`]\)/;
 export function getQueryParams(fullCode: string): paramsType[] {
-  const match = RE_GET_FULL_URL.exec(fullCode);
-  const queries = match?.[1];
+  const matchGetFullUrl = RE_GET_FULL_URL.exec(fullCode);
+  const fullUrlRequest = matchGetFullUrl?.[1];
   const queryParams = [];
 
-  if (queries) {
-    const data = new URL(match[1], 'http://localhost/');
+  if (fullUrlRequest) {
+    const urlParsed = new URL(fullUrlRequest, 'http://localhost/');
 
-    const searchParams = new URLSearchParams(data.search);
+    const searchParams = new URLSearchParams(urlParsed.search);
 
     searchParams.forEach((value2, key) => {
       const value = value2.trim();
+      const valueWithinVariableStart = value.slice(2, value.length - 1);
+
       const isVariable = value.startsWith('${');
       queryParams.push({
         tag: key,
-        variable: isVariable ? value.slice(2, value.length - 1) : '',
+        variable: isVariable ? valueWithinVariableStart : '',
         in: 'query',
         required: null,
-        type: getTypeVariable(value.slice(2, value.length - 1), fullCode).type,
-        example: isVariable ? getTypeVariable(value.slice(2, value.length - 1), fullCode).content : value,
+        type: getTypeVariable(valueWithinVariableStart, fullCode).type,
+        example: isVariable ? getTypeVariable(valueWithinVariableStart, fullCode).content : value,
       });
     });
 
