@@ -136,15 +136,6 @@ export function getContext(fullCode: string): { text: string; order: number } {
   return { text: '', order: BIG_SORT_NUMBER };
 }
 
-function getBaseToQueryParams(fullCode: string): string {
-  const regex = /\(['"`](.{0,450})\?(.{3,450})['"`]\)/;
-  const match = regex.exec(fullCode);
-  if (match) {
-    return match[2];
-  }
-  return '';
-}
-
 export function getDescriptionLocal(contextCode: string): string {
   const regex = /(it|test).*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
   const match = regex.exec(contextCode);
@@ -188,42 +179,38 @@ export function getTypeVariable(variable: string, fullCode: string): getVariable
   return { type: 'unknown', content: '' };
 }
 
-const regex2 = /([\w-]+)=\$\{(\w+)\}/gi;
+const RE_GET_FULL_URL = /\(['"`](.{3,600}?)['"`]\)/;
 export function getQueryParams(fullCode: string): paramsType[] {
-  const queries = getBaseToQueryParams(fullCode);
+  const match = RE_GET_FULL_URL.exec(fullCode);
+  const queries = match?.[1];
+  const queryParams = [];
+
   if (queries) {
-    const params: paramsType[] = [];
+    const data = new URL(match[1], 'http://localhost/');
 
-    for (let x = 0; x <= LIMIT_PREVENT_INFINITE_LOOPS; x += 1) {
-      const regexRouter = regex2.exec(queries);
+    const searchParams = new URLSearchParams(data.search);
 
-      if (regexRouter) {
-        const nameTag = regexRouter[1];
-        const valueVarTag = regexRouter[2];
+    searchParams.forEach((value2, key) => {
+      const value = value2.trim();
+      const isVariable = value.startsWith('${');
+      queryParams.push({
+        tag: key,
+        variable: isVariable ? value.slice(2, value.length - 1) : '',
+        in: 'query',
+        required: null,
+        type: getTypeVariable(value.slice(2, value.length - 1), fullCode).type,
+        example: isVariable ? getTypeVariable(value.slice(2, value.length - 1), fullCode).content : value,
+      });
+    });
 
-        params.push({
-          tag: nameTag,
-          variable: valueVarTag,
-          in: 'query',
-          required: null,
-          type: getTypeVariable(valueVarTag, fullCode).type,
-          example: getTypeVariable(valueVarTag, fullCode).content,
-        });
-      }
-
-      if (!regexRouter) {
-        break;
-      }
-    }
-
-    return params;
+    return queryParams;
   }
   return [];
 }
 
-export function getUrlParams(router: string, text: string): any[] {
+export function getUrlParams(router: string, fullCode: string): any[] {
   const params = [];
-  const regex = /\/\$\{(\w*)\}/gi;
+  const regexParams = /\/\$\{(\w*)\}/gi;
 
   let preventLoop = 0;
   while (true) {
@@ -232,7 +219,7 @@ export function getUrlParams(router: string, text: string): any[] {
       break;
     }
 
-    const regexRouter = regex.exec(router);
+    const regexRouter = regexParams.exec(router);
 
     if (regexRouter) {
       const nameTag = regexRouter[1];
@@ -242,8 +229,8 @@ export function getUrlParams(router: string, text: string): any[] {
         variable: nameTag,
         in: 'param',
         required: null,
-        type: getTypeVariable(nameTag, text).type,
-        example: getTypeVariable(nameTag, text).content,
+        type: getTypeVariable(nameTag, fullCode).type,
+        example: getTypeVariable(nameTag, fullCode).content,
       });
     }
 
