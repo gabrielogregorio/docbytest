@@ -225,12 +225,6 @@ Do you can comments using colors or no, example
 > [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
 ```
 
-or
-
-```md
-> # 💡 What is docbytest
-> [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
-```
 Do you can choose those colors
 
 * purple
