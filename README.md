@@ -1,6 +1,6 @@
 <div align="center">
 
-# DOCBYTEST - Experimental project
+# DOCBYTEST
 
 ![NPM package](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
@@ -8,84 +8,27 @@
 ![Eslint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
 
-<a href="https://backend-valorant.herokuapp.com/docs" target="blank">Example in api valorant tips </a>
+<a href="https://backend-valorant.herokuapp.com/docs" target="blank">Example in api valorant tips (heroku) </a>
 </div>
 
 ![version 0.2](/docs/v0.2.png)
-<p align="center">
-  This is a beta version
-</p>
 
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
 
 ## Summary
+- [For NPM users](#For-NPM-users)
+- [Write your tests](#Write-your-tests)
+- [Example CI in Github](#Example-ci-in-github)
+- [Use Icons](#Use-Icons)
+- [Colors to comments](#Colors-to-comments)
 - [For devs](#For-devs)
 - [How use in develop mode](#How-use-in-develop-mode)
 - [How integrated with docbytest-ui](#How-integrated-with-docbytest-ui)
 - [Contributing with project](#Contributing-with-project)
 - [Avaliable Scripts](#Avaliable-Scripts)
-- [For NPM users](#For-NPM-users)
-- [Write your tests](#Write-your-tests)
-- [Use Icons](#Use-Icons)
-- [Colors to comments](#Colors-to-comments)
 
-
-## For devs
-### How use in develop mode
-1. First, access this root dir from docbytest, and run
-```bash
-npm install
-npm run build
-npm link
-```
-
-2. Clone [docbytest-example-api](https://github.com/gabrielogregorio/docbytest-example-api)
-3. Access **docbytest-example-api** in root dir, install packages and link docbytest
-```bash
-npm install
-npm link docbytest
-```
-5. Start docbytest-example-api, with command
-```bash
-npm run dev
-```
-6. Access [http://127.0.0.1:3333/docs-json](http://127.0.0.1:3333/docs-json) to see json docs
-
-### How integrated with docbytest-ui
-1. Clone [docbytest-ui](https://github.com/gabrielogregorio/docbytest-ui)
-3. Access **docbytest-ui** and install packages
-```bash
-npm install
-```
-5. Start docbytest-ui, with command
-```bash
-npm run dev
-```
-6. Update "./docbytest-ui/src/core/hooks/useGetUrlApi.ts" to
-```typescript
-export const useGetUrlApi = () => {
-  const currentUrlAPi = 'http://127.0.0.1:3333/docs'; // window.location.href;
-  const currentUrlOrigin = 'http://127.0.0.1:3333'; // window.location.origin;
-
-  return {
-    currentUrlAPi,
-    currentUrlOrigin,
-  };
-};
-```
-6. Access [http://127.0.0.1:3000/docs](http://127.0.0.1:3000/docs) to see docbytest-ui
-### Contributing with project
-
-Read [Contributing.md](CONTRIBUTING.md)
-### Avaliable Scripts
-
-```bash
-npm run dev
-npm run jest:watchAll
-```
-
-## For NPM users
+## For NPM/Yarn users
 Do you need install docbytest and docbytest-ui
 
 ```bash
@@ -93,7 +36,19 @@ npm i docbytest
 npm i docbytest-ui
 ```
 
-Create docbytest file with keys
+or
+
+```bash
+yarn add docbytest
+yarn add docbytest-ui
+```
+
+Create docbytest
+| Key | Description |
+|-------|---------|
+|folderTests|folder where your tests, specifications or tests are|
+|docFile|Folder where your docbytest integrated documentation files will be|
+|statusCodeErrorFile|Your status code file, following the docbytetest pattern|
 ```js
 // docbytest.config.json
 {
@@ -103,12 +58,13 @@ Create docbytest file with keys
 }
 ```
 
-Create docs file
+1. Create docs file
 ```md
 // ./docs/introduction/example.md
-# 💻 API docbytest
 
-This is a documentation [types valorant](https://valorant-tips.vercel.app/).
+# 💻 API Example
+
+This is a documentation [docbytest](https://github.com/gabrielogregorio/docbytest).
 
 ## Open code
 
@@ -116,14 +72,13 @@ This is a documentation [types valorant](https://valorant-tips.vercel.app/).
 * item 2
 * item 3
 
-## Erros
+## Errors
 
-This is erros
+This is errors, based in STATUS CODE FILE
 
 [Table of errors](errors_status_table)
 
-
-## Example Table
+## Example any Table
 
 | Extension | Description | Author |
 |-----------|--------|---------|
@@ -134,15 +89,16 @@ This is erros
 
 ### Example code
 
-This is a code, use "`" for render code, similar github readme, view more in colors to comments
+For coding use "`" , similar github readme
 
 ## Example comment
 
 > orange # 💡 What is docbytest
 > [docbytest](https://github.com/gabrielogregorio/docbytest) is the project used to generate this documentation from tests
+
 ```
 
-Create status code file
+2. Create status code file, use this example for start your project
 ```ts
 // ./src/example/statusCode.ts
 const statusCode = {
@@ -159,7 +115,7 @@ const statusCode = {
 export default statusCode
 ```
 
-configure server in your express api
+3. Configure server in your express api
 
 ```ts
 import express from 'express';
@@ -252,6 +208,9 @@ describe('[1] 🙋 Suggestions', () => {
 });
 ```
 
+### Example CI in Github
+* [ci - tests with mongoose db](https://github.com/gabrielogregorio/docbytest-example-api/blob/main/CI/ci-mongodb.yml)
+
 ### Use Icons
 🆗 👍 📂 ⚙ 🛡 🛠 🌍 💡 🤓 🚀 ✈ 🛰 🛸 🕛 🎉 👏 🥳 💵 📚 💳 👩‍🚀 ☢ ⚠ ❌ 🔴 🟠 🟡 🟢 🔵 🟣 🟤 ⚫ ⚪ 🏁 👈 👉 🤏 🔒 🔓 🤷 🤦‍♀️ 👨‍🔧 👀 ✅ 👤 🚫 🙋 💻 📔 🔑 🧑‍💻 🔐 ✏ 📬 🗓 ▶ ⏩ ⏭ ⏯ 🔼 🔽 ⏹ 📶
 
@@ -290,5 +249,56 @@ Do you can choose those colors
 * pink
 * lime
 
+## For developers of doc bytest
+### How use in develop mode
+1. First, access this root dir from docbytest, and run
+```bash
+npm install
+npm run build
+npm link
+```
 
-This is experimental, OK!
+2. Clone [docbytest-example-api](https://github.com/gabrielogregorio/docbytest-example-api)
+3. Access **docbytest-example-api** in root dir, install packages and link docbytest
+```bash
+npm install
+npm link docbytest
+```
+5. Start docbytest-example-api, with command
+```bash
+npm run dev
+```
+6. Access [http://127.0.0.1:3333/docs-json](http://127.0.0.1:3333/docs-json) to see json docs
+
+### How integrated with docbytest-ui
+1. Clone [docbytest-ui](https://github.com/gabrielogregorio/docbytest-ui)
+3. Access **docbytest-ui** and install packages
+```bash
+npm install
+```
+5. Start docbytest-ui, with command
+```bash
+npm run dev
+```
+6. Update "./docbytest-ui/src/core/hooks/useGetUrlApi.ts" to
+```typescript
+export const useGetUrlApi = () => {
+  const currentUrlAPi = 'http://127.0.0.1:3333/docs'; // window.location.href;
+  const currentUrlOrigin = 'http://127.0.0.1:3333'; // window.location.origin;
+
+  return {
+    currentUrlAPi,
+    currentUrlOrigin,
+  };
+};
+```
+6. Access [http://127.0.0.1:3000/docs](http://127.0.0.1:3000/docs) to see docbytest-ui
+### Contributing with project
+
+Read [Contributing.md](CONTRIBUTING.md)
+### Avaliable Scripts
+
+```bash
+npm run dev
+npm run jest:watchAll
+```
