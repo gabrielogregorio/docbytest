@@ -1,0 +1,434 @@
+{
+  "files": [
+    {
+      "paths": {
+        "/user": {
+          "post": {
+            "tests": [
+              {
+                "method": "post",
+                "sendContent": {
+                  "username": "username mock",
+                  "itemSecret": "item secret mock"
+                },
+                "params": [],
+                "title": "Create user",
+                "description": "",
+                "fullPath": "/user",
+                "router": "/user",
+                "headers": "",
+                "response": {
+                  "statusCode": 200,
+                  "body": {}
+                }
+              },
+              {
+                "method": "post",
+                "sendContent": {
+                  "code": "123",
+                  "username": "username",
+                  "itemSecret": "password"
+                },
+                "params": [],
+                "title": "Prevents the registration of a user that already exists",
+                "description": "",
+                "fullPath": "/user",
+                "router": "/user",
+                "headers": "",
+                "response": {
+                  "statusCode": 409,
+                  "body": {}
+                }
+              }
+            ]
+          },
+          "get": {
+            "tests": [
+              {
+                "method": "get",
+                "sendContent": "",
+                "params": [],
+                "title": "Get the data of the logged in user",
+                "description": "",
+                "fullPath": "/user",
+                "router": "/user",
+                "headers": {
+                  "Authorization": "Bearer exampleJwt"
+                },
+                "response": {
+                  "statusCode": 200,
+                  "body": {
+                    "username": "username test"
+                  }
+                }
+              }
+            ]
+          },
+          "delete": {
+            "tests": [
+              {
+                "method": "delete",
+                "sendContent": "",
+                "params": [],
+                "title": "Delete yourself",
+                "description": "",
+                "fullPath": "/user",
+                "router": "/user",
+                "headers": {
+                  "Authorization": "Bearer exampleJwt"
+                },
+                "response": {
+                  "statusCode": 200,
+                  "body": {
+                    "username": "username",
+                    "itemSecret": "password"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "/user/${userId}": {
+          "put": {
+            "tests": [
+              {
+                "method": "put",
+                "sendContent": {
+                  "test": "isTest"
+                },
+                "params": [
+                  {
+                    "tag": "userId",
+                    "variable": "userId",
+                    "in": "param",
+                    "required": null,
+                    "type": "number",
+                    "example": 213
+                  }
+                ],
+                "title": "Update a user",
+                "description": "",
+                "fullPath": "/user/${userId}",
+                "router": "/user/${userId}",
+                "headers": {
+                  "Authorization": "Bearer exampleJwt"
+                },
+                "response": {
+                  "statusCode": 200,
+                  "body": {
+                    "title": {
+                      "titleExample": "example title"
+                    },
+                    "document": {
+                      "items": [
+                        {
+                          "name": "maria"
+                        },
+                        {
+                          "id": "1234"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "description": "User management system",
+      "title": "User",
+      "order": 35
+    },
+    {
+      "paths": {
+        "/post/${postId}": {
+          "get": {
+            "tests": [
+              {
+                "method": "get",
+                "sendContent": {
+                  "item": "123",
+                  "_user_id": 123
+                },
+                "params": [
+                  {
+                    "tag": "postId",
+                    "variable": "postId",
+                    "in": "param",
+                    "required": null,
+                    "type": "number",
+                    "example": 123
+                  },
+                  {
+                    "tag": "limit",
+                    "variable": "limitPost",
+                    "in": "query",
+                    "required": null,
+                    "type": "number",
+                    "example": 4
+                  },
+                  {
+                    "tag": "offset",
+                    "variable": "offsetPost",
+                    "in": "query",
+                    "required": null,
+                    "type": "number",
+                    "example": 30
+                  }
+                ],
+                "title": "Get posts",
+                "description": "",
+                "fullPath": "/post/${postId}",
+                "router": "/post/${postId}?limit=${limitPost}&offset=${offsetPost}",
+                "headers": {
+                  "token": "1234"
+                },
+                "response": {
+                  "statusCode": 200,
+                  "body": {
+                    "item": "4321"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "description": "The registration of posts must be requested from the developers",
+      "title": "Posts",
+      "order": 999
+    },
+    {
+      "paths": {
+        "/user/${userIdValid2}": {
+          "get": {
+            "tests": [
+              {
+                "method": "get",
+                "sendContent": "",
+                "params": [
+                  {
+                    "tag": "userIdValid2",
+                    "variable": "userIdValid2",
+                    "in": "param",
+                    "required": null,
+                    "type": "string",
+                    "example": "981C513A511"
+                  }
+                ],
+                "title": "Get user",
+                "description": "",
+                "fullPath": "/user/${userIdValid2}",
+                "router": "/user/${userIdValid2}",
+                "headers": {},
+                "response": {
+                  "statusCode": 200,
+                  "body": {}
+                }
+              }
+            ]
+          },
+          "put": {
+            "tests": [
+              {
+                "method": "put",
+                "sendContent": {
+                  "name": "updated",
+                  "itemSecret": "gabriel",
+                  "username": "updated2",
+                  "itemBio": [
+                    [
+                      "school",
+                      "Graduation in Systems Analysis and Development at"
+                    ],
+                    [
+                      "status",
+                      "unmarried"
+                    ],
+                    [
+                      "work",
+                      "Web develop"
+                    ],
+                    [
+                      "film",
+                      "Interstellar"
+                    ]
+                  ],
+                  "bio": "Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes",
+                  "motivational": "motivationalMock"
+                },
+                "params": [
+                  {
+                    "tag": "userIdValid2",
+                    "variable": "userIdValid2",
+                    "in": "param",
+                    "required": null,
+                    "type": "string",
+                    "example": "981C513A511"
+                  }
+                ],
+                "title": "Update self",
+                "description": "",
+                "fullPath": "/user/${userIdValid2}",
+                "router": "/user/${userIdValid2}",
+                "headers": {},
+                "response": {
+                  "statusCode": 0,
+                  "body": {
+                    "name": "updated",
+                    "bio": "Lucas 🌻\n🏠 \n⏳ 23\n♍ testetesttesttestestes",
+                    "motivational": "motivationalMock"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "/user/follow/${userIdValid}": {
+          "post": {
+            "tests": [
+              {
+                "method": "post",
+                "sendContent": "",
+                "params": [
+                  {
+                    "tag": "userIdValid",
+                    "variable": "userIdValid",
+                    "in": "param",
+                    "required": null,
+                    "type": "string",
+                    "example": "981C513A511"
+                  }
+                ],
+                "title": "User 1 follow user 2",
+                "description": "",
+                "fullPath": "/user/follow/${userIdValid}",
+                "router": "/user/follow/${userIdValid}",
+                "headers": {},
+                "response": {
+                  "statusCode": 200,
+                  "body": {
+                    "msg": "User cannot follow himself!",
+                    "followed": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "/me": {
+          "get": {
+            "tests": [
+              {
+                "method": "get",
+                "sendContent": "",
+                "params": [],
+                "title": "Get self, and verify if following user 2",
+                "description": "",
+                "fullPath": "/me",
+                "router": "/me",
+                "headers": {},
+                "response": {
+                  "statusCode": 200,
+                  "body": [
+                    {
+                      "name": "lilian",
+                      "email": "any@mail.com",
+                      "username": "bond, super bond",
+                      "following": [
+                        {
+                          "_id": "981C513A511"
+                        },
+                        2
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "description": "",
+      "title": "User",
+      "order": 999
+    },
+    {
+      "paths": {
+        "/users": {
+          "get": {
+            "tests": [
+              {
+                "method": "get",
+                "sendContent": "",
+                "params": [],
+                "title": "Deve retornar uma lista de usuários",
+                "description": "",
+                "fullPath": "/users",
+                "router": "/users",
+                "headers": "",
+                "response": {
+                  "statusCode": 200,
+                  "body": {}
+                }
+              }
+            ]
+          }
+        },
+        "/user": {
+          "delete": {
+            "tests": [
+              {
+                "method": "delete",
+                "sendContent": "",
+                "params": [],
+                "title": "Deve deletar um usuário",
+                "description": "",
+                "fullPath": "/user",
+                "router": "/user",
+                "headers": "",
+                "response": {
+                  "statusCode": 200,
+                  "body": {}
+                }
+              }
+            ]
+          }
+        }
+      },
+      "description": "",
+      "title": "Catastrofic Example",
+      "order": 999
+    }
+  ],
+  "docs": [
+    {
+      "title": "🚀 GETTING STARTED",
+      "order": 1,
+      "docs": [
+        {
+          "title": "Introduction",
+          "order": 1,
+          "text": "# Introduction\nexample\n\n"
+        },
+        {
+          "title": "❌ Errors",
+          "order": 3,
+          "text": "# ❌ Errors\nExample Errors\n\n| statusCode | description |\n|---------|----------|\n| 200 | Ok |\n| 204 | no content |\n| 401 | not permission |\n\ntest\n\n"
+        }
+      ]
+    },
+    {
+      "title": "💻 EXAMPLES",
+      "order": 999,
+      "docs": [
+        {
+          "title": "📀 Examples",
+          "order": 999,
+          "text": "# 📀 Examples\nExample of example\n\n"
+        }
+      ]
+    }
+  ]
+}
