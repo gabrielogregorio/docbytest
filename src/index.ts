@@ -63,7 +63,7 @@ export default async function generateDocs({ statusCode, returnDev }: { statusCo
   try {
     fs.writeFileSync(docbytestDocFile, JSON.stringify({ files: fullDocsSorted, docs }, null, 2));
   } catch (error) {
-    throw new Error(`Error creating documentation file '${docbytestDocFile}': ${error}`);
+    console.log(`Error creating documentation file '${docbytestDocFile}': ${error}`);
   }
 }
 

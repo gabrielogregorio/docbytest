@@ -17,16 +17,16 @@
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
 
 ## Summary
-- [For NPM users](#For-NPM-users)
-- [Write your tests](#Write-your-tests)
-- [Example CI in Github](#Example-ci-in-github)
-- [Use Icons](#Use-Icons)
-- [Colors to comments](#Colors-to-comments)
-- [For devs](#For-devs)
-- [How use in develop mode](#How-use-in-develop-mode)
-- [How integrated with docbytest-ui](#How-integrated-with-docbytest-ui)
-- [Contributing with project](#Contributing-with-project)
-- [Avaliable Scripts](#Avaliable-Scripts)
+-   [For NPM users](#For-NPM-users)
+-   [Write your tests](#Write-your-tests)
+-   [Example CI in Github](#Example-ci-in-github)
+-   [Use Icons](#Use-Icons)
+-   [Colors to comments](#Colors-to-comments)
+-   [For devs](#For-devs)
+-   [How use in develop mode](#How-use-in-develop-mode)
+-   [How integrated with docbytest-ui](#How-integrated-with-docbytest-ui)
+-   [Contributing with project](#Contributing-with-project)
+-   [Avaliable Scripts](#Avaliable-Scripts)
 
 ## For NPM/Yarn users
 Do you need install docbytest and docbytest-ui
