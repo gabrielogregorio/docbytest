@@ -45,7 +45,7 @@ git checkout -b feature/dark-theme-button
 ```
 
 6.  Create the features/fixes
-7. Add tests whenever possible
+7.  Add tests whenever possible
 8.  Add and commit the modified files, example:
 
 ```shell
