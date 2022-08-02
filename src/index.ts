@@ -50,6 +50,8 @@ const mapTestFiles = (directoryTests: string, returnDev: boolean) => {
   return fullDocs;
 };
 
+const docbytestDocFile = '../docbytest.docs.json';
+
 export default async function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
   const configs: configFileType = loadConfigFile(CONFIG_FILE_NAME);
 
@@ -58,7 +60,11 @@ export default async function generateDocs({ statusCode, returnDev }: { statusCo
 
   const docs: getDocsType[] = await getDocs(configs.docFile, statusCode);
 
-  return { files: fullDocsSorted, docs };
+  try {
+    fs.writeFileSync(docbytestDocFile, JSON.stringify({ files: fullDocsSorted, docs }, null, 2));
+  } catch (error) {
+    throw new Error(`Error creating documentation file '${docbytestDocFile}': ${error}`);
+  }
 }
 
 generateDocs.defaultProps = {

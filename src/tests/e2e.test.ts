@@ -1,4 +1,5 @@
 import statusCode from '@/example/statusCode';
+import fs from 'fs';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs from '../index';
 
@@ -7,7 +8,10 @@ const userWithValidId = '/user/${userIdValid2}';
 
 describe('Complete test', () => {
   it('any test', async () => {
-    expect(await generateDocs({ statusCode })).toEqual({
+    await generateDocs({ statusCode });
+    const jsonText = fs.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
+
+    expect(JSON.parse(jsonText)).toEqual({
       files: [
         {
           paths: {

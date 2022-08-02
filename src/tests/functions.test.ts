@@ -224,10 +224,10 @@ describe('Suite', () => {
           const branchData = 'data';
           const productId = 123;
 
-          routerDoc.get("/myPage?sort=\${orderId}&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
+          routerDoc.get("/myPage?sort=981a&page=\${pageNumber}&showDetails=\${valueTrue}&name=\${branchData}&products=\${productId}")
         `),
     ).toEqual([
-      { example: 'ASC', in: 'query', required: null, tag: 'sort', type: 'string', variable: 'orderId' },
+      { example: '981a', in: 'query', required: null, tag: 'sort', type: 'unknown', variable: '' },
       { example: 13, in: 'query', required: null, tag: 'page', type: 'number', variable: 'pageNumber' },
       { example: true, in: 'query', required: null, tag: 'showDetails', type: 'boolean', variable: 'valueTrue' },
       { example: 'data', in: 'query', required: null, tag: 'name', type: 'string', variable: 'branchData' },
@@ -251,34 +251,34 @@ describe('Suite', () => {
   it('should get send content', () => {
     expect(
       getFullDescription(`
-          describe('Any', () => {
-          /* doc: Description Full Description */
-      `),
+            describe('Any', () => {
+            /* doc: Description Full Description */
+        `),
     ).toEqual('Description Full Description');
 
     expect(
       getFullDescription(`
-describe('Any with Markdow http://',  (  ) => {
-/* doc:
-# Title
-## Subtitle
- this is a comment
-Description Full Description
-\`\`\`
-  code example
-\`\`\`
+  describe('Any with Markdow http://',  (  ) => {
+  /* doc:
+  # Title
+  ## Subtitle
+   this is a comment
+  Description Full Description
+  \`\`\`
+    code example
+  \`\`\`
 
-*/
+  */
 
-No Here
-      `),
+  No Here
+        `),
     ).toEqual(`# Title
-## Subtitle
- this is a comment
-Description Full Description
-\`\`\`
-  code example
-\`\`\``);
+  ## Subtitle
+   this is a comment
+  Description Full Description
+  \`\`\`
+    code example
+  \`\`\``);
   });
 
   it('should get a router content', () => {
@@ -293,13 +293,13 @@ Description Full Description
   it('should get a router content', () => {
     const response = getExpectedResponseDynamically(
       `
-    expect(response.body[0].follow).toEqual(1);
-    expect(response.body[0].name).toEqual("Name");
-    expect(response.body[0].boolean).toEqual(true);
-    expect(response.body[0].object).toEqual({ name: 'abc'});
-    expect(response.body[0].following).toEqual([1, 2]);
+      expect(response.body[0].follow).toEqual(1);
+      expect(response.body[0].name).toEqual("Name");
+      expect(response.body[0].boolean).toEqual(true);
+      expect(response.body[0].object).toEqual({ name: 'abc'});
+      expect(response.body[0].following).toEqual([1, 2]);
 
-    `,
+      `,
       ``,
       {},
       '../',
