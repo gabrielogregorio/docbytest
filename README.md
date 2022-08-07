@@ -13,8 +13,19 @@
 
 ![version 0.2](/docs/v0.2.png)
 
+
+<div align="center">
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/23041cf8832e412094ad901c55883f3c)](https://www.codacy.com/gh/gabrielogregorio/docbytest/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielogregorio/docbytest&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/23041cf8832e412094ad901c55883f3c)](https://www.codacy.com/gh/gabrielogregorio/docbytest/dashboard?utm_source=github.com&utm_medium=referral&utm_content=gabrielogregorio/docbytest&utm_campaign=Badge_Coverage)
+
+</div>
+
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
+
+🚀 [Example in pratic](https://github.com/gabrielogregorio/docbytest-example-api)
+
 ## For NPM/Yarn users
 Do you need install docbytest and docbytest-ui
 
