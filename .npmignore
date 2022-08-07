@@ -5,6 +5,13 @@
 .editorconfig
 .github
 .vscode
+.husky
+coverage
+CODE-OF-CONDUCT.md
+commitlint.config.js
+CONTRIBUTING.md
+docbytest.docs.json
+README.md
 tsconfig.json
 jest.config.js
 docbytest.config.json
