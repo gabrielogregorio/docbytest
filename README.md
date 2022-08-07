@@ -23,6 +23,9 @@
 
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
+
+🚀 [Example in pratic](https://github.com/gabrielogregorio/docbytest-example-api)
+
 ## For NPM/Yarn users
 Do you need install docbytest and docbytest-ui
 
