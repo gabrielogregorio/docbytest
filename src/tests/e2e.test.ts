@@ -1,5 +1,5 @@
 import statusCode from '@/example/statusCode';
-import fs from 'fs';
+import fsNode from 'fs';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs from '../index';
 
@@ -9,7 +9,7 @@ const userWithValidId = '/user/${userIdValid2}';
 describe('Complete test', () => {
   it('any test', async () => {
     await generateDocs({ statusCode });
-    const jsonText = fs.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
+    const jsonText = fsNode.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
 
     expect(JSON.parse(jsonText)).toEqual({
       files: [

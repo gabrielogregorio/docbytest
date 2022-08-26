@@ -1,9 +1,13 @@
-import fs from 'fs';
+import fsNode from 'fs';
 import path from 'path';
 import { resolvePathAlias } from './resolvePathAlias';
 import { loadTsConfig } from './tsconfigReader';
 
-export const resolverJsonFiles = (fullCode: string, importDefaultName: string, pathTests: string) => {
+export const resolverJsonFiles = (
+  fullCode: string,
+  importDefaultName: string,
+  pathTests: string,
+): { error: string; content: object } => {
   const reImport = new RegExp(`^\\s*import\\s*${importDefaultName}\\s*from\\s*['"]([\\w@\\.\\/]*)['"]`, 'm');
 
   const result = reImport.exec(fullCode);
@@ -22,11 +26,11 @@ export const resolverJsonFiles = (fullCode: string, importDefaultName: string, p
     pathFile = path.join(pathTests, folderTest);
   }
 
-  const pathFileExists = fs.existsSync(pathFile);
+  const pathFileExists = fsNode.existsSync(pathFile);
   if (!pathFileExists) {
-    return { error: 'file not exists', content: '' };
+    return { error: 'file not exists', content: null };
   }
 
-  const text = fs.readFileSync(pathFile, { encoding: 'utf-8' });
+  const text = fsNode.readFileSync(pathFile, { encoding: 'utf-8' });
   return { error: '', content: JSON.parse(text) };
 };

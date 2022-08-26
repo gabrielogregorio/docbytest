@@ -1,4 +1,4 @@
-export function mergeRecursive(firstObjectBase: object, obj2Base: object) {
+export const mergeRecursive = (firstObjectBase: object, obj2Base: object): object => {
   const firstObject = firstObjectBase;
   const secondObject = obj2Base;
   const itemList = Object.keys(secondObject);
@@ -11,7 +11,7 @@ export function mergeRecursive(firstObjectBase: object, obj2Base: object) {
       } else {
         firstObject[keySecondObject] = secondObject[keySecondObject];
       }
-    } catch (error) {
+    } catch (error: unknown) {
       const objectHasToBeDefined = secondObject[keySecondObject] !== null;
       if (objectHasToBeDefined) {
         firstObject[keySecondObject] = secondObject[keySecondObject];
@@ -20,4 +20,4 @@ export function mergeRecursive(firstObjectBase: object, obj2Base: object) {
   });
 
   return firstObject;
-}
+};

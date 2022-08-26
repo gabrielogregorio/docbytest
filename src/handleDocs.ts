@@ -1,11 +1,11 @@
-import fs from 'fs';
+import fsNode from 'fs';
 import path from 'path';
 import { mountMdDocs } from './helpers/mountMdDocs';
 import { sortOrder } from './helpers/sortOrder';
 import { BIG_SORT_NUMBER } from './constants/variables';
 import { dataDocsType, getDocsType } from './interfaces/docs';
 
-const fsPromises = fs.promises;
+const fsPromises = fsNode.promises;
 
 type getOrderTitleAndFolderDocsType = {
   title: string;
@@ -17,7 +17,7 @@ async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitl
 
   const promises = firstLevelDocFilesOrDirectory.map(async (fileOrDirectory) => {
     const pathTitleDocs = path.join(docFile, fileOrDirectory);
-    const isFolderTitleDocs = fs.lstatSync(pathTitleDocs).isDirectory();
+    const isFolderTitleDocs = fsNode.lstatSync(pathTitleDocs).isDirectory();
 
     if (isFolderTitleDocs) {
       const fileDocsInFolderTitle: string[] = await fsPromises.readdir(pathTitleDocs);
@@ -25,7 +25,7 @@ async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitl
       const docFiles: string[] = [];
       fileDocsInFolderTitle.forEach(async (fileOrDirectoryInSecondLevel: string) => {
         const pathDocFile = path.join(docFile, fileOrDirectory, fileOrDirectoryInSecondLevel);
-        const docFileIsDirectory = fs.lstatSync(pathDocFile).isDirectory();
+        const docFileIsDirectory = fsNode.lstatSync(pathDocFile).isDirectory();
 
         if (!docFileIsDirectory) {
           docFiles.push(pathDocFile);
@@ -48,7 +48,7 @@ async function getOrderTitleAndFolderDocs(docFile: string): Promise<getOrderTitl
 
 function extractContentDocFiles(docFiles: string[], statusCode: unknown): dataDocsType[] {
   return docFiles.map((docFile) => {
-    const docContent = fs.readFileSync(docFile, { encoding: 'utf-8' });
+    const docContent = fsNode.readFileSync(docFile, { encoding: 'utf-8' });
 
     const titleAndOrder = /^#\s{0,10}(\[(\d{1,10})\]\s{0,5}[-\\:\s{0,5}]\s{0,5})?(.{1,100})/.exec(docContent);
 
@@ -66,18 +66,18 @@ function extractContentDocFiles(docFiles: string[], statusCode: unknown): dataDo
 export async function getDocs(docFile: string, statusCode: unknown): Promise<getDocsType[]> {
   const listDocs: getOrderTitleAndFolderDocsType[] = await getOrderTitleAndFolderDocs(docFile);
 
-  const docFilesExtracted = listDocs.map((item: getOrderTitleAndFolderDocsType) => {
+  const docFilesExtracted: getDocsType[] = listDocs.map((item: getOrderTitleAndFolderDocsType) => {
     const orderAndTitle = /(\[(\d{1,10})\]\s{0,5}[-\\:\s{0,5}]\s{0,5})?(.{1,100})/.exec(item.title);
 
     const docs: dataDocsType[] = extractContentDocFiles(item.docs, statusCode);
-    const docsSorted: dataDocsType[] = sortOrder(docs);
+    const docsSorted: dataDocsType[] = sortOrder<dataDocsType>(docs);
 
     return {
-      title: orderAndTitle[3],
+      title: orderAndTitle[3].toString(),
       order: Number(orderAndTitle[2]) || BIG_SORT_NUMBER,
       docs: docsSorted,
     };
   });
 
-  return sortOrder(docFilesExtracted);
+  return sortOrder<getDocsType>(docFilesExtracted);
 }

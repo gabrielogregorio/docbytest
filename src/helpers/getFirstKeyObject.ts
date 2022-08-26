@@ -1,9 +1,9 @@
-export const getFirstKeyObject = (anyObject: object) => {
+export const getFirstKeyObject = (anyObject: object): object => {
   const keys = Object.keys(anyObject);
   try {
     const firstItem = keys[0];
     return anyObject[firstItem] || anyObject;
-  } catch (error) {
+  } catch (error: unknown) {
     return anyObject;
   }
 };

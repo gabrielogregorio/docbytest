@@ -7,5 +7,5 @@ export type dataDocsType = {
 export type getDocsType = {
   title: string;
   order: number;
-  docs: dataDocsType;
+  docs: dataDocsType[];
 };

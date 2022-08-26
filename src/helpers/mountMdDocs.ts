@@ -1,7 +1,7 @@
 import { mountMdTableStatusCode } from './mountMdTableStatusCode';
 
 const reIsSpecialLine = /\[[\w*\s]*\]\((errors_status_table)\)/;
-export function mountMdDocs(mdDoc: any, statusCodeFile: any) {
+export const mountMdDocs = (mdDoc: string, statusCodeFile: unknown): string => {
   let docMounted = '';
   const linesMdDoc = mdDoc.split('\n');
 
@@ -21,4 +21,4 @@ export function mountMdDocs(mdDoc: any, statusCodeFile: any) {
   });
 
   return docMounted;
-}
+};

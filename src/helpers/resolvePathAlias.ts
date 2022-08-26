@@ -1,6 +1,6 @@
 import path from 'path';
 
-export const resolvePathAlias = (tsconfigWithJson, aliasToSearch, importFileWithPathAlias) => {
+export const resolvePathAlias = (tsconfigWithJson, aliasToSearch: string, importFileWithPathAlias: string): string => {
   const removePathAlias = importFileWithPathAlias?.replace(aliasToSearch, '');
   const { baseUrl } = tsconfigWithJson.compilerOptions;
   const compilePathsOptions = tsconfigWithJson.compilerOptions.paths;

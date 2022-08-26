@@ -1,4 +1,4 @@
-export function mountMdTableStatusCode(statusCodeFile: Partial<{ code: number; description: string }>) {
+export const mountMdTableStatusCode = (statusCodeFile: Partial<{ code: number; description: string }>): string => {
   let mountDocsLocal = '| statusCode | description |\n|---------|----------|\n';
 
   const statusCodeItems = Object.keys(statusCodeFile);
@@ -8,4 +8,4 @@ export function mountMdTableStatusCode(statusCodeFile: Partial<{ code: number; d
   });
 
   return mountDocsLocal;
-}
+};

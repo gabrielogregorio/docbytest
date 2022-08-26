@@ -18,9 +18,9 @@ import {
 } from './helpers/helpers';
 import { getFirstKeyObject } from './helpers/getFirstKeyObject';
 
-const replaceToMatch = (content: string, fullMatch: RegExpExecArray) => content.replace(fullMatch[0], '');
+const replaceToMatch = (content: string, fullMatch: RegExpExecArray): string => content.replace(fullMatch[0], '');
 
-const getTests = (fullData2: string, returnDev: boolean) => {
+const getTests = (fullData2: string, returnDev: boolean): string[] => {
   let content = `\n${fullData2}\n`;
 
   const arrayTry = Array.from(Array(content.split('\n').length).keys());
@@ -71,11 +71,11 @@ export function extractDataFromTestFile(
     const method = getRequestMethod(test);
     const router = getRouterRequest(test);
     const fullPath = getRouterParams(router);
-    let body = getExpectedResponseDynamically(test, oneTestText, {}, pathFull);
+    let body: string | number | true | object = getExpectedResponseDynamically(test, oneTestText, {}, pathFull);
 
     try {
       body = getFirstKeyObject(body);
-    } catch (error) {
+    } catch (error: unknown) {
       //
     }
 

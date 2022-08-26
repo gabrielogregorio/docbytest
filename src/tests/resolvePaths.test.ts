@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fsNode from 'fs';
 import { loadTsConfig } from '../helpers/tsconfigReader';
 import { resolverJsonFiles } from '../helpers/resolvers';
 import { resolvePathAlias } from '../helpers/resolvePathAlias';
@@ -22,7 +22,7 @@ describe('Normal Path', () => {
 
   it('json not exists', () => {
     expect(resolverJsonFiles(exampleCode, 'data4', folderTestPast)).toEqual({
-      content: '',
+      content: null,
       error: 'file not exists',
     });
   });
@@ -46,10 +46,10 @@ describe('Normal Path', () => {
     const aliasToSearch = '@/example';
     const fullPathWithResolveAlias = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
 
-    const pathExists = fs.existsSync(fullPathWithResolveAlias);
+    const pathExists = fsNode.existsSync(fullPathWithResolveAlias);
 
     expect(pathExists).toEqual(true);
-    const text = fs.readFileSync(fullPathWithResolveAlias, { encoding: 'utf-8' });
+    const text = fsNode.readFileSync(fullPathWithResolveAlias, { encoding: 'utf-8' });
     expect(text).toEqual(`{\n  "nome": "json item"\n}\n`);
   });
 });

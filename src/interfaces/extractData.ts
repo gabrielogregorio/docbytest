@@ -1,24 +1,24 @@
 export type paramsType = {
-  example: string;
-  in: 'query' | 'param';
-  required: null;
   tag: string;
-  type: string;
   variable: string;
+  in: 'query' | 'param';
+  example: string | number | boolean;
+  required: null;
+  type: string;
 };
 
 export type caseType = {
   method: string;
-  sendContent: string;
+  sendContent: string | number | boolean | object;
   params: paramsType[];
   title: string;
   description: string;
   router: string;
   fullPath: string;
-  headers: any;
+  headers: string | number | boolean | object;
   response: {
     statusCode: number;
-    body: string;
+    body: string | number | true | object;
   };
 };
 

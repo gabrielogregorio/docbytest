@@ -3,17 +3,15 @@ const RE_REMOVE_ARRAY_LEVEL = /\[\d{1,100}\]/;
 const RE_GET_LEVEL_ARRAY = /\[(\d{1,100})\]/;
 const MOCK_LEVEL = '__DOC_BY_TEST__MOCK_LEVEL__';
 
-function removeArrayLevel(objectItem: string) {
-  return objectItem.replace(RE_REMOVE_ARRAY_LEVEL, '');
-}
+const removeArrayLevel = (objectItem: string): string => objectItem.replace(RE_REMOVE_ARRAY_LEVEL, '');
 
-function handleEndArray(arr: string[], getPosition: number, valueHandler) {
+const handleEndArray = (arr: string[], getPosition: number, valueHandler): string => {
   const localArr = arr;
   localArr[getPosition] = valueHandler;
   return JSON.stringify(localArr);
-}
+};
 
-function handleStartLevel(hasArrayLevel: boolean, arr: string[], getPosition: number, partObject: string) {
+function handleStartLevel(hasArrayLevel: boolean, arr: string[], getPosition: number, partObject: string): string {
   if (hasArrayLevel) {
     const endArray = handleEndArray(arr, getPosition, MOCK_LEVEL);
     return `{ "${removeArrayLevel(partObject)}": ${endArray} }`;
@@ -21,19 +19,19 @@ function handleStartLevel(hasArrayLevel: boolean, arr: string[], getPosition: nu
   return `{ "${partObject}": ${MOCK_LEVEL} }`;
 }
 
-function handleMediumLevel(
+const handleMediumLevel = (
   hasArrayLevel: boolean,
   arr: string[],
   getPosition: number,
   partObject: string,
   stringObjectMounted: string,
-) {
+): string => {
   if (hasArrayLevel) {
     const endArray = handleEndArray(arr, getPosition, MOCK_LEVEL);
     return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${removeArrayLevel(partObject)}": ${endArray} }`);
   }
   return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${partObject}": ${MOCK_LEVEL} }`);
-}
+};
 
 const handleEndLevel = (
   hasArrayLevel: boolean,
@@ -42,7 +40,7 @@ const handleEndLevel = (
   value,
   stringObjectMounted: string,
   partObject: string,
-) => {
+): string => {
   if (hasArrayLevel) {
     const endArray = handleEndArray(arr, getPosition, value);
 
@@ -54,12 +52,12 @@ const handleEndLevel = (
       RE_MOCK_LEVEL,
       `{ "${partObject}": ${typeof value === 'string' ? value : JSON.stringify(value)} }`,
     );
-  } catch (error) {
+  } catch (error: unknown) {
     return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${partObject}": ${value?.toString()} }`);
   }
 };
 
-export function dynamicAssembly(fullText: string, value: string | boolean | number | object) {
+export const dynamicAssembly = (fullText: string, value: string | boolean | number | object): string => {
   const partsOfObject: string[] = fullText.split('.');
   let stringObjectMounted: string = '';
 
@@ -86,4 +84,4 @@ export function dynamicAssembly(fullText: string, value: string | boolean | numb
   });
 
   return stringObjectMounted;
-}
+};

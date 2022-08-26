@@ -1,14 +1,21 @@
 import { resolverJsonFiles } from './resolvers';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
 
-export const getStringToObjectUsableInCode = (variable: string, fullCode: string) => {
+export const getStringToObjectUsableInCode = (
+  variable: string,
+  fullCode: string,
+): string | number | boolean | object => {
   const regexItems = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
   const matchItems: RegExpExecArray | null = regexItems.exec(fullCode);
 
   return transformStringToUsableObject(`${matchItems[3]}`);
 };
 
-export const findValueInCode = (value: string, fullCode: string, pathFull: string) => {
+export const findValueInCode = (
+  value: string,
+  fullCode: string,
+  pathFull: string,
+): string | number | boolean | object => {
   const isStringWithDoubleQuotation = value.trim().startsWith('"') && value.trim().endsWith('"');
   if (isStringWithDoubleQuotation) {
     return value;
@@ -16,19 +23,19 @@ export const findValueInCode = (value: string, fullCode: string, pathFull: strin
 
   try {
     return transformStringToUsableObject(`${value}`);
-  } catch (error) {
+  } catch (error: unknown) {
     //
   }
 
   try {
     return getStringToObjectUsableInCode(`${value}`, fullCode);
-  } catch (error2) {
+  } catch (error2: unknown) {
     //
   }
 
   try {
     return resolverJsonFiles(fullCode, value, pathFull).content;
-  } catch (error) {
+  } catch (error: unknown) {
     //
   }
 

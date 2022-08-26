@@ -6,7 +6,7 @@ import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING = `\\(['"\`](.*?)['"\`]\\)`;
 
-export function getExpectedResponse(code: string, text: string, pathFull: string): any {
+export function getExpectedResponse(code: string, text: string, pathFull: string): string | number | boolean | object {
   const regex = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match = regex.exec(code);
   if (match) {
@@ -15,7 +15,13 @@ export function getExpectedResponse(code: string, text: string, pathFull: string
   return '';
 }
 
-function mountDynamicObject(expectedResponse: string, command: string, completeObject, oneTestText, pathFull: string) {
+function mountDynamicObject(
+  expectedResponse: string,
+  command: string,
+  completeObject: object,
+  oneTestText: string,
+  pathFull: string,
+): object {
   let valueExtracted = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
     valueExtracted = `"${valueExtracted}"`;
@@ -25,11 +31,16 @@ function mountDynamicObject(expectedResponse: string, command: string, completeO
   return mergeRecursive(completeObject, JSON.parse(transform.replace(/'/g, '"')));
 }
 
-export function getExpectedResponseDynamically(code: string, oneTestText: string, object, pathFull: string): any {
-  let completeObject = object;
+export function getExpectedResponseDynamically(
+  code: string,
+  oneTestText: string,
+  object: object,
+  pathFull: string,
+): object {
+  let completeObject: object = object;
   const regexDynamicBody = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
-  for (let x = 0; x <= LIMIT_PREVENT_INFINITE_LOOPS; x += 1) {
+  for (let increment = 0; increment <= LIMIT_PREVENT_INFINITE_LOOPS; increment += 1) {
     const regexRouter = regexDynamicBody.exec(code);
 
     if (regexRouter) {
@@ -40,7 +51,7 @@ export function getExpectedResponseDynamically(code: string, oneTestText: string
       if (isFunctionFromObject) {
         try {
           completeObject = mountDynamicObject(expectedResponse, command, completeObject, oneTestText, pathFull);
-        } catch (error) {
+        } catch (error: unknown) {
           //
         }
       }
@@ -65,7 +76,7 @@ export function getExpectedStatusCode(code: string): number {
   return 0;
 }
 
-export function getContentSend(code: string, text: string, pathFull: string): any {
+export function getContentSend(code: string, text: string, pathFull: string): string | number | boolean | object {
   const RE_CONTENT_SEND = /\.send\(([^))]{1,9999})[\S\s]{0,500}\)[\S\s]{0,500}[;\\.]/;
   const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(code);
   if (contentSend) {
@@ -74,7 +85,7 @@ export function getContentSend(code: string, text: string, pathFull: string): an
   return '';
 }
 
-export function getSentHeader(fullBlock: string, text: string, pathFull: string) {
+export function getSentHeader(fullBlock: string, text: string, pathFull: string): string | number | boolean | object {
   const RE_SEND_HEADER = /\.set\(([^(\\);)]*)/;
   const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(fullBlock);
 
@@ -156,7 +167,7 @@ export function getFullDescription(contextCode: string): string {
 
 type getVariable = {
   type: 'number' | 'boolean' | 'string' | 'unknown';
-  content: any | null;
+  content: string | number | boolean;
 };
 
 export function getTypeVariable(variable: string, fullCode: string): getVariable {
@@ -210,8 +221,8 @@ export function getQueryParams(fullCode: string): paramsType[] {
   return [];
 }
 
-export function getUrlParams(router: string, fullCode: string): any[] {
-  const params = [];
+export function getUrlParams(router: string, fullCode: string): paramsType[] {
+  const params: paramsType[] = [];
   const regexParams = /\/\$\{(\w*)\}/gi;
 
   let preventLoop = 0;
