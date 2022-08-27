@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import statusCode from '@/example/statusCode';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs, { makeDocsReturnType } from '../index';

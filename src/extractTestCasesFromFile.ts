@@ -18,13 +18,15 @@ import {
 } from './helpers/helpers';
 import { getFirstKeyObject } from './helpers/getFirstKeyObject';
 
+const COMPLETE_TEXT_REGEX: number = 0;
+
 const removeTestCaseExtracted = ({
   completeTextFileText,
   textNextTestCase,
 }: {
   completeTextFileText: string;
   textNextTestCase: RegExpExecArray;
-}): string => completeTextFileText.replace(textNextTestCase[0], '');
+}): string => completeTextFileText.replace(textNextTestCase[COMPLETE_TEXT_REGEX], '');
 
 const removeBreakLines = ({ completeTextFileText }: { completeTextFileText: string }): string =>
   completeTextFileText.replace(/^.{0,300}\n/, '');
@@ -40,7 +42,7 @@ const extractTestCasesText = ({ textFileTest }: { textFileTest: string }): strin
     const textNextTestCase: RegExpExecArray = testesTwoSpaceLines.exec(completeTextFileText);
     if (textNextTestCase) {
       completeTextFileText = removeTestCaseExtracted({ completeTextFileText, textNextTestCase });
-      return textNextTestCase[0];
+      return textNextTestCase[COMPLETE_TEXT_REGEX];
     }
 
     completeTextFileText = removeBreakLines({ completeTextFileText });

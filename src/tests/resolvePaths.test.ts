@@ -39,9 +39,9 @@ describe('Normal Path', () => {
   it('resolve json with path alias', () => {
     const insertTest: string = 'examplePathAlias';
     const reImport: RegExp = new RegExp(`^\\s*import\\s*${insertTest}\\s*from\\s*['"]([\\w\\.\\@\\/]*)['"]`, 'm');
-
+    const GROUP_IMPORT_PATH: number = 1;
     const result: RegExpExecArray = reImport.exec(exampleCode);
-    const folderTest: string = result[1];
+    const folderTest: string = result[GROUP_IMPORT_PATH];
 
     const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const aliasToSearch: string = '@/example';

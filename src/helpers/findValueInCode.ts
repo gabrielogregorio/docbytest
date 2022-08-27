@@ -2,11 +2,13 @@ import { contentRequestType } from '@/interfaces/extractData';
 import { resolverJsonFiles } from './resolvers';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
 
+const GROUP_VALUE_POSITION: number = 3;
+
 export const getStringToObjectUsableInCode = (variable: string, fullCode: string): contentRequestType => {
   const regexItems: RegExp = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
   const matchItems: RegExpExecArray | null = regexItems.exec(fullCode);
 
-  return transformStringToUsableObject(`${matchItems[3]}`);
+  return transformStringToUsableObject(`${matchItems[GROUP_VALUE_POSITION]}`);
 };
 
 export const findValueInCode = (value: string, fullCode: string, pathFull: string): contentRequestType => {
@@ -17,21 +19,15 @@ export const findValueInCode = (value: string, fullCode: string, pathFull: strin
 
   try {
     return transformStringToUsableObject(`${value}`);
-  } catch (error: unknown) {
-    //
-  }
+  } catch (error: unknown) {}
 
   try {
     return getStringToObjectUsableInCode(`${value}`, fullCode);
-  } catch (error2: unknown) {
-    //
-  }
+  } catch (error2: unknown) {}
 
   try {
     return resolverJsonFiles(fullCode, value, pathFull).content;
-  } catch (error: unknown) {
-    //
-  }
+  } catch (error: unknown) {}
 
   return '';
 };

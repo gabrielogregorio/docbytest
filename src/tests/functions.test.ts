@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import {
   getStatusCode,
   getResponseSimple,
@@ -12,12 +13,25 @@ import {
 
 const usernameTest: string = 'Lucas Santos';
 
+const EXAMPLE_SUCCESS_STATUS_CODE: number = 200;
+const EXAMPLE_500_ERROR_STATUS_CODE: number = 500;
+const EXAMPLE_403_ERROR_STATUS_CODE: number = 403;
+const EXAMPLE_301_ERROR_STATUS_CODE: number = 301;
+
 describe('Suite', () => {
   it('should return status code', () => {
-    expect(getStatusCode({ testCaseText: 'expect(response.statusCode)\n.toBe(200);' })).toEqual(200);
-    expect(getStatusCode({ testCaseText: 'expect(res.statusCode).toBe(\n 301\n).toTest()' })).toEqual(301);
-    expect(getStatusCode({ testCaseText: 'expect(res.statusCode).toBe( 500);' })).toEqual(500);
-    expect(getStatusCode({ testCaseText: 'expect(response.statusCode).toEqual(403);' })).toEqual(403);
+    expect(
+      getStatusCode({ testCaseText: `expect(response.statusCode)\n.toBe(${EXAMPLE_SUCCESS_STATUS_CODE});` }),
+    ).toEqual(EXAMPLE_SUCCESS_STATUS_CODE);
+    expect(
+      getStatusCode({ testCaseText: `expect(res.statusCode).toBe(\n ${EXAMPLE_301_ERROR_STATUS_CODE}\n).toTest()` }),
+    ).toEqual(EXAMPLE_301_ERROR_STATUS_CODE);
+    expect(getStatusCode({ testCaseText: `expect(res.statusCode).toBe( ${EXAMPLE_500_ERROR_STATUS_CODE});` })).toEqual(
+      EXAMPLE_500_ERROR_STATUS_CODE,
+    );
+    expect(
+      getStatusCode({ testCaseText: `expect(response.statusCode).toEqual(${EXAMPLE_403_ERROR_STATUS_CODE});` }),
+    ).toEqual(EXAMPLE_403_ERROR_STATUS_CODE);
   });
 
   it('should return expected response', () => {

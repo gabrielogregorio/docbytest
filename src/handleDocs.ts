@@ -7,6 +7,9 @@ import { BIG_SORT_NUMBER } from './constants/variables';
 import { dataDocsType, getDocsType } from './interfaces/docs';
 import { getPathAndInfoDocs, getPathAndInfoDocsType } from './getPathAndInfoDocs';
 
+const GROUP_TITLE: number = 3;
+const GROUP_ORDER: number = 2;
+
 export const handleMarkdownFiles = async (statusCode: statusCodeConfigType): Promise<getDocsType[]> => {
   const { docFile: routeDocs }: configFileType = loadConfigFile();
   const pathAndInfoDocs: getPathAndInfoDocsType[] = await getPathAndInfoDocs({ routeDocs });
@@ -20,8 +23,8 @@ export const handleMarkdownFiles = async (statusCode: statusCodeConfigType): Pro
     const docsSorted: dataDocsType[] = sortOrder<dataDocsType>(docs);
 
     return {
-      title: orderAndTitle[3].toString(),
-      order: Number(orderAndTitle[2]) || BIG_SORT_NUMBER,
+      title: orderAndTitle[GROUP_TITLE].toString(),
+      order: Number(orderAndTitle[GROUP_ORDER]) || BIG_SORT_NUMBER,
       docs: docsSorted,
     };
   });

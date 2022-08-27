@@ -59,20 +59,23 @@ const handleEndLevel = (
   }
 };
 
+const DECREMENT_LAST_POSITION: number = 1;
+const FIRST_LEVEL: number = 0;
+const FIRST_POSITION_REGEX: number = 1;
 export const dynamicAssembly = (fullText: string, value: contentRequestType): string => {
   const partsOfObject: string[] = fullText.split('.');
   let stringObjectMounted: string = '';
 
   partsOfObject.forEach((partObject: string, indexObject: number) => {
-    const endLevel: boolean = indexObject === partsOfObject.length - 1;
-    const startLevel: boolean = indexObject === 0;
+    const endLevel: boolean = indexObject === partsOfObject.length - DECREMENT_LAST_POSITION;
+    const startLevel: boolean = indexObject === FIRST_LEVEL;
     const hasArrayLevel: boolean = partObject.includes('[');
 
     let getPosition: number = 0;
     let arr: string[] = [];
     if (hasArrayLevel) {
       const levelArray: RegExpExecArray = RE_GET_LEVEL_ARRAY.exec(partObject);
-      getPosition = Number(levelArray[1]);
+      getPosition = Number(levelArray[FIRST_POSITION_REGEX]);
       arr = new Array(getPosition).fill(null);
     }
 

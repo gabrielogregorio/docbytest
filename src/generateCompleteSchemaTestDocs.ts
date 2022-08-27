@@ -8,7 +8,7 @@ export type allTestCasesType = {
 export type makeFullSchemaTestDocsType = {
   paths: allTestCasesType;
   description: string;
-  title: String;
+  title: string;
   order: number;
 };
 

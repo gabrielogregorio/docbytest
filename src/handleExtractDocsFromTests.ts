@@ -22,7 +22,7 @@ export const handleExtractDocsFromTests = (): makeFullSchemaTestDocsType[] => {
       directoryAllTests,
     });
 
-    const existSomeTestExtracted: boolean = testsExtractedFromFile.cases.length !== 0;
+    const existSomeTestExtracted: boolean = !!testsExtractedFromFile.cases.length;
     if (existSomeTestExtracted) {
       completeDocsByTests.push(generateCompleteSchemaTestDocs(testsExtractedFromFile));
     }

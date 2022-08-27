@@ -1,6 +1,8 @@
 import { configTsconfigType, configTsConfigPathsType } from '@/interfaces/configFile';
 import path from 'path';
 
+const FIRST_OPTION_ALIAS: number = 0;
+
 export const resolvePathAlias = (
   tsconfigWithJson: configTsconfigType,
   aliasToSearch: string,
@@ -10,5 +12,9 @@ export const resolvePathAlias = (
   const { baseUrl }: { baseUrl: string } = tsconfigWithJson.compilerOptions;
   const compilePathsOptions: configTsConfigPathsType = tsconfigWithJson.compilerOptions.paths;
 
-  return path.join(baseUrl, compilePathsOptions[`${aliasToSearch}/*`][0]?.toString().replace('*', ''), removePathAlias);
+  return path.join(
+    baseUrl,
+    compilePathsOptions[`${aliasToSearch}/*`][FIRST_OPTION_ALIAS]?.toString().replace('*', ''),
+    removePathAlias,
+  );
 };

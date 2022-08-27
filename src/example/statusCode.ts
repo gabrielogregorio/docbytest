@@ -1,11 +1,11 @@
-type statusCodeTypeType = {
+type statusCodeType = {
   [key: string]: {
     code: number;
     description: string;
   };
 };
 
-const statusCode: statusCodeTypeType = {
+const statusCode: statusCodeType = {
   SUCCESS: {
     code: 200,
     description: 'Ok',

@@ -13,7 +13,6 @@
 
 ![version 0.2](/docs/v0.2.png)
 
-
 <div align="center">
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/23041cf8832e412094ad901c55883f3c)](https://www.codacy.com/gh/gabrielogregorio/docbytest/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielogregorio/docbytest&amp;utm_campaign=Badge_Grade)
