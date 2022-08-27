@@ -4,13 +4,13 @@ export type configFileType = {
   statusCodeErrorFile: string;
 };
 
-export type configTsConfigPaths = {
+export type configTsConfigPathsType = {
   [key: string]: string[];
 };
 
-export type configTsconfig = {
+export type configTsconfigType = {
   compilerOptions: {
-    paths: configTsConfigPaths;
+    paths: configTsConfigPathsType;
     baseUrl: string;
   };
 };

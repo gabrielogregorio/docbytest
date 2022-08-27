@@ -1,13 +1,13 @@
 import { BIG_SORT_NUMBER } from '../constants/variables';
-import { extractDataFromTestFile } from '../extractDataFromTestFile';
+import { extractTestCasesFromFile } from '../extractTestCasesFromFile';
 
 const stringSend: string = 'string send';
 
 describe('Should test e2e application', () => {
   it('should return expected response', () => {
     expect(
-      extractDataFromTestFile(
-        `
+      extractTestCasesFromFile({
+        textFileTest: `
 describe('Name suit test', () => {
   /* doc: Title suit test */
 
@@ -36,35 +36,32 @@ describe('Name suit test', () => {
     expect(response.statusCode).toEqual(200);
   });
 
-  it("[dev] - Name test dev", async () => {
+  it("[docs]: Name test dev", async () => {
     const response = await request.get('/user').send('string send')
 
     expect(response.statusCode).toEqual(300);
   });
 });
-        `,
-        false,
-        '../',
-      ),
+                  `,
+        directoryAllTests: '../',
+      }),
     ).toEqual({
       cases: [
         {
           method: 'post',
           sendContent: stringSend,
-          params: [
+          parameters: [
             {
               example: 10,
               in: 'query',
-              required: null,
-              tag: 'limit',
+              name: 'limit',
               type: 'number',
               variable: 'limit',
             },
           ],
           title: 'Name from test',
           description: 'Description from test',
-          fullPath: '/user',
-          router: '/user?limit=${limit}',
+          path: '/user',
           headers: {
             Authorization: 'Bearer',
           },
@@ -76,28 +73,25 @@ describe('Name suit test', () => {
         {
           method: 'delete',
           sendContent: { id: 1 },
-          params: [
+          parameters: [
             {
               example: 123,
-              tag: 'userId',
+              name: 'userId',
               type: 'number',
               in: 'param',
-              required: null,
               variable: 'userId',
             },
             {
               example: true,
-              tag: 'reverse',
+              name: 'reverse',
               type: 'boolean',
               in: 'query',
-              required: null,
               variable: 'reverseTrue',
             },
           ],
           title: 'Name from test 2',
           description: 'Title Suit test 2',
-          fullPath: '/user/${userId}',
-          router: '/user/${userId}?reverse=${reverseTrue}',
+          path: '/user/${userId}',
           headers: {
             Authorization: 'Bearer 2',
           },
@@ -114,10 +108,9 @@ describe('Name suit test', () => {
   });
 
   it('should return expected response', () => {
-    const returnDev: boolean = true;
     expect(
-      extractDataFromTestFile(
-        `
+      extractTestCasesFromFile({
+        textFileTest: `
 describe('Name suit test', () => {
   it("[doc] - Name from test", async () => {
     const response = await request.post('/user').send('string send')
@@ -126,26 +119,24 @@ describe('Name suit test', () => {
     expect(response.body).toEqual('example return string body');
   });
 
-  it("[dev] - Name test dev", async () => {
+  it("[doc] - Name test dev", async () => {
     const response = await request.get('/user').send('string send')
 
     expect(response.statusCode).toEqual(300);
   });
 });
         `,
-        returnDev,
-        '../',
-      ),
+        directoryAllTests: '../',
+      }),
     ).toEqual({
       cases: [
         {
           method: 'post',
           sendContent: stringSend,
-          params: [],
+          parameters: [],
           title: 'Name from test',
           description: '',
-          fullPath: '/user',
-          router: '/user',
+          path: '/user',
           headers: '',
           response: {
             statusCode: 200,
@@ -155,11 +146,10 @@ describe('Name suit test', () => {
         {
           method: 'get',
           sendContent: stringSend,
-          params: [],
+          parameters: [],
           title: 'Name test dev',
           description: '',
-          fullPath: '/user',
-          router: '/user',
+          path: '/user',
           headers: '',
           response: {
             statusCode: 300,

@@ -1,5 +1,5 @@
 import fsNode from 'fs';
-import { configTsconfig } from '@/interfaces/configFile';
+import { configTsconfigType } from '@/interfaces/configFile';
 import { loadTsConfig } from '../helpers/tsconfigReader';
 import { resolverJsonFiles } from '../helpers/resolvers';
 import { resolvePathAlias } from '../helpers/resolvePathAlias';
@@ -31,26 +31,26 @@ describe('Normal Path', () => {
   it('get path alias available', () => {
     const importFileWithPathAlias: string = '@/example/fileStatus.json';
     const aliasToSearch: string = '@/example';
-    const tsconfigWithJson: configTsconfig = loadTsConfig();
-    const fullPathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, importFileWithPathAlias);
-    expect(fullPathWithResolveAlias).toEqual('src/example/fileStatus.json');
+    const tsconfigWithJson: configTsconfigType = loadTsConfig();
+    const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, importFileWithPathAlias);
+    expect(pathWithResolveAlias).toEqual('src/example/fileStatus.json');
   });
 
   it('resolve json with path alias', () => {
     const insertTest: string = 'examplePathAlias';
     const reImport: RegExp = new RegExp(`^\\s*import\\s*${insertTest}\\s*from\\s*['"]([\\w\\.\\@\\/]*)['"]`, 'm');
-
+    const GROUP_IMPORT_PATH: number = 1;
     const result: RegExpExecArray = reImport.exec(exampleCode);
-    const folderTest: string = result[1];
+    const folderTest: string = result[GROUP_IMPORT_PATH];
 
-    const tsconfigWithJson: configTsconfig = loadTsConfig();
+    const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const aliasToSearch: string = '@/example';
-    const fullPathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
+    const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
 
-    const pathExists: boolean = fsNode.existsSync(fullPathWithResolveAlias);
+    const pathExists: boolean = fsNode.existsSync(pathWithResolveAlias);
 
     expect(pathExists).toEqual(true);
-    const text: string = fsNode.readFileSync(fullPathWithResolveAlias, { encoding: 'utf-8' });
+    const text: string = fsNode.readFileSync(pathWithResolveAlias, { encoding: 'utf-8' });
     expect(text).toEqual(`{\n  "nome": "json item"\n}\n`);
   });
 });

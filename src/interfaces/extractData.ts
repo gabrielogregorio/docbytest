@@ -1,30 +1,30 @@
-export type paramsType = {
-  tag: string;
-  variable: string;
-  in: 'query' | 'param';
-  example: string | number | boolean;
-  required: null;
-  type: string;
-};
+export enum parametersInEnum {
+  query = 'query',
+  param = 'param',
+}
 
-export type caseType = {
+export type parametersExampleType = string | number | boolean;
+
+export interface IParameters {
+  in: parametersInEnum;
+  name: string;
+  example: parametersExampleType;
+  variable: string;
+  type: string;
+}
+
+export type contentRequestType = string | number | boolean | object;
+
+export interface ITestCase {
   method: string;
-  sendContent: string | number | boolean | object;
-  params: paramsType[];
+  sendContent: contentRequestType;
+  parameters: IParameters[];
   title: string;
   description: string;
-  router: string;
-  fullPath: string;
-  headers: string | number | boolean | object;
+  path: string;
+  headers: contentRequestType;
   response: {
     statusCode: number;
-    body: string | number | true | object;
+    body: contentRequestType;
   };
-};
-
-export type typeExtractDataFromTextType = {
-  cases: caseType[];
-  title: string;
-  order: number;
-  description: string;
-};
+}

@@ -1,3 +1,5 @@
+import { contentRequestType } from '@/interfaces/extractData';
+
 const RE_MOCK_LEVEL: RegExp = /["']?__DOC_BY_TEST__MOCK_LEVEL__["']?/;
 const RE_REMOVE_ARRAY_LEVEL: RegExp = /\[\d{1,100}\]/;
 const RE_GET_LEVEL_ARRAY: RegExp = /\[(\d{1,100})\]/;
@@ -5,11 +7,7 @@ const MOCK_LEVEL: string = '__DOC_BY_TEST__MOCK_LEVEL__';
 
 const removeArrayLevel = (objectItem: string): string => objectItem.replace(RE_REMOVE_ARRAY_LEVEL, '');
 
-const handleEndArray = (
-  arr: string[],
-  getPosition: number,
-  valueHandler: string | number | boolean | object,
-): string => {
+const handleEndArray = (arr: string[], getPosition: number, valueHandler: contentRequestType): string => {
   const localArr: unknown[] = arr;
   localArr[getPosition] = valueHandler;
   return JSON.stringify(localArr);
@@ -41,7 +39,7 @@ const handleEndLevel = (
   hasArrayLevel: boolean,
   arr: string[],
   getPosition: number,
-  value: string | number | boolean | object,
+  value: contentRequestType,
   stringObjectMounted: string,
   partObject: string,
 ): string => {
@@ -61,20 +59,23 @@ const handleEndLevel = (
   }
 };
 
-export const dynamicAssembly = (fullText: string, value: string | boolean | number | object): string => {
+const DECREMENT_LAST_POSITION: number = 1;
+const FIRST_LEVEL: number = 0;
+const FIRST_POSITION_REGEX: number = 1;
+export const dynamicAssembly = (fullText: string, value: contentRequestType): string => {
   const partsOfObject: string[] = fullText.split('.');
   let stringObjectMounted: string = '';
 
   partsOfObject.forEach((partObject: string, indexObject: number) => {
-    const endLevel: boolean = indexObject === partsOfObject.length - 1;
-    const startLevel: boolean = indexObject === 0;
+    const endLevel: boolean = indexObject === partsOfObject.length - DECREMENT_LAST_POSITION;
+    const startLevel: boolean = indexObject === FIRST_LEVEL;
     const hasArrayLevel: boolean = partObject.includes('[');
 
     let getPosition: number = 0;
     let arr: string[] = [];
     if (hasArrayLevel) {
       const levelArray: RegExpExecArray = RE_GET_LEVEL_ARRAY.exec(partObject);
-      getPosition = Number(levelArray[1]);
+      getPosition = Number(levelArray[FIRST_POSITION_REGEX]);
       arr = new Array(getPosition).fill(null);
     }
 
