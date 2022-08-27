@@ -1,6 +1,6 @@
 import { mountMdDocs } from '../helpers/mountMdDocs';
 
-const documentation = `
+const documentation: string = `
 # Bem vindo a documentação
 
 Blog [dicas de valorant](https://valorant-tips.vercel.app/), sendo a primeira usando a bibliteca doctbytest
@@ -17,7 +17,7 @@ Alguns endpoints precisam de autenticação, você pode conseguir uma chave de a
 
 [Documentação de endpoints](client_test_paths)`;
 
-const statusCode = {
+const statusCode: { [key: string]: { code: number; description: string } } = {
   SUCCESS: {
     code: 200,
     description: 'Tudo ocorreu com sucesso',

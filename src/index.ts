@@ -8,7 +8,7 @@ import { getDocsType } from './interfaces/docs';
 import { sortOrder } from './helpers/sortOrder';
 import { getDocs } from './handleDocs';
 
-export const CONFIG_FILE_NAME = './docbytest.config.json';
+export const CONFIG_FILE_NAME: string = './docbytest.config.json';
 
 type allCasesType = {
   [key: string]: { [key2: string]: { tests: caseType } };
@@ -20,13 +20,13 @@ const mountDocByTests = (suitCase: typeExtractDataFromTextType): mountDocByTests
   const allCases: allCasesType[] = [];
 
   suitCase?.cases?.forEach((test: caseType) => {
-    const testPath = test.fullPath;
-    const testMethod = test.method;
+    const testPath: string = test.fullPath;
+    const testMethod: string = test.method;
 
     try {
       allCases[testPath][testMethod].tests.push(test);
     } catch (error: unknown) {
-      const docRouterObjectIsNotMounted = !allCases[testPath];
+      const docRouterObjectIsNotMounted: boolean = !allCases[testPath];
       if (docRouterObjectIsNotMounted) {
         allCases[testPath] = {};
       }
@@ -40,13 +40,13 @@ const mountDocByTests = (suitCase: typeExtractDataFromTextType): mountDocByTests
 
 const mapTestFiles = (directoryTests: string, returnDev: boolean): mountDocByTestsType[] => {
   const fullDocs: mountDocByTestsType[] = [];
-  fsNode.readdirSync(directoryTests).forEach((file) => {
-    const fullPathOneTest = path.join(directoryTests, file);
+  fsNode.readdirSync(directoryTests).forEach((file: string) => {
+    const fullPathOneTest: string = path.join(directoryTests, file);
 
-    const fullOneTest = fsNode.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
-    const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev, directoryTests);
+    const fullOneTest: string = fsNode.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
+    const testsOneFile: typeExtractDataFromTextType = extractDataFromTestFile(fullOneTest, returnDev, directoryTests);
 
-    const existsTestCases = testsOneFile.cases.length !== 0;
+    const existsTestCases: boolean = testsOneFile.cases.length !== 0;
 
     if (existsTestCases) {
       const documentationOnFile: mountDocByTestsType = mountDocByTests(testsOneFile);

@@ -1,6 +1,6 @@
-import { getTypeVariable } from '../helpers/helpers';
+import { getTypeVariable, getVariable } from '../helpers/helpers';
 
-const exampleCode = `
+const exampleCode: string = `
 const theString = 'Santos'
 const cocamar = 123
 const juliana = false
@@ -11,32 +11,32 @@ const theStringThree = \`Santos\`
 
 describe('Suite', () => {
   it('resolve string', () => {
-    const data = getTypeVariable('theString', exampleCode);
+    const data: getVariable = getTypeVariable('theString', exampleCode);
     expect(data).toStrictEqual({ content: 'Santos', type: 'string' });
   });
 
   it('resolve string duple', () => {
-    const data = getTypeVariable('theStringTwo', exampleCode);
+    const data: getVariable = getTypeVariable('theStringTwo', exampleCode);
     expect(data).toStrictEqual({ content: 'Santos', type: 'string' });
   });
 
   it('resolve string crasis???', () => {
-    const data = getTypeVariable('theStringThree', exampleCode);
+    const data: getVariable = getTypeVariable('theStringThree', exampleCode);
     expect(data).toStrictEqual({ content: 'Santos', type: 'string' });
   });
 
   it('resolve number', () => {
-    const data = getTypeVariable('cocamar', exampleCode);
+    const data: getVariable = getTypeVariable('cocamar', exampleCode);
     expect(data).toStrictEqual({ content: 123, type: 'number' });
   });
 
   it('resolve boolean false', () => {
-    const data = getTypeVariable('juliana', exampleCode);
+    const data: getVariable = getTypeVariable('juliana', exampleCode);
     expect(data).toStrictEqual({ content: false, type: 'boolean' });
   });
 
   it('resolve boolean true', () => {
-    const data = getTypeVariable('santana', exampleCode);
+    const data: getVariable = getTypeVariable('santana', exampleCode);
     expect(data).toStrictEqual({ content: true, type: 'boolean' });
   });
 });

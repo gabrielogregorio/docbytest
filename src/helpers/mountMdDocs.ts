@@ -1,18 +1,18 @@
 import { mountMdTableStatusCode } from './mountMdTableStatusCode';
 
-const reIsSpecialLine = /\[[\w*\s]*\]\((errors_status_table)\)/;
+const reIsSpecialLine: RegExp = /\[[\w*\s]*\]\((errors_status_table)\)/;
 export const mountMdDocs = (mdDoc: string, statusCodeFile: unknown): string => {
-  let docMounted = '';
-  const linesMdDoc = mdDoc.split('\n');
+  let docMounted: string = '';
+  const linesMdDoc: string[] = mdDoc.split('\n');
 
-  linesMdDoc.forEach((lineMdDoc) => {
-    const matchIsSpecialLine = reIsSpecialLine.exec(lineMdDoc);
+  linesMdDoc.forEach((lineMdDoc: string) => {
+    const matchIsSpecialLine: RegExpExecArray = reIsSpecialLine.exec(lineMdDoc);
 
     if (matchIsSpecialLine) {
-      const specialLineType = matchIsSpecialLine[1];
+      const specialLineType: string = matchIsSpecialLine[1];
 
       if (specialLineType === 'errors_status_table') {
-        const tableMdStatusCode = mountMdTableStatusCode(statusCodeFile);
+        const tableMdStatusCode: string = mountMdTableStatusCode(statusCodeFile);
         docMounted += `${tableMdStatusCode}\n`;
       }
     } else {

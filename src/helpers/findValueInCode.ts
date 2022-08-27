@@ -5,7 +5,7 @@ export const getStringToObjectUsableInCode = (
   variable: string,
   fullCode: string,
 ): string | number | boolean | object => {
-  const regexItems = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
+  const regexItems: RegExp = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
   const matchItems: RegExpExecArray | null = regexItems.exec(fullCode);
 
   return transformStringToUsableObject(`${matchItems[3]}`);
@@ -16,7 +16,7 @@ export const findValueInCode = (
   fullCode: string,
   pathFull: string,
 ): string | number | boolean | object => {
-  const isStringWithDoubleQuotation = value.trim().startsWith('"') && value.trim().endsWith('"');
+  const isStringWithDoubleQuotation: boolean = value.trim().startsWith('"') && value.trim().endsWith('"');
   if (isStringWithDoubleQuotation) {
     return value;
   }

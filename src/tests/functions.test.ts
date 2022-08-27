@@ -11,7 +11,7 @@ import {
   getExpectedResponseDynamically,
 } from '../helpers/helpers';
 
-const usernameTest = 'Lucas Santos';
+const usernameTest: string = 'Lucas Santos';
 
 describe('Suite', () => {
   it('should return status code', () => {
@@ -291,7 +291,7 @@ describe('Suite', () => {
   });
 
   it('should get a router content', () => {
-    const response = getExpectedResponseDynamically(
+    const response: object = getExpectedResponseDynamically(
       `
       expect(response.body[0].follow).toEqual(1);
       expect(response.body[0].name).toEqual("Name");

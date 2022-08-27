@@ -3,13 +3,13 @@ import fsNode from 'fs';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs from '../index';
 
-const Authorization = 'Bearer exampleJwt';
-const userWithValidId = '/user/${userIdValid2}';
+const Authorization: string = 'Bearer exampleJwt';
+const userWithValidId: string = '/user/${userIdValid2}';
 
 describe('Complete test', () => {
   it('any test', async () => {
     await generateDocs({ statusCode });
-    const jsonText = fsNode.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
+    const jsonText: string = fsNode.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
 
     expect(JSON.parse(jsonText)).toEqual({
       files: [

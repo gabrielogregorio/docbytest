@@ -1,7 +1,7 @@
-export function sortOrder<T extends { order: number }>(tests: T[]): T[] {
-  return tests.sort((firstItem, secondItem) => {
-    const first = Number(firstItem.order);
-    const second = Number(secondItem.order);
+export const sortOrder = <T extends { order: number }>(tests: T[]): T[] =>
+  tests.sort((firstItem: T, secondItem: T) => {
+    const first: number = Number(firstItem.order);
+    const second: number = Number(secondItem.order);
 
     if (first > second) {
       return 1;
@@ -13,4 +13,3 @@ export function sortOrder<T extends { order: number }>(tests: T[]): T[] {
 
     return 0;
   });
-}
