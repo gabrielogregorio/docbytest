@@ -1,5 +1,7 @@
 import fsNode from 'fs';
 import path from 'path';
+import { loadConfigFile } from '@/helpers/loadConfigFile';
+import { configFileType } from '@/interfaces/configFile';
 import { mountMdDocs } from './helpers/mountMdDocs';
 import { sortOrder } from './helpers/sortOrder';
 import { BIG_SORT_NUMBER } from './constants/variables';
@@ -70,7 +72,10 @@ const extractContentDocFiles = (docFiles: string[], statusCode: unknown): dataDo
     };
   });
 
-export const getDocs = async (docFile: string, statusCode: unknown): Promise<getDocsType[]> => {
+export const handleMarkdownFiles = async (statusCode: unknown): Promise<getDocsType[]> => {
+  const configDocbytest: configFileType = loadConfigFile();
+  const { docFile } = configDocbytest;
+
   const listDocs: getOrderTitleAndFolderDocsType[] = await getOrderTitleAndFolderDocs(docFile);
 
   const docFilesExtracted: getDocsType[] = listDocs.map((item: getOrderTitleAndFolderDocsType) => {

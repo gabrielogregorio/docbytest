@@ -6,15 +6,19 @@ import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING: string = `\\(['"\`](.*?)['"\`]\\)`;
 
-export const getExpectedResponse = (
-  code: string,
-  text: string,
-  pathFull: string,
-): string | number | boolean | object => {
+export const getResponseSimple = ({
+  testCaseText,
+  textFileTest,
+  directoryAllTests,
+}: {
+  testCaseText: string;
+  textFileTest: string;
+  directoryAllTests: string;
+}): string | number | boolean | object => {
   const regex: RegExp = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
-  const match: RegExpExecArray = regex.exec(code);
+  const match: RegExpExecArray = regex.exec(testCaseText);
   if (match) {
-    return findValueInCode(match[2], text, pathFull);
+    return findValueInCode(match[2], textFileTest, directoryAllTests);
   }
   return '';
 };
@@ -39,17 +43,22 @@ const mountDynamicObject = (
   return mergeRecursive(completeObject, JSON.parse(transform.replace(/'/g, '"')));
 };
 
-export const getExpectedResponseDynamically = (
-  code: string,
-  oneTestText: string,
-  object: object,
-  pathFull: string,
-): object => {
+export const getResponseDynamically = ({
+  testCaseText,
+  textFileTest,
+  object,
+  directoryAllTests,
+}: {
+  testCaseText: string;
+  textFileTest: string;
+  object: object;
+  directoryAllTests: string;
+}): object => {
   let completeObject: object = object;
   const regexDynamicBody: RegExp = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
   for (let increment: number = 0; increment <= LIMIT_PREVENT_INFINITE_LOOPS; increment += 1) {
-    const regexRouter: RegExpExecArray = regexDynamicBody.exec(code);
+    const regexRouter: RegExpExecArray = regexDynamicBody.exec(testCaseText);
 
     if (regexRouter) {
       const command: string = regexRouter[1];
@@ -58,7 +67,13 @@ export const getExpectedResponseDynamically = (
       const isFunctionFromObject: boolean = !command.endsWith('length');
       if (isFunctionFromObject) {
         try {
-          completeObject = mountDynamicObject(expectedResponse, command, completeObject, oneTestText, pathFull);
+          completeObject = mountDynamicObject(
+            expectedResponse,
+            command,
+            completeObject,
+            textFileTest,
+            directoryAllTests,
+          );
         } catch (error: unknown) {
           //
         }
@@ -73,61 +88,73 @@ export const getExpectedResponseDynamically = (
   return completeObject;
 };
 
-export const getExpectedStatusCode = (code: string): number => {
+export const getStatusCode = ({ testCaseText }: { testCaseText: string }): number => {
   const RE_EXPECTED_STATUS_CODE: RegExp =
     /expect\(([\w\d]{1,50}\.statusCode)\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject|toBe)\(\s{0,20}(\d{3})\s{0,20}\)/;
 
-  const matchExpectedStatusCode: RegExpExecArray = RE_EXPECTED_STATUS_CODE.exec(code);
+  const matchExpectedStatusCode: RegExpExecArray = RE_EXPECTED_STATUS_CODE.exec(testCaseText);
   if (matchExpectedStatusCode) {
     return Number(matchExpectedStatusCode[3]);
   }
   return 0;
 };
 
-export const getContentSend = (code: string, text: string, pathFull: string): string | number | boolean | object => {
+export const getContentSendTestCase = ({
+  testCaseText,
+  textFileTest,
+  directoryAllTests,
+}: {
+  testCaseText: string;
+  textFileTest: string;
+  directoryAllTests: string;
+}): string | number | boolean | object => {
   const RE_CONTENT_SEND: RegExp = /\.send\(([^))]{1,9999})[\S\s]{0,500}\)[\S\s]{0,500}[;\\.]/;
-  const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(code);
+  const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(testCaseText);
   if (contentSend) {
-    return findValueInCode(contentSend[1], text, pathFull);
+    return findValueInCode(contentSend[1], textFileTest, directoryAllTests);
   }
   return '';
 };
 
-export const getSentHeader = (
-  fullBlock: string,
-  text: string,
-  pathFull: string,
-): string | number | boolean | object => {
+export const getHeader = ({
+  testCaseText,
+  textFileTest,
+  directoryAllTests,
+}: {
+  testCaseText: string;
+  textFileTest: string;
+  directoryAllTests: string;
+}): string | number | boolean | object => {
   const RE_SEND_HEADER: RegExp = /\.set\(([^(\\);)]*)/;
-  const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(fullBlock);
+  const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(testCaseText);
 
   if (sendHeader) {
-    return findValueInCode(sendHeader[1], text, pathFull);
+    return findValueInCode(sendHeader[1], textFileTest, directoryAllTests);
   }
   return '';
 };
 
-export const getRequestMethod = (code: string): string => {
+export const getMethod = ({ testCaseText }: { testCaseText: string }): string => {
   const RE_REQUEST_METHOD: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const requestMethod: RegExpExecArray = RE_REQUEST_METHOD.exec(code);
+  const requestMethod: RegExpExecArray = RE_REQUEST_METHOD.exec(testCaseText);
   if (requestMethod) {
     return requestMethod[1];
   }
   return '';
 };
 
-export const getRouterRequest = (code: string): string => {
+export const getRouter = ({ testCaseText }: { testCaseText: string }): string => {
   const regex: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const match: RegExpExecArray = regex.exec(code);
+  const match: RegExpExecArray = regex.exec(testCaseText);
   if (match) {
     return match[2];
   }
   return '';
 };
 
-export const getRouterParams = (code: string): string => {
+export const getRouterParams = ({ router }: { router: string }): string => {
   const regex: RegExp = /([/\w/{}$]+)*/;
-  const match: RegExpExecArray = regex.exec(code);
+  const match: RegExpExecArray = regex.exec(router);
   if (match) {
     return match[1];
   }
@@ -135,14 +162,11 @@ export const getRouterParams = (code: string): string => {
   return '';
 };
 
-const removeDocPrefix = (content: string): string => {
-  const contentLocal: string = content.replace(/^\s*\[doc\]\s*[:-]\s*/, '');
-  return contentLocal.replace(/^\s*\[dev\]\s*[:-]\s*/, '');
-};
+const removeDocPrefix = (content: string): string => content.replace(/^\s*\[doc\]\s*[:-]\s*/, '');
 
-export const getContentTest = (code: string): string => {
+export const getNameTest = ({ testCaseText }: { testCaseText: string }): string => {
   const regex: RegExp = /(it|test)\(['`"](.*?)['`"]/;
-  const match: RegExpExecArray = regex.exec(code);
+  const match: RegExpExecArray = regex.exec(testCaseText);
   if (match) {
     return removeDocPrefix(match[2]);
   }
@@ -150,32 +174,32 @@ export const getContentTest = (code: string): string => {
   return '';
 };
 
-export type getContextType = {
+export type getTitleSuiteType = {
   text: string;
   order: number;
 };
 
-export const getContext = (fullCode: string): getContextType => {
+export const getTitleSuite = ({ textFileTest }: { textFileTest: string }): getTitleSuiteType => {
   const regex: RegExp = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}:?)?\s{0,12}(.*)['"`]/;
-  const match: RegExpExecArray = regex.exec(fullCode);
+  const match: RegExpExecArray = regex.exec(textFileTest);
   if (match) {
     return { text: match[3], order: Number(match[2]) || BIG_SORT_NUMBER };
   }
   return { text: '', order: BIG_SORT_NUMBER };
 };
 
-export const getDescriptionLocal = (contextCode: string): string => {
+export const getDescriptionTest = ({ testCaseText }: { testCaseText: string }): string => {
   const regex: RegExp = /(it|test).*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
-  const match: RegExpExecArray = regex.exec(contextCode);
+  const match: RegExpExecArray = regex.exec(testCaseText);
   if (match) {
     return match[2].trim();
   }
   return '';
 };
 
-export const getFullDescription = (contextCode: string): string => {
+export const getDescriptionSuite = ({ textFileTest }: { textFileTest: string }): string => {
   const regex: RegExp = /describe.*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
-  const match: RegExpExecArray = regex.exec(contextCode);
+  const match: RegExpExecArray = regex.exec(textFileTest);
   if (match) {
     return match[1].trim();
   }
@@ -208,8 +232,8 @@ export const getTypeVariable = (variable: string, fullCode: string): getVariable
 };
 
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
-export const getQueryParams = (fullCode: string): paramsType[] => {
-  const matchGetFullUrl: RegExpExecArray = RE_GET_FULL_URL.exec(fullCode);
+export const getQueryParams = ({ testCaseText }: { testCaseText: string }): paramsType[] => {
+  const matchGetFullUrl: RegExpExecArray = RE_GET_FULL_URL.exec(testCaseText);
   const fullUrlRequest: string = matchGetFullUrl?.[1];
   const queryParams: paramsType[] = [];
 
@@ -228,8 +252,8 @@ export const getQueryParams = (fullCode: string): paramsType[] => {
         variable: isVariable ? valueWithinVariableStart : '',
         in: 'query',
         required: null,
-        type: getTypeVariable(valueWithinVariableStart, fullCode).type,
-        example: isVariable ? getTypeVariable(valueWithinVariableStart, fullCode).content : value,
+        type: getTypeVariable(valueWithinVariableStart, testCaseText).type,
+        example: isVariable ? getTypeVariable(valueWithinVariableStart, testCaseText).content : value,
       });
     });
 
@@ -238,7 +262,13 @@ export const getQueryParams = (fullCode: string): paramsType[] => {
   return [];
 };
 
-export const getUrlParams = (router: string, fullCode: string): paramsType[] => {
+export const getParams = ({
+  testCaseText,
+  textFileTest,
+}: {
+  testCaseText: string;
+  textFileTest: string;
+}): paramsType[] => {
   const params: paramsType[] = [];
   const regexParams: RegExp = /\/\$\{(\w*)\}/gi;
 
@@ -249,7 +279,7 @@ export const getUrlParams = (router: string, fullCode: string): paramsType[] => 
       break;
     }
 
-    const regexRouter: RegExpExecArray = regexParams.exec(router);
+    const regexRouter: RegExpExecArray = regexParams.exec(testCaseText);
 
     if (regexRouter) {
       const nameTag: string = regexRouter[1];
@@ -259,8 +289,8 @@ export const getUrlParams = (router: string, fullCode: string): paramsType[] => 
         variable: nameTag,
         in: 'param',
         required: null,
-        type: getTypeVariable(nameTag, fullCode).type,
-        example: getTypeVariable(nameTag, fullCode).content,
+        type: getTypeVariable(nameTag, textFileTest).type,
+        example: getTypeVariable(nameTag, textFileTest).content,
       });
     }
 
