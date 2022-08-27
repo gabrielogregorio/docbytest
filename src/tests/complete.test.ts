@@ -1,7 +1,7 @@
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import { extractDataFromTestFile } from '../extractDataFromTestFile';
 
-const stringSend = 'string send';
+const stringSend: string = 'string send';
 
 describe('Should test e2e application', () => {
   it('should return expected response', () => {
@@ -114,7 +114,7 @@ describe('Name suit test', () => {
   });
 
   it('should return expected response', () => {
-    const returnDev = true;
+    const returnDev: boolean = true;
     expect(
       extractDataFromTestFile(
         `

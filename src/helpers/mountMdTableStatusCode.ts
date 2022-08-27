@@ -1,11 +1,11 @@
-export function mountMdTableStatusCode(statusCodeFile: Partial<{ code: number; description: string }>) {
-  let mountDocsLocal = '| statusCode | description |\n|---------|----------|\n';
+export const mountMdTableStatusCode = (statusCodeFile: Partial<{ code: number; description: string }>): string => {
+  let mountDocsLocal: string = '| statusCode | description |\n|---------|----------|\n';
 
-  const statusCodeItems = Object.keys(statusCodeFile);
+  const statusCodeItems: string[] = Object.keys(statusCodeFile);
 
-  statusCodeItems.forEach((key) => {
+  statusCodeItems.forEach((key: string) => {
     mountDocsLocal += `| ${statusCodeFile[key].code} | ${statusCodeFile[key].description} |\n`;
   });
 
   return mountDocsLocal;
-}
+};

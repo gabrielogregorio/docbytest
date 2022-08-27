@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs';
+import fsNode from 'fs';
 import { configFileType } from './interfaces/configFile';
 import { caseType, typeExtractDataFromTextType } from './interfaces/extractData';
 import { loadConfigFile } from './helpers/loadConfigFile';
@@ -8,19 +8,25 @@ import { getDocsType } from './interfaces/docs';
 import { sortOrder } from './helpers/sortOrder';
 import { getDocs } from './handleDocs';
 
-export const CONFIG_FILE_NAME = './docbytest.config.json';
+export const CONFIG_FILE_NAME: string = './docbytest.config.json';
 
-function mountDocByTests(suitCase: typeExtractDataFromTextType) {
-  const allCases = [];
+type allCasesType = {
+  [key: string]: { [key2: string]: { tests: caseType } };
+};
+
+type mountDocByTestsType = { paths: allCasesType[]; description: string; title: String; order: number };
+
+const mountDocByTests = (suitCase: typeExtractDataFromTextType): mountDocByTestsType => {
+  const allCases: allCasesType[] = [];
 
   suitCase?.cases?.forEach((test: caseType) => {
-    const testPath = test.fullPath;
-    const testMethod = test.method;
+    const testPath: string = test.fullPath;
+    const testMethod: string = test.method;
 
     try {
       allCases[testPath][testMethod].tests.push(test);
-    } catch (error) {
-      const docRouterObjectIsNotMounted = !allCases[testPath];
+    } catch (error: unknown) {
+      const docRouterObjectIsNotMounted: boolean = !allCases[testPath];
       if (docRouterObjectIsNotMounted) {
         allCases[testPath] = {};
       }
@@ -29,38 +35,51 @@ function mountDocByTests(suitCase: typeExtractDataFromTextType) {
     }
   });
 
-  return { paths: { ...allCases }, description: suitCase.description, title: suitCase.title, order: suitCase.order };
-}
+  return { paths: allCases, description: suitCase.description, title: suitCase.title, order: suitCase.order };
+};
 
-const mapTestFiles = (directoryTests: string, returnDev: boolean) => {
-  const fullDocs: typeExtractDataFromTextType[] = [];
-  fs.readdirSync(directoryTests).forEach((file) => {
-    const fullPathOneTest = path.join(directoryTests, file);
+const mapTestFiles = (directoryTests: string, returnDev: boolean): mountDocByTestsType[] => {
+  const fullDocs: mountDocByTestsType[] = [];
+  fsNode.readdirSync(directoryTests).forEach((file: string) => {
+    const fullPathOneTest: string = path.join(directoryTests, file);
 
-    const fullOneTest = fs.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
-    const testsOneFile = extractDataFromTestFile(fullOneTest, returnDev, directoryTests);
+    const fullOneTest: string = fsNode.readFileSync(fullPathOneTest, { encoding: 'utf-8' });
+    const testsOneFile: typeExtractDataFromTextType = extractDataFromTestFile(fullOneTest, returnDev, directoryTests);
 
-    const existsTestCases = testsOneFile.cases.length !== 0;
+    const existsTestCases: boolean = testsOneFile.cases.length !== 0;
 
     if (existsTestCases) {
-      const documentationOnFile: any = mountDocByTests(testsOneFile);
+      const documentationOnFile: mountDocByTestsType = mountDocByTests(testsOneFile);
       fullDocs.push(documentationOnFile);
     }
   });
   return fullDocs;
 };
 
-export default async function generateDocs({ statusCode, returnDev }: { statusCode: unknown; returnDev?: boolean }) {
+type generateDocsType = {
+  statusCode: unknown;
+  returnDev?: boolean;
+};
+
+const generateDocs = async ({
+  statusCode,
+  returnDev,
+}: generateDocsType): Promise<{
+  files: mountDocByTestsType[];
+  docs: getDocsType[];
+}> => {
   const configs: configFileType = loadConfigFile(CONFIG_FILE_NAME);
 
-  const fullDocs: typeExtractDataFromTextType[] = mapTestFiles(configs.folderTests, returnDev);
-  const fullDocsSorted = sortOrder(fullDocs);
+  const fullDocs: mountDocByTestsType[] = mapTestFiles(configs.folderTests, returnDev);
+  const fullDocsSorted: mountDocByTestsType[] = sortOrder<mountDocByTestsType>(fullDocs);
 
   const docs: getDocsType[] = await getDocs(configs.docFile, statusCode);
 
   return { files: fullDocsSorted, docs };
-}
+};
 
 generateDocs.defaultProps = {
   returnDev: false,
 };
+
+export default generateDocs;

@@ -1,6 +1,7 @@
-import fs from 'fs';
+import fsNode from 'fs';
+import { configTsconfig } from '@/interfaces/configFile';
 
-export function loadTsConfig() {
-  const fileTsconfig = fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' });
+export const loadTsConfig = (): configTsconfig => {
+  const fileTsconfig: string = fsNode.readFileSync('./tsconfig.json', { encoding: 'utf-8' });
   return JSON.parse(fileTsconfig);
-}
+};

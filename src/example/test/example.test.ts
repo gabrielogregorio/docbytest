@@ -1,4 +1,6 @@
+// @ts-ignore
 import objectMockJsonExample from '@/mocksExample/folder/example.json';
+// @ts-ignore
 import mockTitle from 'mocksExample/folder/example2.json';
 import mockJsonExample from '../../mocksExample/index.json';
 

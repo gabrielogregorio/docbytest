@@ -29,7 +29,8 @@
     "jest:watchAll": "jest --watchAll",
     "jest:coverage": "jest --coverage",
     "publish-npm": "npm run jest && rm -rf ./build && npm run build && npm publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint -c ./.eslintrc.json --ext '.ts' 'src/**'"
   },
   "engines": {
     "node": ">=8",

@@ -1,2 +1,2 @@
-export const anyKey = '123';
-export const otherKey = '431';
+export const anyKey: string = '123';
+export const otherKey: string = '431';
