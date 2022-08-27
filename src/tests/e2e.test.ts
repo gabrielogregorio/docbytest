@@ -1,17 +1,14 @@
 import statusCode from '@/example/statusCode';
-import fsNode from 'fs';
 import { BIG_SORT_NUMBER } from '../constants/variables';
-import generateDocs from '../index';
+import generateDocs, { makeDocsReturnType } from '../index';
 
 const Authorization: string = 'Bearer exampleJwt';
 const userWithValidId: string = '/user/${userIdValid2}';
 
 describe('Complete test', () => {
   it('any test', async () => {
-    await generateDocs({ statusCode });
-    const jsonText: string = fsNode.readFileSync('./docbytest.docs.json', { encoding: 'utf-8' });
-
-    expect(JSON.parse(jsonText)).toEqual({
+    const jsonText: makeDocsReturnType = await generateDocs({ statusCode });
+    expect(jsonText).toEqual({
       files: [
         {
           paths: {
@@ -24,7 +21,7 @@ describe('Complete test', () => {
                       username: 'username mock',
                       itemSecret: 'item secret mock',
                     },
-                    params: [],
+                    parameters: [],
                     title: 'Create user',
                     description: '',
                     fullPath: '/user',
@@ -42,7 +39,7 @@ describe('Complete test', () => {
                       username: 'username',
                       itemSecret: 'password',
                     },
-                    params: [],
+                    parameters: [],
                     title: 'Prevents the registration of a user that already exists',
                     description: '',
                     router: '/user',
@@ -61,7 +58,7 @@ describe('Complete test', () => {
                   {
                     method: 'get',
                     sendContent: '',
-                    params: [],
+                    parameters: [],
                     title: 'Get the data of the logged in user',
                     description: '',
                     fullPath: '/user',
@@ -84,7 +81,7 @@ describe('Complete test', () => {
                   {
                     method: 'delete',
                     sendContent: '',
-                    params: [],
+                    parameters: [],
                     title: 'Delete yourself',
                     description: '',
                     fullPath: '/user',
@@ -110,12 +107,11 @@ describe('Complete test', () => {
                   {
                     method: 'put',
                     sendContent: { test: 'isTest' },
-                    params: [
+                    parameters: [
                       {
                         example: 213,
                         in: 'param',
-                        required: null,
-                        tag: 'userId',
+                        name: 'userId',
                         type: 'number',
                         variable: 'userId',
                       },
@@ -165,28 +161,25 @@ describe('Complete test', () => {
                       token: '1234',
                     },
                     method: 'get',
-                    params: [
+                    parameters: [
                       {
                         example: 123,
                         in: 'param',
-                        required: null,
-                        tag: 'postId',
+                        name: 'postId',
                         type: 'number',
                         variable: 'postId',
                       },
                       {
                         example: 4,
                         in: 'query',
-                        required: null,
-                        tag: 'limit',
+                        name: 'limit',
                         type: 'number',
                         variable: 'limitPost',
                       },
                       {
                         example: 30,
                         in: 'query',
-                        required: null,
-                        tag: 'offset',
+                        name: 'offset',
                         type: 'number',
                         variable: 'offsetPost',
                       },
@@ -226,12 +219,11 @@ describe('Complete test', () => {
                     fullPath: userWithValidId,
                     headers: {},
                     method: 'get',
-                    params: [
+                    parameters: [
                       {
                         example: '981C513A511',
                         in: 'param',
-                        required: null,
-                        tag: 'userIdValid2',
+                        name: 'userIdValid2',
                         type: 'string',
                         variable: 'userIdValid2',
                       },
@@ -253,12 +245,11 @@ describe('Complete test', () => {
                     fullPath: userWithValidId,
                     headers: {},
                     method: 'put',
-                    params: [
+                    parameters: [
                       {
                         example: '981C513A511',
                         in: 'param',
-                        required: null,
-                        tag: 'userIdValid2',
+                        name: 'userIdValid2',
                         type: 'string',
                         variable: 'userIdValid2',
                       },
@@ -298,12 +289,11 @@ describe('Complete test', () => {
                     fullPath: '/user/follow/${userIdValid}',
                     headers: {},
                     method: 'post',
-                    params: [
+                    parameters: [
                       {
                         example: '981C513A511',
                         in: 'param',
-                        required: null,
-                        tag: 'userIdValid',
+                        name: 'userIdValid',
                         type: 'string',
                         variable: 'userIdValid',
                       },
@@ -330,7 +320,7 @@ describe('Complete test', () => {
                     fullPath: '/me',
                     headers: {},
                     method: 'get',
-                    params: [],
+                    parameters: [],
                     response: {
                       body: [
                         {
@@ -371,7 +361,7 @@ describe('Complete test', () => {
                     fullPath: '/user',
                     headers: '',
                     method: 'delete',
-                    params: [],
+                    parameters: [],
                     response: {
                       body: {},
                       statusCode: 200,
@@ -391,7 +381,7 @@ describe('Complete test', () => {
                     fullPath: '/users',
                     headers: '',
                     method: 'get',
-                    params: [],
+                    parameters: [],
                     response: {
                       body: {},
                       statusCode: 200,

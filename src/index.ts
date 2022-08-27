@@ -6,7 +6,7 @@ type makeDocsType = {
   statusCode: unknown;
 };
 
-type makeDocsReturnType = {
+export type makeDocsReturnType = {
   files: makeFullSchemaTestDocsType[];
   docs: getDocsType[];
 };
@@ -14,7 +14,6 @@ type makeDocsReturnType = {
 const makeDocs = async ({ statusCode }: makeDocsType): Promise<makeDocsReturnType> => {
   const testDocumentation: makeFullSchemaTestDocsType[] = handleExtractDocsFromTests();
   const markdownDocumentation: getDocsType[] = await handleMarkdownFiles(statusCode);
-
   return { files: testDocumentation, docs: markdownDocumentation };
 };
 

@@ -75,7 +75,7 @@ describe('[1] 🙋 Suggestions', () => {
     });
   });
 
-  it('[doc]: 🚫 block suggestion without params', async () => {
+  it('[doc]: 🚫 block suggestion without parameters', async () => {
     const suggestionId = 123456
     const res = await request.put(`/suggestion/${suggestionId}`).send({});
 

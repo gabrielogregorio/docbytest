@@ -6,8 +6,8 @@ import {
   getRouter,
   getDescriptionSuite,
   getHeader,
-  getQueryParams,
-  getParams,
+  getQueryParameters,
+  getParameters,
   getResponseDynamically,
 } from '../helpers/helpers';
 
@@ -237,9 +237,9 @@ describe('Suite', () => {
     ).toEqual('a lower description?');
   });
 
-  it('should get query params', () => {
+  it('should get query parameters', () => {
     expect(
-      getQueryParams({
+      getQueryParameters({
         testCaseText: `
           const orderId = "ASC";
           let pageNumber = 13;
@@ -251,17 +251,17 @@ describe('Suite', () => {
         `,
       }),
     ).toEqual([
-      { example: '981a', in: 'query', required: null, tag: 'sort', type: 'unknown', variable: '' },
-      { example: 13, in: 'query', required: null, tag: 'page', type: 'number', variable: 'pageNumber' },
-      { example: true, in: 'query', required: null, tag: 'showDetails', type: 'boolean', variable: 'valueTrue' },
-      { example: 'data', in: 'query', required: null, tag: 'name', type: 'string', variable: 'branchData' },
-      { example: 123, in: 'query', required: null, tag: 'products', type: 'number', variable: 'productId' },
+      { example: '981a', in: 'query', name: 'sort', type: 'unknown', variable: '' },
+      { example: 13, in: 'query', name: 'page', type: 'number', variable: 'pageNumber' },
+      { example: true, in: 'query', name: 'showDetails', type: 'boolean', variable: 'valueTrue' },
+      { example: 'data', in: 'query', name: 'name', type: 'string', variable: 'branchData' },
+      { example: 123, in: 'query', name: 'products', type: 'number', variable: 'productId' },
     ]);
   });
 
-  it('should get url params', () => {
+  it('should get url parameters', () => {
     expect(
-      getParams({
+      getParameters({
         testCaseText: `requestdoc.get('/users/\${userId}').send()`,
         textFileTest: `const userId = 1234`,
       }),
@@ -269,8 +269,7 @@ describe('Suite', () => {
       {
         example: 1234,
         in: 'param',
-        required: null,
-        tag: 'userId',
+        name: 'userId',
         type: 'number',
         variable: 'userId',
       },

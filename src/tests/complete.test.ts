@@ -50,12 +50,11 @@ describe('Name suit test', () => {
         {
           method: 'post',
           sendContent: stringSend,
-          params: [
+          parameters: [
             {
               example: 10,
               in: 'query',
-              required: null,
-              tag: 'limit',
+              name: 'limit',
               type: 'number',
               variable: 'limit',
             },
@@ -75,21 +74,19 @@ describe('Name suit test', () => {
         {
           method: 'delete',
           sendContent: { id: 1 },
-          params: [
+          parameters: [
             {
               example: 123,
-              tag: 'userId',
+              name: 'userId',
               type: 'number',
               in: 'param',
-              required: null,
               variable: 'userId',
             },
             {
               example: true,
-              tag: 'reverse',
+              name: 'reverse',
               type: 'boolean',
               in: 'query',
-              required: null,
               variable: 'reverseTrue',
             },
           ],
@@ -138,7 +135,7 @@ describe('Name suit test', () => {
         {
           method: 'post',
           sendContent: stringSend,
-          params: [],
+          parameters: [],
           title: 'Name from test',
           description: '',
           fullPath: '/user',
@@ -152,7 +149,7 @@ describe('Name suit test', () => {
         {
           method: 'get',
           sendContent: stringSend,
-          params: [],
+          parameters: [],
           title: 'Name test dev',
           description: '',
           fullPath: '/user',

@@ -37,7 +37,7 @@ const generateCompleteSchemaTestDocs = (testCase: typeExtractDataFromTextType): 
   });
 
   return {
-    paths: allTestCases,
+    paths: { ...allTestCases },
     description: testCase.description,
     title: testCase.title,
     order: testCase.order,

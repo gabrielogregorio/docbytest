@@ -1,7 +1,7 @@
 const request: any = {};
 
 describe('Suggestions', () => {
-  test('[doc]: Get suggestion', async () => {
+  test('[dev]: Get suggestion', async () => {
     const response = await request
       .get(`/suggestions`)
       .set({

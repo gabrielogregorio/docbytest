@@ -1,16 +1,15 @@
-export type paramsType = {
-  tag: string;
-  variable: string;
+export type parametersType = {
   in: 'query' | 'param';
+  name: string;
   example: string | number | boolean;
-  required: null;
+  variable: string;
   type: string;
 };
 
 export type caseTestType = {
   method: string;
   sendContent: string | number | boolean | object;
-  params: paramsType[];
+  parameters: parametersType[];
   title: string;
   description: string;
   router: string;

@@ -1,4 +1,4 @@
-import { caseTestType, paramsType, typeExtractDataFromTextType } from './interfaces/extractData';
+import { caseTestType, parametersType, typeExtractDataFromTextType } from './interfaces/extractData';
 
 import {
   getResponseSimple,
@@ -7,13 +7,13 @@ import {
   getContentSendTestCase,
   getStatusCode,
   getTitleSuite,
-  getParams,
+  getParameters,
   getNameTest,
   getDescriptionTest,
   getDescriptionSuite,
-  getQueryParams,
+  getQueryParameters,
   getHeader,
-  getRouterParams,
+  getRouterParameters,
   getResponseDynamically,
   getTitleSuiteType,
 } from './helpers/helpers';
@@ -68,13 +68,13 @@ export const extractTestCasesFromFile = ({
       directoryAllTests,
     });
     const statusCode: number = getStatusCode({ testCaseText });
-    const queryParams: paramsType[] = getQueryParams({ testCaseText });
+    const queryParameters: parametersType[] = getQueryParameters({ testCaseText });
     const headers: string | number | boolean | object = getHeader({ testCaseText, textFileTest, directoryAllTests });
-    const params: paramsType[] = getParams({ testCaseText, textFileTest });
+    const parameters: parametersType[] = getParameters({ testCaseText, textFileTest });
     const description: string = getDescriptionTest({ testCaseText });
     const method: string = getMethod({ testCaseText });
     const router: string = getRouter({ testCaseText });
-    const fullPath: string = getRouterParams({ router });
+    const fullPath: string = getRouterParameters({ router });
 
     let dynamicBody: string | number | true | object = getResponseDynamically({
       testCaseText,
@@ -99,7 +99,7 @@ export const extractTestCasesFromFile = ({
     testCases.push({
       method,
       sendContent,
-      params: [...params, ...queryParams],
+      parameters: [...parameters, ...queryParameters],
       title,
       description,
       fullPath,

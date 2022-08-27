@@ -1,7 +1,7 @@
 import { dynamicAssembly } from './dynamicAssembly';
 import { mergeRecursive } from './mergeRecursive';
 import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
-import { paramsType } from '../interfaces/extractData';
+import { parametersType } from '../interfaces/extractData';
 import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING: string = `\\(['"\`](.*?)['"\`]\\)`;
@@ -152,7 +152,7 @@ export const getRouter = ({ testCaseText }: { testCaseText: string }): string =>
   return '';
 };
 
-export const getRouterParams = ({ router }: { router: string }): string => {
+export const getRouterParameters = ({ router }: { router: string }): string => {
   const regex: RegExp = /([/\w/{}$]+)*/;
   const match: RegExpExecArray = regex.exec(router);
   if (match) {
@@ -232,45 +232,44 @@ export const getTypeVariable = (variable: string, fullCode: string): getVariable
 };
 
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
-export const getQueryParams = ({ testCaseText }: { testCaseText: string }): paramsType[] => {
+export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): parametersType[] => {
   const matchGetFullUrl: RegExpExecArray = RE_GET_FULL_URL.exec(testCaseText);
   const fullUrlRequest: string = matchGetFullUrl?.[1];
-  const queryParams: paramsType[] = [];
+  const queryParameters: parametersType[] = [];
 
   if (fullUrlRequest) {
     const urlParsed: URL = new URL(fullUrlRequest, 'http://localhost/');
 
-    const searchParams: URLSearchParams = new URLSearchParams(urlParsed.search);
+    const searchParameters: URLSearchParams = new URLSearchParams(urlParsed.search);
 
-    searchParams.forEach((value2: string, key: string) => {
-      const value: string = value2.trim();
+    searchParameters.forEach((variable: string, property: string) => {
+      const value: string = variable.trim();
       const valueWithinVariableStart: string = value.slice(2, value.length - 1);
 
       const isVariable: boolean = value.startsWith('${');
-      queryParams.push({
-        tag: key,
+      queryParameters.push({
+        name: property,
         variable: isVariable ? valueWithinVariableStart : '',
         in: 'query',
-        required: null,
         type: getTypeVariable(valueWithinVariableStart, testCaseText).type,
         example: isVariable ? getTypeVariable(valueWithinVariableStart, testCaseText).content : value,
       });
     });
 
-    return queryParams;
+    return queryParameters;
   }
   return [];
 };
 
-export const getParams = ({
+export const getParameters = ({
   testCaseText,
   textFileTest,
 }: {
   testCaseText: string;
   textFileTest: string;
-}): paramsType[] => {
-  const params: paramsType[] = [];
-  const regexParams: RegExp = /\/\$\{(\w*)\}/gi;
+}): parametersType[] => {
+  const parameters: parametersType[] = [];
+  const regexParameters: RegExp = /\/\$\{(\w*)\}/gi;
 
   let preventLoop: number = 0;
   while (true) {
@@ -279,16 +278,15 @@ export const getParams = ({
       break;
     }
 
-    const regexRouter: RegExpExecArray = regexParams.exec(testCaseText);
+    const regexRouter: RegExpExecArray = regexParameters.exec(testCaseText);
 
     if (regexRouter) {
       const nameTag: string = regexRouter[1];
 
-      params.push({
-        tag: nameTag,
+      parameters.push({
+        name: nameTag,
         variable: nameTag,
         in: 'param',
-        required: null,
         type: getTypeVariable(nameTag, textFileTest).type,
         example: getTypeVariable(nameTag, textFileTest).content,
       });
@@ -298,5 +296,5 @@ export const getParams = ({
       break;
     }
   }
-  return params;
+  return parameters;
 };
