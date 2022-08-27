@@ -1,4 +1,4 @@
-import { ITestCase, IParameters } from './interfaces/extractData';
+import { ITestCase, IParameters, contentRequestType } from './interfaces/extractData';
 
 import {
   getResponseSimple,
@@ -68,20 +68,21 @@ export const extractTestCasesFromFile = ({
 
   extractTestCasesText({ textFileTest }).forEach((testCaseText: string) => {
     const title: string = getNameTest({ testCaseText });
-    const sendContent: string | number | boolean | object = getContentSendTestCase({
+    const sendContent: contentRequestType = getContentSendTestCase({
       testCaseText,
       textFileTest,
       directoryAllTests,
     });
+
     const statusCode: number = getStatusCode({ testCaseText });
     const queryParameters: IParameters[] = getQueryParameters({ testCaseText });
-    const headers: string | number | boolean | object = getHeader({ testCaseText, textFileTest, directoryAllTests });
+    const headers: contentRequestType = getHeader({ testCaseText, textFileTest, directoryAllTests });
     const parameters: IParameters[] = getParameters({ testCaseText, textFileTest });
     const description: string = getDescriptionTest({ testCaseText });
     const method: string = getMethod({ testCaseText });
     const path: string = getRouterParameters({ testCaseText });
 
-    let dynamicBody: string | number | true | object = getResponseDynamically({
+    let dynamicBody: contentRequestType = getResponseDynamically({
       testCaseText,
       textFileTest,
       object: {},
@@ -92,7 +93,7 @@ export const extractTestCasesFromFile = ({
       dynamicBody = getFirstKeyObject(dynamicBody);
     } catch (error: unknown) {}
 
-    const simpleResponse: string | number | boolean | object = getResponseSimple({
+    const simpleResponse: contentRequestType = getResponseSimple({
       testCaseText,
       textFileTest,
       directoryAllTests,

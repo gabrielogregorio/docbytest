@@ -1,3 +1,5 @@
+import { contentRequestType } from '@/interfaces/extractData';
+
 const RE_REMOVE_LAST_COMMA_IN_ARRAYS: RegExp = /]\s*,[\s{0,4}\n]{0,20}\]/g;
 const RE_REMOVE_LAST_COMMA_IN_OBJECT: RegExp = /,[\s{0,4}\n]{0,20}\}/g;
 const RE_ADD_QUOTES_AROUND_AN_JSON_BRACES: RegExp = /([\w]{1,255})\s{0,100}:\s*/g;
@@ -16,7 +18,7 @@ const normalizeTextJson = (value: string): object => {
   return JSON.parse(jsonObject);
 };
 
-export const transformStringToUsableObject = (textJson: string): string | number | boolean | object => {
+export const transformStringToUsableObject = (textJson: string): contentRequestType => {
   if (IS_BOOLEAN.test(textJson)) {
     return convertToBoolean(textJson);
   }

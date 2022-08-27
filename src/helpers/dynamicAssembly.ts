@@ -1,3 +1,5 @@
+import { contentRequestType } from '@/interfaces/extractData';
+
 const RE_MOCK_LEVEL: RegExp = /["']?__DOC_BY_TEST__MOCK_LEVEL__["']?/;
 const RE_REMOVE_ARRAY_LEVEL: RegExp = /\[\d{1,100}\]/;
 const RE_GET_LEVEL_ARRAY: RegExp = /\[(\d{1,100})\]/;
@@ -5,11 +7,7 @@ const MOCK_LEVEL: string = '__DOC_BY_TEST__MOCK_LEVEL__';
 
 const removeArrayLevel = (objectItem: string): string => objectItem.replace(RE_REMOVE_ARRAY_LEVEL, '');
 
-const handleEndArray = (
-  arr: string[],
-  getPosition: number,
-  valueHandler: string | number | boolean | object,
-): string => {
+const handleEndArray = (arr: string[], getPosition: number, valueHandler: contentRequestType): string => {
   const localArr: unknown[] = arr;
   localArr[getPosition] = valueHandler;
   return JSON.stringify(localArr);
@@ -41,7 +39,7 @@ const handleEndLevel = (
   hasArrayLevel: boolean,
   arr: string[],
   getPosition: number,
-  value: string | number | boolean | object,
+  value: contentRequestType,
   stringObjectMounted: string,
   partObject: string,
 ): string => {
@@ -61,7 +59,7 @@ const handleEndLevel = (
   }
 };
 
-export const dynamicAssembly = (fullText: string, value: string | boolean | number | object): string => {
+export const dynamicAssembly = (fullText: string, value: contentRequestType): string => {
   const partsOfObject: string[] = fullText.split('.');
   let stringObjectMounted: string = '';
 

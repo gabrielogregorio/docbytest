@@ -1,7 +1,7 @@
 import { dynamicAssembly } from './dynamicAssembly';
 import { mergeRecursive } from './mergeRecursive';
 import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
-import { IParameters, parametersInEnum } from '../interfaces/extractData';
+import { contentRequestType, IParameters, parametersExampleType, parametersInEnum } from '../interfaces/extractData';
 import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING: string = `\\(['"\`](.*?)['"\`]\\)`;
@@ -14,7 +14,7 @@ export const getResponseSimple = ({
   testCaseText: string;
   textFileTest: string;
   directoryAllTests: string;
-}): string | number | boolean | object => {
+}): contentRequestType => {
   const regex: RegExp = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
   const match: RegExpExecArray = regex.exec(testCaseText);
   if (match) {
@@ -30,11 +30,7 @@ const mountDynamicObject = (
   oneTestText: string,
   pathFull: string,
 ): object => {
-  let valueExtracted: string | number | boolean | object = findValueInCode(
-    expectedResponse.replace(/'/gi, '"'),
-    oneTestText,
-    pathFull,
-  );
+  let valueExtracted: contentRequestType = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[0] !== '"') {
     valueExtracted = `"${valueExtracted}"`;
   }
@@ -105,7 +101,7 @@ export const getContentSendTestCase = ({
   testCaseText: string;
   textFileTest: string;
   directoryAllTests: string;
-}): string | number | boolean | object => {
+}): contentRequestType => {
   const RE_CONTENT_SEND: RegExp = /\.send\(([^))]{1,9999})[\S\s]{0,500}\)[\S\s]{0,500}[;\\.]/;
   const contentSend: RegExpExecArray | null = RE_CONTENT_SEND.exec(testCaseText);
   if (contentSend) {
@@ -122,7 +118,7 @@ export const getHeader = ({
   testCaseText: string;
   textFileTest: string;
   directoryAllTests: string;
-}): string | number | boolean | object => {
+}): contentRequestType => {
   const RE_SEND_HEADER: RegExp = /\.set\(([^(\\);)]*)/;
   const sendHeader: RegExpExecArray | null = RE_SEND_HEADER.exec(testCaseText);
 
@@ -201,7 +197,7 @@ export const getDescriptionSuite = ({ textFileTest }: { textFileTest: string }):
 
 export type getVariable = {
   type: 'number' | 'boolean' | 'string' | 'unknown';
-  content: string | number | boolean;
+  content: parametersExampleType;
 };
 
 export const getTypeVariable = (variable: string, fullCode: string): getVariable => {
