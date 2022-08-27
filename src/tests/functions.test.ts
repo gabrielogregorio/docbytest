@@ -3,7 +3,6 @@ import {
   getResponseSimple,
   getContentSendTestCase,
   getDescriptionTest,
-  getRouter,
   getDescriptionSuite,
   getHeader,
   getQueryParameters,
@@ -311,15 +310,6 @@ describe('Suite', () => {
   \`\`\`
     code example
   \`\`\``);
-  });
-
-  it('should get a router content', () => {
-    expect(getRouter({ testCaseText: `requestDoc.get('/users').send()` })).toEqual('/users');
-    expect(getRouter({ testCaseText: `requestDoc\n\n.get('/users').send()` })).toEqual('/users');
-    expect(getRouter({ testCaseText: `requestDoc(app).get('/users/posts-data').send()` })).toEqual('/users/posts-data');
-    expect(getRouter({ testCaseText: `requestDoc.get("/users").send()` })).toEqual('/users');
-    expect(getRouter({ testCaseText: `requestDoc.get(\`/users\`).send()` })).toEqual('/users');
-    expect(getRouter({ testCaseText: `requestDoc.get(\`/users/\${userId}\`).send()` })).toEqual('/users/${userId}');
   });
 
   it('should get a router content', () => {

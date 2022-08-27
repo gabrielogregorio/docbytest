@@ -74,9 +74,7 @@ export const getResponseDynamically = ({
             textFileTest,
             directoryAllTests,
           );
-        } catch (error: unknown) {
-          //
-        }
+        } catch (error: unknown) {}
       }
     }
 
@@ -143,22 +141,17 @@ export const getMethod = ({ testCaseText }: { testCaseText: string }): string =>
   return '';
 };
 
-export const getRouter = ({ testCaseText }: { testCaseText: string }): string => {
-  const regex: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const match: RegExpExecArray = regex.exec(testCaseText);
-  if (match) {
-    return match[2];
+export const getRouterParameters = ({ testCaseText }: { testCaseText: string }): string => {
+  const regex1: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
+  const match1: RegExpExecArray = regex1.exec(testCaseText);
+  if (match1) {
+    const router: string = match1[2];
+    const regex: RegExp = /([/\w/{}$]+)*/;
+    const match: RegExpExecArray = regex.exec(router);
+    if (match) {
+      return match[1];
+    }
   }
-  return '';
-};
-
-export const getRouterParameters = ({ router }: { router: string }): string => {
-  const regex: RegExp = /([/\w/{}$]+)*/;
-  const match: RegExpExecArray = regex.exec(router);
-  if (match) {
-    return match[1];
-  }
-
   return '';
 };
 

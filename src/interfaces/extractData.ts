@@ -12,8 +12,7 @@ export type caseTestType = {
   parameters: parametersType[];
   title: string;
   description: string;
-  router: string;
-  fullPath: string;
+  path: string;
   headers: string | number | boolean | object;
   response: {
     statusCode: number;

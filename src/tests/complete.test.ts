@@ -61,8 +61,7 @@ describe('Name suit test', () => {
           ],
           title: 'Name from test',
           description: 'Description from test',
-          fullPath: '/user',
-          router: '/user?limit=${limit}',
+          path: '/user',
           headers: {
             Authorization: 'Bearer',
           },
@@ -92,8 +91,7 @@ describe('Name suit test', () => {
           ],
           title: 'Name from test 2',
           description: 'Title Suit test 2',
-          fullPath: '/user/${userId}',
-          router: '/user/${userId}?reverse=${reverseTrue}',
+          path: '/user/${userId}',
           headers: {
             Authorization: 'Bearer 2',
           },
@@ -138,8 +136,7 @@ describe('Name suit test', () => {
           parameters: [],
           title: 'Name from test',
           description: '',
-          fullPath: '/user',
-          router: '/user',
+          path: '/user',
           headers: '',
           response: {
             statusCode: 200,
@@ -152,8 +149,7 @@ describe('Name suit test', () => {
           parameters: [],
           title: 'Name test dev',
           description: '',
-          fullPath: '/user',
-          router: '/user',
+          path: '/user',
           headers: '',
           response: {
             statusCode: 300,

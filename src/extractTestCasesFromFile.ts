@@ -2,7 +2,6 @@ import { caseTestType, parametersType, typeExtractDataFromTextType } from './int
 
 import {
   getResponseSimple,
-  getRouter,
   getMethod,
   getContentSendTestCase,
   getStatusCode,
@@ -73,8 +72,7 @@ export const extractTestCasesFromFile = ({
     const parameters: parametersType[] = getParameters({ testCaseText, textFileTest });
     const description: string = getDescriptionTest({ testCaseText });
     const method: string = getMethod({ testCaseText });
-    const router: string = getRouter({ testCaseText });
-    const fullPath: string = getRouterParameters({ router });
+    const path: string = getRouterParameters({ testCaseText });
 
     let dynamicBody: string | number | true | object = getResponseDynamically({
       testCaseText,
@@ -97,13 +95,12 @@ export const extractTestCasesFromFile = ({
     }
 
     testCases.push({
-      method,
-      sendContent,
-      parameters: [...parameters, ...queryParameters],
       title,
       description,
-      fullPath,
-      router,
+      method,
+      path,
+      sendContent,
+      parameters: [...parameters, ...queryParameters],
       headers,
       response: {
         statusCode,
@@ -117,7 +114,7 @@ export const extractTestCasesFromFile = ({
   return {
     cases: testCases,
     title: titleSuit.text,
-    order: titleSuit.order,
     description: describeSuit,
+    order: titleSuit.order,
   };
 };

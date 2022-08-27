@@ -2,6 +2,7 @@ import fsNode from 'fs';
 import path from 'path';
 import { loadConfigFile } from '@/helpers/loadConfigFile';
 import { configFileType } from '@/interfaces/configFile';
+import { statusCodeConfig } from '@/interfaces/inputLib';
 import { mountMdDocs } from './helpers/mountMdDocs';
 import { sortOrder } from './helpers/sortOrder';
 import { BIG_SORT_NUMBER } from './constants/variables';
@@ -51,7 +52,7 @@ const getOrderTitleAndFolderDocs = async (docFile: string): Promise<getOrderTitl
   return docs.filter((item: getOrderTitleAndFolderDocsType) => item !== null);
 };
 
-const extractContentDocFiles = (docFiles: string[], statusCode: unknown): dataDocsType[] =>
+const extractContentDocFiles = (docFiles: string[], statusCode: statusCodeConfig): dataDocsType[] =>
   docFiles.map((docFile: string) => {
     const docContent: string = fsNode.readFileSync(docFile, { encoding: 'utf-8' });
 
@@ -72,7 +73,7 @@ const extractContentDocFiles = (docFiles: string[], statusCode: unknown): dataDo
     };
   });
 
-export const handleMarkdownFiles = async (statusCode: unknown): Promise<getDocsType[]> => {
+export const handleMarkdownFiles = async (statusCode: statusCodeConfig): Promise<getDocsType[]> => {
   const configDocbytest: configFileType = loadConfigFile();
   const { docFile } = configDocbytest;
 

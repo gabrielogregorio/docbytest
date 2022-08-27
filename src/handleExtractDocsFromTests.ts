@@ -1,4 +1,4 @@
-import path from 'path';
+import pathNode from 'path';
 import fsNode from 'fs';
 import { configFileType } from './interfaces/configFile';
 import { caseTestType, typeExtractDataFromTextType } from './interfaces/extractData';
@@ -7,37 +7,36 @@ import { extractTestCasesFromFile } from './extractTestCasesFromFile';
 import { sortOrder } from './helpers/sortOrder';
 
 type allTestCasesType = {
-  [key: string]: { [key2: string]: { tests: caseTestType } };
+  [key: string]: { [key2: string]: caseTestType[] };
 };
 
 export type makeFullSchemaTestDocsType = {
-  paths: allTestCasesType[];
+  paths: allTestCasesType;
   description: string;
   title: String;
   order: number;
 };
 
 const generateCompleteSchemaTestDocs = (testCase: typeExtractDataFromTextType): makeFullSchemaTestDocsType => {
-  const allTestCases: allTestCasesType[] = [];
+  const allTestCases: allTestCasesType = {};
 
   testCase.cases.forEach((test: caseTestType) => {
-    const testPath: string = test.fullPath;
-    const testMethod: string = test.method;
+    const { path, method } = test;
 
     try {
-      allTestCases[testPath][testMethod].tests.push(test);
+      allTestCases[path][method].push(test);
     } catch (error: unknown) {
-      const docRouterObjectIsNotMounted: boolean = !allTestCases[testPath];
+      const docRouterObjectIsNotMounted: boolean = !allTestCases[path];
       if (docRouterObjectIsNotMounted) {
-        allTestCases[testPath] = {};
+        allTestCases[path] = {};
       }
 
-      allTestCases[testPath][testMethod] = { tests: [test] };
+      allTestCases[path][method] = [test];
     }
   });
 
   return {
-    paths: { ...allTestCases },
+    paths: allTestCases,
     description: testCase.description,
     title: testCase.title,
     order: testCase.order,
@@ -51,7 +50,7 @@ export const handleExtractDocsFromTests = (): makeFullSchemaTestDocsType[] => {
   const completeDocsByTests: makeFullSchemaTestDocsType[] = [];
 
   fsNode.readdirSync(directoryAllTests).forEach((testPath: string) => {
-    const pathOneTest: string = path.join(directoryAllTests, testPath);
+    const pathOneTest: string = pathNode.join(directoryAllTests, testPath);
 
     const textFileTest: string = fsNode.readFileSync(pathOneTest, { encoding: 'utf-8' });
 

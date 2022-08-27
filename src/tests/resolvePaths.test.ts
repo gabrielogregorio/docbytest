@@ -32,8 +32,8 @@ describe('Normal Path', () => {
     const importFileWithPathAlias: string = '@/example/fileStatus.json';
     const aliasToSearch: string = '@/example';
     const tsconfigWithJson: configTsconfig = loadTsConfig();
-    const fullPathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, importFileWithPathAlias);
-    expect(fullPathWithResolveAlias).toEqual('src/example/fileStatus.json');
+    const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, importFileWithPathAlias);
+    expect(pathWithResolveAlias).toEqual('src/example/fileStatus.json');
   });
 
   it('resolve json with path alias', () => {
@@ -45,12 +45,12 @@ describe('Normal Path', () => {
 
     const tsconfigWithJson: configTsconfig = loadTsConfig();
     const aliasToSearch: string = '@/example';
-    const fullPathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
+    const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
 
-    const pathExists: boolean = fsNode.existsSync(fullPathWithResolveAlias);
+    const pathExists: boolean = fsNode.existsSync(pathWithResolveAlias);
 
     expect(pathExists).toEqual(true);
-    const text: string = fsNode.readFileSync(fullPathWithResolveAlias, { encoding: 'utf-8' });
+    const text: string = fsNode.readFileSync(pathWithResolveAlias, { encoding: 'utf-8' });
     expect(text).toEqual(`{\n  "nome": "json item"\n}\n`);
   });
 });
