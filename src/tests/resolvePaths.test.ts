@@ -1,5 +1,5 @@
 import fsNode from 'fs';
-import { configTsconfig } from '@/interfaces/configFile';
+import { configTsconfigType } from '@/interfaces/configFile';
 import { loadTsConfig } from '../helpers/tsconfigReader';
 import { resolverJsonFiles } from '../helpers/resolvers';
 import { resolvePathAlias } from '../helpers/resolvePathAlias';
@@ -31,7 +31,7 @@ describe('Normal Path', () => {
   it('get path alias available', () => {
     const importFileWithPathAlias: string = '@/example/fileStatus.json';
     const aliasToSearch: string = '@/example';
-    const tsconfigWithJson: configTsconfig = loadTsConfig();
+    const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, importFileWithPathAlias);
     expect(pathWithResolveAlias).toEqual('src/example/fileStatus.json');
   });
@@ -43,7 +43,7 @@ describe('Normal Path', () => {
     const result: RegExpExecArray = reImport.exec(exampleCode);
     const folderTest: string = result[1];
 
-    const tsconfigWithJson: configTsconfig = loadTsConfig();
+    const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const aliasToSearch: string = '@/example';
     const pathWithResolveAlias: string = resolvePathAlias(tsconfigWithJson, aliasToSearch, folderTest);
 

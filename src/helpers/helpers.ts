@@ -1,7 +1,7 @@
 import { dynamicAssembly } from './dynamicAssembly';
 import { mergeRecursive } from './mergeRecursive';
 import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
-import { parametersType } from '../interfaces/extractData';
+import { IParameters, parametersInEnum } from '../interfaces/extractData';
 import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING: string = `\\(['"\`](.*?)['"\`]\\)`;
@@ -225,10 +225,10 @@ export const getTypeVariable = (variable: string, fullCode: string): getVariable
 };
 
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
-export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): parametersType[] => {
+export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): IParameters[] => {
   const matchGetFullUrl: RegExpExecArray = RE_GET_FULL_URL.exec(testCaseText);
   const fullUrlRequest: string = matchGetFullUrl?.[1];
-  const queryParameters: parametersType[] = [];
+  const queryParameters: IParameters[] = [];
 
   if (fullUrlRequest) {
     const urlParsed: URL = new URL(fullUrlRequest, 'http://localhost/');
@@ -243,7 +243,7 @@ export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): 
       queryParameters.push({
         name: property,
         variable: isVariable ? valueWithinVariableStart : '',
-        in: 'query',
+        in: parametersInEnum.query,
         type: getTypeVariable(valueWithinVariableStart, testCaseText).type,
         example: isVariable ? getTypeVariable(valueWithinVariableStart, testCaseText).content : value,
       });
@@ -260,8 +260,8 @@ export const getParameters = ({
 }: {
   testCaseText: string;
   textFileTest: string;
-}): parametersType[] => {
-  const parameters: parametersType[] = [];
+}): IParameters[] => {
+  const parameters: IParameters[] = [];
   const regexParameters: RegExp = /\/\$\{(\w*)\}/gi;
 
   let preventLoop: number = 0;
@@ -279,7 +279,7 @@ export const getParameters = ({
       parameters.push({
         name: nameTag,
         variable: nameTag,
-        in: 'param',
+        in: parametersInEnum.param,
         type: getTypeVariable(nameTag, textFileTest).type,
         example: getTypeVariable(nameTag, textFileTest).content,
       });

@@ -1,4 +1,4 @@
-import { caseTestType, parametersType, typeExtractDataFromTextType } from './interfaces/extractData';
+import { ITestCase, IParameters } from './interfaces/extractData';
 
 import {
   getResponseSimple,
@@ -50,14 +50,21 @@ const extractTestCasesText = ({ textFileTest }: { textFileTest: string }): strin
   return allTestCases.filter((item: string) => !!item === true);
 };
 
+export type extractTestCasesFromFileType = {
+  cases: ITestCase[];
+  title: string;
+  order: number;
+  description: string;
+};
+
 export const extractTestCasesFromFile = ({
   textFileTest,
   directoryAllTests,
 }: {
   textFileTest: string;
   directoryAllTests: string;
-}): typeExtractDataFromTextType => {
-  const testCases: caseTestType[] = [];
+}): extractTestCasesFromFileType => {
+  const testCases: ITestCase[] = [];
 
   extractTestCasesText({ textFileTest }).forEach((testCaseText: string) => {
     const title: string = getNameTest({ testCaseText });
@@ -67,9 +74,9 @@ export const extractTestCasesFromFile = ({
       directoryAllTests,
     });
     const statusCode: number = getStatusCode({ testCaseText });
-    const queryParameters: parametersType[] = getQueryParameters({ testCaseText });
+    const queryParameters: IParameters[] = getQueryParameters({ testCaseText });
     const headers: string | number | boolean | object = getHeader({ testCaseText, textFileTest, directoryAllTests });
-    const parameters: parametersType[] = getParameters({ testCaseText, textFileTest });
+    const parameters: IParameters[] = getParameters({ testCaseText, textFileTest });
     const description: string = getDescriptionTest({ testCaseText });
     const method: string = getMethod({ testCaseText });
     const path: string = getRouterParameters({ testCaseText });

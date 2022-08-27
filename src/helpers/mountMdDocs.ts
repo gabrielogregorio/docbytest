@@ -1,8 +1,8 @@
-import { statusCodeConfig } from '@/interfaces/inputLib';
+import { statusCodeConfigType } from '@/interfaces/inputLib';
 import { mountMdTableStatusCode } from './mountMdTableStatusCode';
 
 const reIsSpecialLine: RegExp = /\[[\w*\s]*\]\((errors_status_table)\)/;
-export const mountMdDocs = (mdDoc: string, statusCodeFile: statusCodeConfig): string => {
+export const mountMdDocs = (mdDoc: string, statusCodeFile: statusCodeConfigType): string => {
   let docMounted: string = '';
   const linesMdDoc: string[] = mdDoc.split('\n');
 

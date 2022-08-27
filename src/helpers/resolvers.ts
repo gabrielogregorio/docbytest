@@ -1,4 +1,4 @@
-import { configTsconfig } from '@/interfaces/configFile';
+import { configTsconfigType } from '@/interfaces/configFile';
 import fsNode from 'fs';
 import path from 'path';
 import { resolvePathAlias } from './resolvePathAlias';
@@ -18,7 +18,7 @@ export const resolverJsonFiles = (
 
   const isAbsolutePath: boolean = !folderTest.startsWith('.');
   if (isAbsolutePath) {
-    const tsconfigWithJson: configTsconfig = loadTsConfig();
+    const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const RE_GET_FIRST_RELATIVE_PATH: RegExp = /([@]?[\\/]?[\d\w_]{1,})/;
     const aliasToSearch: RegExpExecArray = RE_GET_FIRST_RELATIVE_PATH.exec(folderTest);
     pathFile = resolvePathAlias(tsconfigWithJson, aliasToSearch?.[1], folderTest);
