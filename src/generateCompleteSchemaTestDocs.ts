@@ -1,5 +1,5 @@
-import { ITestCase } from '@/interfaces/extractData';
-import { extractTestCasesFromFileType } from 'src/extractTestCasesFromFile';
+import { ITestCase } from './interfaces/extractData';
+import { extractTestCasesFromFileType } from './extractTestCasesFromFile';
 
 export type allTestCasesType = {
   [key: string]: { [key2: string]: ITestCase[] };

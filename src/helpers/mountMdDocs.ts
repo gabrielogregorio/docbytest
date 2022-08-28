@@ -1,4 +1,4 @@
-import { statusCodeConfigType } from '@/interfaces/inputLib';
+import { statusCodeConfigType } from '../interfaces/inputLib';
 import { mountMdTableStatusCode } from './mountMdTableStatusCode';
 
 const reIsSpecialLine: RegExp = /\[[\w*\s]*\]\((errors_status_table)\)/;

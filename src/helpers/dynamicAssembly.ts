@@ -1,4 +1,4 @@
-import { contentRequestType } from '@/interfaces/extractData';
+import { contentRequestType } from '../interfaces/extractData';
 
 const RE_MOCK_LEVEL: RegExp = /["']?__DOC_BY_TEST__MOCK_LEVEL__["']?/;
 const RE_REMOVE_ARRAY_LEVEL: RegExp = /\[\d{1,100}\]/;

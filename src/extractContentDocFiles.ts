@@ -1,6 +1,6 @@
-import { statusCodeConfigType } from '@/interfaces/inputLib';
 import fsNode from 'fs';
-import { dataDocsType } from '@/interfaces/docs';
+import { statusCodeConfigType } from './interfaces/inputLib';
+import { dataDocsType } from './interfaces/docs';
 import { BIG_SORT_NUMBER } from './constants/variables';
 import { mountMdDocs } from './helpers/mountMdDocs';
 

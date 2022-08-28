@@ -10,7 +10,7 @@ describe('Complete test', () => {
   it('any test', async () => {
     const jsonText: makeDocsReturnType = await generateDocs(statusCode);
     expect(jsonText).toEqual({
-      files: [
+      suites: [
         {
           paths: {
             '/user': {

@@ -1,5 +1,5 @@
 import fsNode from 'fs';
-import { configTsconfigType } from '@/interfaces/configFile';
+import { configTsconfigType } from '../interfaces/configFile';
 import { loadTsConfig } from '../helpers/tsconfigReader';
 import { resolverJsonFiles } from '../helpers/resolvers';
 import { resolvePathAlias } from '../helpers/resolvePathAlias';

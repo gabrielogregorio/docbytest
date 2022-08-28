@@ -4,6 +4,5 @@
   },
 
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
