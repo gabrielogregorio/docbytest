@@ -1,4 +1,4 @@
-import { contentRequestType } from '@/interfaces/extractData';
+import { contentRequestType } from '../interfaces/extractData';
 import { resolverJsonFiles } from './resolvers';
 import { transformStringToUsableObject } from './transformStringToUsableObject';
 

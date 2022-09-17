@@ -1,6 +1,6 @@
-import { loadConfigFile } from '@/helpers/loadConfigFile';
-import { configFileType } from '@/interfaces/configFile';
-import { statusCodeConfigType } from '@/interfaces/inputLib';
+import { loadConfigFile } from './helpers/loadConfigFile';
+import { configFileType } from './interfaces/configFile';
+import { statusCodeConfigType } from './interfaces/inputLib';
 import { extractContentDocFiles } from './extractContentDocFiles';
 import { sortOrder } from './helpers/sortOrder';
 import { BIG_SORT_NUMBER } from './constants/variables';

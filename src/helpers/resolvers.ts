@@ -1,6 +1,6 @@
-import { configTsconfigType } from '@/interfaces/configFile';
 import fsNode from 'fs';
 import path from 'path';
+import { configTsconfigType } from '../interfaces/configFile';
 import { resolvePathAlias } from './resolvePathAlias';
 import { loadTsConfig } from './tsconfigReader';
 

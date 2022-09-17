@@ -18,10 +18,7 @@
     "paths": {
       "@/example/*": ["src/example/*"],
       "@/mocksExample/*": ["src/mocksExample/*"],
-      "mocksExample/*": ["src/mocksExample/*"],
-      "@/constants/*": ["./src/constants/*"],
-      "@/helpers/*": ["./src/helpers/*"],
-      "@/interfaces/*": ["./src/interfaces/*"]
+      "mocksExample/*": ["src/mocksExample/*"]
     }
   },
   "include": ["src/**/*"]
