@@ -44,7 +44,7 @@
     "@babel/preset-typescript": "^7.17.12",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
-    "@types/jest": "^28.1.8",
+    "@types/jest": "^29.1.1",
     "@types/node": "^18.7.13",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
