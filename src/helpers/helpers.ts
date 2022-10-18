@@ -18,7 +18,7 @@ export const getResponseSimple = ({
   directoryAllTests: string;
 }): contentRequestType => {
   const regex: RegExp = /expect\([\w\\_]*\.body\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject)\(([^(\\);)]*)/;
-  const match: RegExpExecArray = regex.exec(testCaseText);
+  const match: RegExpExecArray | null = regex.exec(testCaseText);
   if (match) {
     return findValueInCode(match[GROUP_POSITION_CONTENT_RESPONSE], textFileTest, directoryAllTests);
   }
@@ -61,7 +61,7 @@ export const getResponseDynamically = ({
   const regexDynamicBody: RegExp = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
   for (let increment: number = 0; increment <= LIMIT_PREVENT_INFINITE_LOOPS; increment += INCREMENT_DYNAMIC_POSITION) {
-    const regexRouter: RegExpExecArray = regexDynamicBody.exec(testCaseText);
+    const regexRouter: RegExpExecArray | null = regexDynamicBody.exec(testCaseText);
 
     if (regexRouter) {
       const command: string = regexRouter[GROUP_COMMAND_POSITION];
@@ -95,7 +95,7 @@ export const getStatusCode = ({ testCaseText }: { testCaseText: string }): numbe
   const RE_EXPECTED_STATUS_CODE: RegExp =
     /expect\(([\w\d]{1,50}\.statusCode)\)[\\.\n]*(toEqual|toStrictEqual|toMatchObject|toBe)\(\s{0,20}(\d{3})\s{0,20}\)/;
 
-  const matchExpectedStatusCode: RegExpExecArray = RE_EXPECTED_STATUS_CODE.exec(testCaseText);
+  const matchExpectedStatusCode: RegExpExecArray | null = RE_EXPECTED_STATUS_CODE.exec(testCaseText);
   if (matchExpectedStatusCode) {
     return Number(matchExpectedStatusCode[GROUP_STATUS_CODE_POSITION]);
   }
@@ -142,7 +142,7 @@ export const getHeader = ({
 const GROUP_METHOD_POSITION: number = 1;
 export const getMethod = ({ testCaseText }: { testCaseText: string }): string => {
   const RE_REQUEST_METHOD: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const requestMethod: RegExpExecArray = RE_REQUEST_METHOD.exec(testCaseText);
+  const requestMethod: RegExpExecArray | null = RE_REQUEST_METHOD.exec(testCaseText);
   if (requestMethod) {
     return requestMethod[GROUP_METHOD_POSITION];
   }
@@ -154,11 +154,11 @@ const GROUP_POSITION_ROUTER_INSIDE: number = 1;
 
 export const getRouterParameters = ({ testCaseText }: { testCaseText: string }): string => {
   const regex1: RegExp = new RegExp(`\\.(get|post|put|delete)${REGEX_GROUP_STRING}`);
-  const match1: RegExpExecArray = regex1.exec(testCaseText);
+  const match1: RegExpExecArray | null = regex1.exec(testCaseText);
   if (match1) {
     const router: string = match1[GROUP_POSITION_ROUTER];
     const regex: RegExp = /([/\w/{}$]+)*/;
-    const match: RegExpExecArray = regex.exec(router);
+    const match: RegExpExecArray | null = regex.exec(router);
     if (match) {
       return match[GROUP_POSITION_ROUTER_INSIDE];
     }
@@ -171,7 +171,7 @@ const removeDocPrefix = (content: string): string => content.replace(/^\s*\[doc\
 const GROUP_POSITION_NAME_TEST: number = 2;
 export const getNameTest = ({ testCaseText }: { testCaseText: string }): string => {
   const regex: RegExp = /(it|test)\(['`"](.*?)['`"]/;
-  const match: RegExpExecArray = regex.exec(testCaseText);
+  const match: RegExpExecArray | null = regex.exec(testCaseText);
   if (match) {
     return removeDocPrefix(match[GROUP_POSITION_NAME_TEST]);
   }
@@ -188,7 +188,7 @@ const GROUP_TEXT_POSITION: number = 3;
 const GROUP_POSITION_ORDER: number = 2;
 export const getTitleSuite = ({ textFileTest }: { textFileTest: string }): getTitleSuiteType => {
   const regex: RegExp = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}:?)?\s{0,12}(.*)['"`]/;
-  const match: RegExpExecArray = regex.exec(textFileTest);
+  const match: RegExpExecArray | null = regex.exec(textFileTest);
   if (match) {
     return { text: match[GROUP_TEXT_POSITION], order: Number(match[GROUP_POSITION_ORDER]) || BIG_SORT_NUMBER };
   }
@@ -198,7 +198,7 @@ export const getTitleSuite = ({ textFileTest }: { textFileTest: string }): getTi
 const GROUP_POSITION_DESCRIPTION: number = 2;
 export const getDescriptionTest = ({ testCaseText }: { testCaseText: string }): string => {
   const regex: RegExp = /(it|test).*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
-  const match: RegExpExecArray = regex.exec(testCaseText);
+  const match: RegExpExecArray | null = regex.exec(testCaseText);
   if (match) {
     return match[GROUP_POSITION_DESCRIPTION].trim();
   }
@@ -208,7 +208,7 @@ export const getDescriptionTest = ({ testCaseText }: { testCaseText: string }): 
 const GROUP_POSITION_DESCRIBE_SUITE: number = 1;
 export const getDescriptionSuite = ({ textFileTest }: { textFileTest: string }): string => {
   const regex: RegExp = /describe.*\n\s*\/\*\s*doc\s*[:-]\s*([^\\*]*)/;
-  const match: RegExpExecArray = regex.exec(textFileTest);
+  const match: RegExpExecArray | null = regex.exec(textFileTest);
   if (match) {
     return match[GROUP_POSITION_DESCRIBE_SUITE].trim();
   }
@@ -227,7 +227,7 @@ export const getTypeVariable = (variable: string, fullCode: string): getVariable
   const regexBoolean: RegExp = new RegExp(`\\s${variable}\\s*\\=\\s*(false|true)`);
 
   if (regexString.exec(fullCode)) {
-    return { type: 'string', content: regexString.exec(fullCode)?.[GROUP_POSITION_VALUE_VARIABLE]?.toString() };
+    return { type: 'string', content: regexString.exec(fullCode)?.[GROUP_POSITION_VALUE_VARIABLE]?.toString() || '' };
   }
 
   if (regexNumber.exec(fullCode)) {
@@ -247,8 +247,8 @@ export const getTypeVariable = (variable: string, fullCode: string): getVariable
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
 const GROUP_POSITION_TEXT_INSIDE_URL: number = 1;
 export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): IParameters[] => {
-  const matchGetFullUrl: RegExpExecArray = RE_GET_FULL_URL.exec(testCaseText);
-  const fullUrlRequest: string = matchGetFullUrl?.[GROUP_POSITION_TEXT_INSIDE_URL];
+  const matchGetFullUrl: RegExpExecArray | null = RE_GET_FULL_URL.exec(testCaseText);
+  const fullUrlRequest: string | undefined = matchGetFullUrl?.[GROUP_POSITION_TEXT_INSIDE_URL];
   const queryParameters: IParameters[] = [];
 
   if (fullUrlRequest) {
@@ -299,7 +299,7 @@ export const getParameters = ({
       break;
     }
 
-    const regexRouter: RegExpExecArray = regexParameters.exec(testCaseText);
+    const regexRouter: RegExpExecArray | null = regexParameters.exec(testCaseText);
 
     if (regexRouter) {
       const nameTag: string = regexRouter[GROUP_POSITION_NAME_TAG];

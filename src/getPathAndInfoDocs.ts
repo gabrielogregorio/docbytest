@@ -36,11 +36,14 @@ export const getPathAndInfoDocs = async ({ routeDocs }: { routeDocs: string }): 
         return returnTest;
       }
 
-      return null;
+      return {
+        folderDocs: '',
+        fileDocs: [],
+      };
     },
   );
 
   const docs: getPathAndInfoDocsType[] = await Promise.all(promises);
 
-  return docs.filter((item: getPathAndInfoDocsType) => item !== null);
+  return docs.filter((item: getPathAndInfoDocsType) => item.folderDocs !== '');
 };

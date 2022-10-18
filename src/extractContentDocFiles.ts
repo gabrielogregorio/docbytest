@@ -6,7 +6,7 @@ import { mountMdDocs } from './helpers/mountMdDocs';
 
 type extractContentDocFilesType = {
   fileDocs: string[];
-  statusCode: statusCodeConfigType;
+  statusCode: statusCodeConfigType | null;
 };
 
 const TITLE_POSITION: number = 3;
@@ -17,14 +17,17 @@ const RE_SORT_NUMBER: RegExp = /^#\s{0,10}(\[(\d{1,10})\]\s{0,5}[-\\:\s{0,5}]\s{
 export const extractContentDocFiles = ({ fileDocs, statusCode }: extractContentDocFilesType): dataDocsType[] =>
   fileDocs.map((docFile: string) => {
     const docContent: string = fsNode.readFileSync(docFile, { encoding: 'utf-8' });
-    const titleAndOrder: RegExpExecArray = RE_TITLE_AND_ORDER.exec(docContent);
+    const titleAndOrder: RegExpExecArray | null = RE_TITLE_AND_ORDER.exec(docContent);
 
     const docContentWithoutSortNumber: string = docContent.replace(RE_SORT_NUMBER, '# ');
     const markdownDocs: string = mountMdDocs(docContentWithoutSortNumber, statusCode);
 
+    if (titleAndOrder === null) {
+      return { title: '', order: 0, text: markdownDocs };
+    }
     return {
-      title: titleAndOrder[TITLE_POSITION],
-      order: Number(titleAndOrder[ORDER_POSITION]) || BIG_SORT_NUMBER,
+      title: titleAndOrder?.[TITLE_POSITION],
+      order: Number(titleAndOrder?.[ORDER_POSITION]) || BIG_SORT_NUMBER,
       text: markdownDocs,
     };
   });

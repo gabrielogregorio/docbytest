@@ -1,1 +1,1 @@
-export const app = (): void => null;
+export const app = (): void => {};

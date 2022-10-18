@@ -61,7 +61,9 @@ const handleEndLevel = (
 
 const DECREMENT_LAST_POSITION: number = 1;
 const FIRST_LEVEL: number = 0;
+const DEFAULT_POSITION: number = 0;
 const FIRST_POSITION_REGEX: number = 1;
+
 export const dynamicAssembly = (fullText: string, value: contentRequestType): string => {
   const partsOfObject: string[] = fullText.split('.');
   let stringObjectMounted: string = '';
@@ -74,8 +76,8 @@ export const dynamicAssembly = (fullText: string, value: contentRequestType): st
     let getPosition: number = 0;
     let arr: string[] = [];
     if (hasArrayLevel) {
-      const levelArray: RegExpExecArray = RE_GET_LEVEL_ARRAY.exec(partObject);
-      getPosition = Number(levelArray[FIRST_POSITION_REGEX]);
+      const levelArray: RegExpExecArray | null = RE_GET_LEVEL_ARRAY.exec(partObject);
+      getPosition = levelArray ? Number(levelArray[FIRST_POSITION_REGEX]) : DEFAULT_POSITION;
       arr = new Array(getPosition).fill(null);
     }
 

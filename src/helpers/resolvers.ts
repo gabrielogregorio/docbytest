@@ -10,10 +10,14 @@ export const resolverJsonFiles = (
   fullCode: string,
   importDefaultName: string,
   pathTests: string,
-): { error: string; content: object } => {
+): { error: string; content: object | null } => {
   const reImport: RegExp = new RegExp(`^\\s*import\\s*${importDefaultName}\\s*from\\s*['"]([\\w@\\.\\/]*)['"]`, 'm');
 
-  const result: RegExpExecArray = reImport.exec(fullCode);
+  const result: RegExpExecArray | null = reImport.exec(fullCode);
+
+  if (result === null) {
+    return { error: 'import not exists', content: null };
+  }
 
   const folderTest: string = result[GROUP_POSITION_IMPORT_PATH];
 
@@ -23,7 +27,11 @@ export const resolverJsonFiles = (
   if (isAbsolutePath) {
     const tsconfigWithJson: configTsconfigType = loadTsConfig();
     const RE_GET_FIRST_RELATIVE_PATH: RegExp = /([@]?[\\/]?[\d\w_]{1,})/;
-    const aliasToSearch: RegExpExecArray = RE_GET_FIRST_RELATIVE_PATH.exec(folderTest);
+    const aliasToSearch: RegExpExecArray | null = RE_GET_FIRST_RELATIVE_PATH.exec(folderTest);
+
+    if (aliasToSearch === null) {
+      return { error: 'alias not exists', content: null };
+    }
     pathFile = resolvePathAlias(tsconfigWithJson, aliasToSearch?.[GROUP_POSITION_ALIAS_TS_CONFIG], folderTest);
   } else {
     pathFile = path.join(pathTests, folderTest);
