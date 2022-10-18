@@ -8,6 +8,10 @@ export const getStringToObjectUsableInCode = (variable: string, fullCode: string
   const regexItems: RegExp = new RegExp(`(const|let)\\s*(${variable})\\s+=\\s+([^;)]*)`);
   const matchItems: RegExpExecArray | null = regexItems.exec(fullCode);
 
+  if (matchItems === null) {
+    throw new Error('');
+  }
+
   return transformStringToUsableObject(`${matchItems[GROUP_VALUE_POSITION]}`);
 };
 
@@ -26,7 +30,7 @@ export const findValueInCode = (value: string, fullCode: string, pathFull: strin
   } catch (error2: unknown) {}
 
   try {
-    return resolverJsonFiles(fullCode, value, pathFull).content;
+    return resolverJsonFiles(fullCode, value, pathFull).content || '';
   } catch (error: unknown) {}
 
   return '';

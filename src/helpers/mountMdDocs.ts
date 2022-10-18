@@ -3,12 +3,12 @@ import { mountMdTableStatusCode } from './mountMdTableStatusCode';
 
 const reIsSpecialLine: RegExp = /\[[\w*\s]*\]\((errors_status_table)\)/;
 const GROUP_POSITION_SPECIAL_STATUS: number = 1;
-export const mountMdDocs = (mdDoc: string, statusCodeFile: statusCodeConfigType): string => {
+export const mountMdDocs = (mdDoc: string, statusCodeFile: statusCodeConfigType | null): string => {
   let docMounted: string = '';
   const linesMdDoc: string[] = mdDoc.split('\n');
 
   linesMdDoc.forEach((lineMdDoc: string) => {
-    const matchIsSpecialLine: RegExpExecArray = reIsSpecialLine.exec(lineMdDoc);
+    const matchIsSpecialLine: RegExpExecArray | null = reIsSpecialLine.exec(lineMdDoc);
 
     if (matchIsSpecialLine) {
       const specialLineType: string = matchIsSpecialLine[GROUP_POSITION_SPECIAL_STATUS];

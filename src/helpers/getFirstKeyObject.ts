@@ -5,6 +5,7 @@ export const getFirstKeyObject = (object: object): object => {
 
   try {
     const firstItem: string = keys[POSITION_FIRST_KEY];
+    // @ts-ignore
     return object[firstItem] || object;
   } catch (error: unknown) {
     return object;

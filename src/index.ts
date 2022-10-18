@@ -9,7 +9,7 @@ export type makeDocsReturnType = {
   docs: getDocsType[];
 };
 
-const makeDocs = async (statusCode: statusCodeConfigType = null): Promise<makeDocsReturnType> => {
+const makeDocs = async (statusCode: statusCodeConfigType | null = null): Promise<makeDocsReturnType> => {
   const testDocumentation: makeFullSchemaTestDocsType[] = handleExtractDocsFromTests();
   const markdownDocumentation: getDocsType[] = await handleMarkdownFiles(statusCode);
   return { suites: testDocumentation, docs: markdownDocumentation };

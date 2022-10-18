@@ -39,14 +39,14 @@ const extractTestCasesText = ({ textFileTest }: { textFileTest: string }): strin
   const listAttemptsGetTestCases: number[] = Array.from(Array(completeTextFileText.split('\n').length).keys());
 
   const allTestCases: string[] = listAttemptsGetTestCases.map(() => {
-    const textNextTestCase: RegExpExecArray = testesTwoSpaceLines.exec(completeTextFileText);
+    const textNextTestCase: RegExpExecArray | null = testesTwoSpaceLines.exec(completeTextFileText);
     if (textNextTestCase) {
       completeTextFileText = removeTestCaseExtracted({ completeTextFileText, textNextTestCase });
       return textNextTestCase[COMPLETE_TEXT_REGEX];
     }
 
     completeTextFileText = removeBreakLines({ completeTextFileText });
-    return null;
+    return '';
   });
 
   return allTestCases.filter((item: string) => !!item === true);
