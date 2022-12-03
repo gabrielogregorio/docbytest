@@ -6,14 +6,19 @@ import { mergeRecursive } from '../mergeRecursive';
 
 const START_POSITION: number = 0;
 
-const mountDynamicObject = (
-  expectedResponse: string,
-  command: string,
-  completeObject: object,
-  oneTestText: string,
-  pathFull: string,
-  // eslint-disable-next-line max-params
-): object => {
+const mountDynamicObject = ({
+  expectedResponse,
+  command,
+  completeObject,
+  oneTestText,
+  pathFull,
+}: {
+  expectedResponse: string;
+  command: string;
+  completeObject: object;
+  oneTestText: string;
+  pathFull: string;
+}): object => {
   let valueExtracted: contentRequestType = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[START_POSITION] !== '"') {
     valueExtracted = `"${valueExtracted}"`;
@@ -43,7 +48,13 @@ const tryIncrementOrReturnSelf = ({
   directoryAllTests,
 }: tryIncrementOrReturnSelfType): object => {
   try {
-    return mountDynamicObject(expectedResponse, command, completeObject, textFileTest, directoryAllTests);
+    return mountDynamicObject({
+      expectedResponse,
+      command,
+      completeObject,
+      oneTestText: textFileTest,
+      pathFull: directoryAllTests,
+    });
   } catch (error: unknown) {
     return completeObject;
   }

@@ -1,6 +1,6 @@
 import { statusCodeConfigType } from '../interfaces/inputLib';
 
-export const mountMdTableStatusCode = (statusCodeFile: statusCodeConfigType | null): string => {
+export const mountMdTableStatusCode = (statusCodeFile: { [key: string]: statusCodeConfigType } | null): string => {
   let mountDocsLocal: string = '| statusCode | description |\n|---------|----------|\n';
 
   if (statusCodeFile === null) {
@@ -10,7 +10,6 @@ export const mountMdTableStatusCode = (statusCodeFile: statusCodeConfigType | nu
   const statusCodeItems: string[] = Object.keys(statusCodeFile);
 
   statusCodeItems.forEach((key: string) => {
-    // @ts-ignore
     mountDocsLocal += `| ${statusCodeFile?.[key].code} | ${statusCodeFile[key].description} |\n`;
   });
 

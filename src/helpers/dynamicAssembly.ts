@@ -21,14 +21,19 @@ const handleStartLevel = (hasArrayLevel: boolean, arr: string[], getPosition: nu
   return `{ "${partObject}": ${MOCK_LEVEL} }`;
 };
 
-const handleMediumLevel = (
-  hasArrayLevel: boolean,
-  arr: string[],
-  getPosition: number,
-  partObject: string,
-  stringObjectMounted: string,
-  // eslint-disable-next-line max-params
-): string => {
+const handleMediumLevel = ({
+  hasArrayLevel,
+  arr,
+  getPosition,
+  partObject,
+  stringObjectMounted,
+}: {
+  hasArrayLevel: boolean;
+  arr: string[];
+  getPosition: number;
+  partObject: string;
+  stringObjectMounted: string;
+}): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, MOCK_LEVEL);
     return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${removeArrayLevel(partObject)}": ${endArray} }`);
@@ -36,15 +41,21 @@ const handleMediumLevel = (
   return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${partObject}": ${MOCK_LEVEL} }`);
 };
 
-const handleEndLevel = (
-  hasArrayLevel: boolean,
-  arr: string[],
-  getPosition: number,
-  value: contentRequestType,
-  stringObjectMounted: string,
-  partObject: string,
-  // eslint-disable-next-line max-params
-): string => {
+const handleEndLevel = ({
+  hasArrayLevel,
+  arr,
+  getPosition,
+  value,
+  stringObjectMounted,
+  partObject,
+}: {
+  hasArrayLevel: boolean;
+  arr: string[];
+  getPosition: number;
+  value: contentRequestType;
+  stringObjectMounted: string;
+  partObject: string;
+}): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, value);
 
@@ -86,9 +97,9 @@ export const dynamicAssembly = (fullText: string, value: contentRequestType): st
     if (startLevel) {
       stringObjectMounted = handleStartLevel(hasArrayLevel, arr, getPosition, partObject);
     } else if (endLevel) {
-      stringObjectMounted = handleEndLevel(hasArrayLevel, arr, getPosition, value, stringObjectMounted, partObject);
+      stringObjectMounted = handleEndLevel({ hasArrayLevel, arr, getPosition, value, stringObjectMounted, partObject });
     } else {
-      stringObjectMounted = handleMediumLevel(hasArrayLevel, arr, getPosition, partObject, stringObjectMounted);
+      stringObjectMounted = handleMediumLevel({ hasArrayLevel, arr, getPosition, partObject, stringObjectMounted });
     }
   });
 
