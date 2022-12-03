@@ -9,6 +9,7 @@
     "strictNullChecks": true,
     "noErrorTruncation": true,
     "outDir": "./dist",
+    "declaration": true,
     "rootDir": "./src",
     "removeComments": true,
     "typeRoots": ["./node_modules/@types", "./src/@types"],
