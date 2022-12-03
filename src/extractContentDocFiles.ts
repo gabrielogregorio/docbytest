@@ -6,7 +6,7 @@ import { mountMdDocs } from './helpers/mountMdDocs';
 
 type extractContentDocFilesType = {
   fileDocs: string[];
-  statusCode: { [key: string]: statusCodeConfigType } | null;
+  statusCode: statusCodeConfigType | null;
 };
 
 const TITLE_POSITION: number = 3;

@@ -4,13 +4,13 @@ import { getTypeVariable } from './getTypeVariable';
 
 const INCREMENT_PREVENT_LOOP: number = 1;
 const GROUP_POSITION_NAME_TAG: number = 1;
-export const getParameters = ({
-  testCaseText,
-  textFileTest,
-}: {
+
+type getParametersType = {
   testCaseText: string;
   textFileTest: string;
-}): IParameters[] => {
+};
+
+export const getParameters = ({ testCaseText, textFileTest }: getParametersType): IParameters[] => {
   const parameters: IParameters[] = [];
   const regexParameters: RegExp = /\/\$\{(\w*)\}/gi;
 

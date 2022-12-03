@@ -7,6 +7,7 @@ import { getQueryParameters } from '../helpers/handlers/getQueryParameters';
 import { getResponseDynamically } from '../helpers/handlers/getResponseDynamically';
 import { getResponseSimple } from '../helpers/handlers/getResponseSimple';
 import { getStatusCode } from '../helpers/handlers/getStatusCode';
+import { contentRequestType } from '../interfaces/extractData';
 
 const usernameTest: string = 'Lucas Santos';
 
@@ -328,7 +329,7 @@ describe('Suite', () => {
 
   it('should get a router content', () => {
     const MOCK_RESPONSE: number = 2;
-    const response: object = getResponseDynamically({
+    const response: contentRequestType = getResponseDynamically({
       testCaseText: `
   expect(response.body[0].follow).toEqual(1);
   expect(response.body[0].name).toEqual("Name");

@@ -1,6 +1,11 @@
-export const mergeRecursive = (firstObjectBase: object, obj2Base: object): object => {
-  const firstObject: object = firstObjectBase;
-  const secondObject: object = obj2Base;
+import { contentRequestType } from '../interfaces/extractData';
+
+export const mergeRecursive = (
+  firstObjectBase: contentRequestType,
+  obj2Base: contentRequestType,
+): contentRequestType => {
+  const firstObject: contentRequestType = firstObjectBase;
+  const secondObject: contentRequestType = obj2Base;
   const itemList: string[] = Object.keys(secondObject);
 
   itemList.forEach((keySecondObject: string) => {

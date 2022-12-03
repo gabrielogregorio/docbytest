@@ -13,7 +13,16 @@ export interface IParameters {
   type: string;
 }
 
-export type contentRequestType = string | number | boolean | object;
+export type contentRequestType =
+  | string
+  | string[]
+  | number
+  | number[]
+  | boolean
+  | boolean[]
+  | contentRequestType[]
+  | { [key: string]: contentRequestType }
+  | { [key: string]: contentRequestType }[];
 
 export interface ITestCase {
   method: string;

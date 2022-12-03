@@ -9,7 +9,7 @@ const IS_BOOLEAN: RegExp = /(true|false)/;
 
 const convertToBoolean = (value: string): boolean => value === 'true';
 
-const normalizeTextJson = (value: string): object => {
+const normalizeTextJson = (value: string): contentRequestType => {
   let jsonObject: string = value.replace(RE_ADD_QUOTES_AROUND_AN_JSON_BRACES, '"$1": ');
   jsonObject = jsonObject.replace(RE_REMOVE_LAST_COMMA_IN_OBJECT, '}');
   jsonObject = jsonObject.replace(RE_REMOVE_LAST_COMMA_IN_ARRAYS, ']]');

@@ -1,6 +1,8 @@
+import { contentRequestType } from '../interfaces/extractData';
+
 const POSITION_FIRST_KEY: number = 0;
 
-export const getFirstKeyObject = (object: object): object => {
+export const getFirstKeyObject = (object: contentRequestType): contentRequestType => {
   const keys: string[] = Object.keys(object);
 
   try {

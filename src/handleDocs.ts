@@ -10,9 +10,7 @@ import { getPathAndInfoDocs, getPathAndInfoDocsType } from './getPathAndInfoDocs
 const GROUP_TITLE: number = 3;
 const GROUP_ORDER: number = 2;
 
-export const handleMarkdownFiles = async (
-  statusCode: { [key: string]: statusCodeConfigType } | null,
-): Promise<getDocsType[]> => {
+export const handleMarkdownFiles = async (statusCode: statusCodeConfigType | null): Promise<getDocsType[]> => {
   const { docFile: routeDocs }: configFileType = loadConfigFile();
   const pathAndInfoDocs: getPathAndInfoDocsType[] = await getPathAndInfoDocs({ routeDocs });
 
