@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import statusCode from '@/example/statusCode';
 import { BIG_SORT_NUMBER } from '../constants/variables';
 import generateDocs, { makeDocsReturnType } from '../index';
 
 const Authorization: string = 'Bearer exampleJwt';
 const userWithValidId: string = '/user/${userIdValid2}';
+const MOCK_RESPONSE: number = 2;
 
 describe('Complete test', () => {
   it('any test', async () => {
@@ -306,7 +306,7 @@ describe('Complete test', () => {
                           {
                             _id: '981C513A511',
                           },
-                          2,
+                          MOCK_RESPONSE,
                         ],
 
                         name: 'lilian',

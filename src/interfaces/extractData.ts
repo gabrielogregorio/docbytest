@@ -1,4 +1,4 @@
-export enum parametersInEnum {
+export enum ParametersInEnum {
   query = 'query',
   param = 'param',
 }
@@ -6,7 +6,7 @@ export enum parametersInEnum {
 export type parametersExampleType = string | number | boolean;
 
 export interface IParameters {
-  in: parametersInEnum;
+  in: ParametersInEnum;
   name: string;
   example: parametersExampleType;
   variable: string;
