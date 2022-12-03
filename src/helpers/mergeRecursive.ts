@@ -1,4 +1,4 @@
-import { contentRequestType } from '../interfaces/extractData';
+import { contentRequestType } from '@/interfaces/extractData';
 
 export const mergeRecursive = (
   firstObjectBase: contentRequestType,

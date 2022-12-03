@@ -1,4 +1,4 @@
-import { parametersExampleType } from '../../interfaces/extractData';
+import { parametersExampleType } from '@/interfaces/extractData';
 
 export type getVariable = {
   type: 'number' | 'boolean' | 'string' | 'unknown';

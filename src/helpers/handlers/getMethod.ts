@@ -1,4 +1,4 @@
-import { REGEX_GROUP_STRING } from '../../constants/variables';
+import { REGEX_GROUP_STRING } from '@/constants/variables';
 
 const GROUP_METHOD_POSITION: number = 1;
 

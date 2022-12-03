@@ -1,8 +1,8 @@
-import { LIMIT_PREVENT_INFINITE_LOOPS } from '../../constants/variables';
-import { contentRequestType } from '../../interfaces/extractData';
-import { dynamicAssembly } from '../dynamicAssembly';
-import { findValueInCode } from '../findValueInCode';
-import { mergeRecursive } from '../mergeRecursive';
+import { dynamicAssembly } from '@/helpers/dynamicAssembly';
+import { findValueInCode } from '@/helpers/findValueInCode';
+import { mergeRecursive } from '@/helpers/mergeRecursive';
+import { contentRequestType } from '@/interfaces/extractData';
+import { LIMIT_PREVENT_INFINITE_LOOPS } from '@/constants/variables';
 
 const START_POSITION: number = 0;
 

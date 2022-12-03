@@ -1,8 +1,8 @@
 import fsNode from 'fs';
-import { statusCodeConfigType } from './interfaces/inputLib';
-import { dataDocsType } from './interfaces/docs';
+import { mountMdDocs } from '@/helpers/mountMdDocs';
+import { statusCodeConfigType } from '@/interfaces/inputLib';
+import { dataDocsType } from '@/interfaces/docs';
 import { BIG_SORT_NUMBER } from './constants/variables';
-import { mountMdDocs } from './helpers/mountMdDocs';
 
 type extractContentDocFilesType = {
   fileDocs: string[];

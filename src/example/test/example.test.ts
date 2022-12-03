@@ -1,6 +1,6 @@
 import objectMockJsonExample from '@/mocksExample/folder/example.json';
 import mockTitle from 'mocksExample/folder/example2.json';
-import mockJsonExample from '../../mocksExample/index.json';
+import mockJsonExample from '@/mocksExample/index.json';
 
 const requestExample1: any = {};
 

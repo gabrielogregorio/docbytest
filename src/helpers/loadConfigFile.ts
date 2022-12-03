@@ -1,5 +1,5 @@
 import fsNode from 'fs';
-import { configFileType } from '../interfaces/configFile';
+import { configFileType } from '@/interfaces/configFile';
 
 export const CONFIG_FILE_NAME: string = './docbytest.config.json';
 

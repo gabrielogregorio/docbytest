@@ -1,10 +1,10 @@
 import pathNode from 'path';
 import fsNode from 'fs';
+import { loadConfigFile } from '@/helpers/loadConfigFile';
+import { sortOrder } from '@/helpers/sortOrder';
+import { configFileType } from '@/interfaces/configFile';
 import { generateCompleteSchemaTestDocs, makeFullSchemaTestDocsType } from './generateCompleteSchemaTestDocs';
-import { configFileType } from './interfaces/configFile';
-import { loadConfigFile } from './helpers/loadConfigFile';
 import { extractTestCasesFromFile, extractTestCasesFromFileType } from './extractTestCasesFromFile';
-import { sortOrder } from './helpers/sortOrder';
 
 const configDocbytest: configFileType = loadConfigFile();
 

@@ -1,8 +1,8 @@
 import fsNode from 'fs';
-import { configTsconfigType } from '../interfaces/configFile';
-import { loadTsConfig } from '../helpers/tsconfigReader';
-import { resolverJsonFiles } from '../helpers/resolvers';
-import { resolvePathAlias } from '../helpers/resolvePathAlias';
+import { loadTsConfig } from '@/helpers/tsconfigReader';
+import { resolverJsonFiles } from '@/helpers/resolvers';
+import { resolvePathAlias } from '@/helpers/resolvePathAlias';
+import { configTsconfigType } from '@/interfaces/configFile';
 
 const exampleCode: string = `
 import jsonIten from '../example/fileStatus.json';

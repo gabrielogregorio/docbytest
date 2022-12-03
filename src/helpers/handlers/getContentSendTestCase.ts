@@ -1,5 +1,5 @@
-import { contentRequestType } from '../../interfaces/extractData';
-import { findValueInCode } from '../findValueInCode';
+import { findValueInCode } from '@/helpers/findValueInCode';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const GROUP_VALUE_POSITION_SEND_CONTENT: number = 1;
 

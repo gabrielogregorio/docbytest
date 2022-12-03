@@ -1,6 +1,6 @@
-import { contentRequestType } from '../interfaces/extractData';
-import { resolverJsonFiles } from './resolvers';
-import { transformStringToUsableObject } from './transformStringToUsableObject';
+import { contentRequestType } from '@/interfaces/extractData';
+import { resolverJsonFiles } from '@/helpers/resolvers';
+import { transformStringToUsableObject } from '@/helpers/transformStringToUsableObject';
 
 const GROUP_VALUE_POSITION: number = 3;
 

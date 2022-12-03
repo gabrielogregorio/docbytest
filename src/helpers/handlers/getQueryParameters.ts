@@ -1,5 +1,5 @@
-import { IParameters, ParametersInEnum } from '../../interfaces/extractData';
-import { getTypeVariable } from './getTypeVariable';
+import { IParameters, ParametersInEnum } from '@/interfaces/extractData';
+import { getTypeVariable } from '@/helpers/handlers/getTypeVariable';
 
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
 const GROUP_POSITION_TEXT_INSIDE_URL: number = 1;

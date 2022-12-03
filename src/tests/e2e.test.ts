@@ -1,5 +1,5 @@
 import statusCode from '@/example/statusCode';
-import { BIG_SORT_NUMBER } from '../constants/variables';
+import { BIG_SORT_NUMBER } from '@/constants/variables';
 import generateDocs, { makeDocsReturnType } from '../index';
 
 const Authorization: string = 'Bearer exampleJwt';

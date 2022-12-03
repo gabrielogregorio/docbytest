@@ -1,7 +1,7 @@
 import fsNode from 'fs';
 import path from 'path';
-import { configTsconfigType } from '../interfaces/configFile';
-import { contentRequestType } from '../interfaces/extractData';
+import { configTsconfigType } from '@/interfaces/configFile';
+import { contentRequestType } from '@/interfaces/extractData';
 import { resolvePathAlias } from './resolvePathAlias';
 import { loadTsConfig } from './tsconfigReader';
 

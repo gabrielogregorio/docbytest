@@ -1,7 +1,7 @@
-import { mergeRecursive } from '../helpers/mergeRecursive';
-import { dynamicAssembly } from '../helpers/dynamicAssembly';
-import { getFirstKeyObject } from '../helpers/getFirstKeyObject';
-import { contentRequestType } from '../interfaces/extractData';
+import { mergeRecursive } from '@/helpers/mergeRecursive';
+import { dynamicAssembly } from '@/helpers/dynamicAssembly';
+import { getFirstKeyObject } from '@/helpers/getFirstKeyObject';
+import { contentRequestType } from '@/interfaces/extractData';
 
 describe('Dynamic assembly', () => {
   it('should mount dynamic payload', () => {

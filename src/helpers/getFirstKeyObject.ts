@@ -1,4 +1,4 @@
-import { contentRequestType } from '../interfaces/extractData';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const POSITION_FIRST_KEY: number = 0;
 

@@ -1,4 +1,4 @@
-import { REGEX_GROUP_STRING } from '../../constants/variables';
+import { REGEX_GROUP_STRING } from '@/constants/variables';
 
 const GROUP_POSITION_ROUTER: number = 2;
 const GROUP_POSITION_ROUTER_INSIDE: number = 1;

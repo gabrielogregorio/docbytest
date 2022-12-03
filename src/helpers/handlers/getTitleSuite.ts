@@ -1,4 +1,4 @@
-import { BIG_SORT_NUMBER } from '../../constants/variables';
+import { BIG_SORT_NUMBER } from '@/constants/variables';
 
 const GROUP_TEXT_POSITION: number = 3;
 const GROUP_POSITION_ORDER: number = 2;

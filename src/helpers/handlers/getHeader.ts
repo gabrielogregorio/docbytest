@@ -1,5 +1,5 @@
-import { contentRequestType } from '../../interfaces/extractData';
-import { findValueInCode } from '../findValueInCode';
+import { findValueInCode } from '@/helpers/findValueInCode';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const GROUP_POSITION_HEADER: number = 1;
 

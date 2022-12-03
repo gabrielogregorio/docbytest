@@ -1,7 +1,7 @@
-import { statusCodeConfigType } from './interfaces/inputLib';
+import { statusCodeConfigType } from '@/interfaces/inputLib';
+import { getDocsType } from '@/interfaces/docs';
 import { makeFullSchemaTestDocsType } from './generateCompleteSchemaTestDocs';
 import { handleExtractDocsFromTests } from './handleExtractDocsFromTests';
-import { getDocsType } from './interfaces/docs';
 import { handleMarkdownFiles } from './handleDocs';
 
 export type makeDocsReturnType = {

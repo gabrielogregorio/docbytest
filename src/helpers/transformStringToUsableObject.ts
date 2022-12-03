@@ -1,4 +1,4 @@
-import { contentRequestType } from '../interfaces/extractData';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const RE_REMOVE_LAST_COMMA_IN_ARRAYS: RegExp = /]\s*,[\s{0,4}\n]{0,20}\]/g;
 const RE_REMOVE_LAST_COMMA_IN_OBJECT: RegExp = /,[\s{0,4}\n]{0,20}\}/g;
