@@ -16,7 +16,7 @@
     "project": "./tsconfig.json",
     "tsconfigRootDir": "./"
   },
-  "plugins": ["@typescript-eslint", "import", "sonarjs"],
+  "plugins": ["@typescript-eslint", "spellcheck", "import", "sonarjs"],
   "rules": {
     "import/extensions": "off",
     "no-underscore-dangle": "off",
@@ -28,14 +28,65 @@
     "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-invalid-this": "error",
+    "max-lines": ["error", { "max": 100, "skipBlankLines": true, "skipComments": true }],
+    "max-depth": ["error", 3],
+    "max-lines-per-function": ["error", { "max": 70, "skipBlankLines": true, "skipComments": true }],
+    "max-params": ["error", { "max": 4 }],
+    "no-alert": "error",
+    "no-console": "error",
+    "no-delete-var": "error",
+    "no-const-assign": "error",
+    "no-unreachable": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-implicit-any-catch": "error",
     "id-length": [2, { "min": 3, "properties": "never" }],
     "@typescript-eslint/no-duplicate-enum-values": "error",
     "@typescript-eslint/no-dynamic-delete": "error",
-    "@typescript-eslint/no-magic-numbers": "error",
+    "@typescript-eslint/no-magic-numbers": ["error", { "ignore": [-1, 0, 1] }],
     "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^I[A-Za-z]",
+          "match": true
+        }
+      },
+      {
+        "selector": "enum",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "Enum$",
+          "match": true
+        }
+      }
+    ],
+    "spellcheck/spell-checker": [
+      1,
+      {
+        "comments": false,
+        "strings": false,
+        "templates": false,
+        "identifiers": true,
+        "lang": "en_US",
+        "skipWords": [
+          "href",
+          "enum",
+          "testid",
+          "msg",
+          "nome",
+          "lstatSync",
+          "readdir",
+          "lstat",
+          "docbytest",
+          "tsconfig"
+        ],
+        "minLength": 3
+      }
+    ],
     "@typescript-eslint/typedef": [
       "error",
       {
@@ -44,5 +95,14 @@
         "variableDeclarationIgnoreFunction": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*\\.test.ts", "*\\.spec.ts"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off"
+      }
+    }
+  ]
 }

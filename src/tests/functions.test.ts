@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import {
   getStatusCode,
   getResponseSimple,
@@ -49,6 +48,8 @@ describe('Suite', () => {
       Authorization: '3',
     });
 
+    const mockResponse: number = 123;
+
     expect(
       getHeader({
         testCaseText: `
@@ -57,7 +58,7 @@ describe('Suite', () => {
           .set({
             Authorization: '3',
             test: [
-              {item: 123}
+              {item: ${mockResponse}}
             ]
           });
           `,
@@ -66,7 +67,7 @@ describe('Suite', () => {
       }),
     ).toEqual({
       Authorization: '3',
-      test: [{ item: 123 }],
+      test: [{ item: mockResponse }],
     });
 
     expect(
@@ -80,14 +81,14 @@ describe('Suite', () => {
           const dataToken = {
             Authorization: '3',
             test: [
-              {item: 123}
+              {item: ${mockResponse}}
             ]
           };`,
         directoryAllTests: '../',
       }),
     ).toEqual({
       Authorization: '3',
-      test: [{ item: 123 }],
+      test: [{ item: mockResponse }],
     });
   });
 
@@ -149,6 +150,7 @@ describe('Suite', () => {
   });
 
   it('should get send content', () => {
+    const MOCK_RESPONSE: number = 123;
     expect(
       getContentSendTestCase({
         testCaseText: `const response = await request_doc.post(\`/post/comment/11111111\`)
@@ -156,14 +158,14 @@ describe('Suite', () => {
           {
             text: 'This is a comment',
             test: [
-              123
+              ${MOCK_RESPONSE}
             ]
           }
           );\n\n`,
         textFileTest: '',
         directoryAllTests: '../',
       }),
-    ).toEqual({ text: 'This is a comment', test: [123] });
+    ).toEqual({ text: 'This is a comment', test: [MOCK_RESPONSE] });
 
     expect(
       getContentSendTestCase({
@@ -172,11 +174,11 @@ describe('Suite', () => {
   .set(token)
   .send({
     text: 'this response',
-    replie: 190 });`,
+    replies: 190 });`,
         textFileTest: '',
         directoryAllTests: '../',
       }),
-    ).toEqual({ text: 'this response', replie: 190 });
+    ).toEqual({ text: 'this response', replies: 190 });
 
     expect(
       getContentSendTestCase({
@@ -327,13 +329,14 @@ describe('Suite', () => {
   });
 
   it('should get a router content', () => {
+    const MOCK_RESPONSE: number = 2;
     const response: object = getResponseDynamically({
       testCaseText: `
   expect(response.body[0].follow).toEqual(1);
   expect(response.body[0].name).toEqual("Name");
   expect(response.body[0].boolean).toEqual(true);
   expect(response.body[0].object).toEqual({ name: 'abc'});
-  expect(response.body[0].following).toEqual([1, 2]);
+  expect(response.body[0].following).toEqual([1, ${MOCK_RESPONSE}]);
 
   `,
       textFileTest: '',
@@ -341,7 +344,7 @@ describe('Suite', () => {
       directoryAllTests: '../',
     });
     expect(response).toEqual({
-      body: [{ boolean: true, object: { name: 'abc' }, follow: 1, name: 'Name', following: [1, 2] }],
+      body: [{ boolean: true, object: { name: 'abc' }, follow: 1, name: 'Name', following: [1, MOCK_RESPONSE] }],
     });
   });
 });

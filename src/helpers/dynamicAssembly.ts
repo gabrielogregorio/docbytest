@@ -27,6 +27,7 @@ const handleMediumLevel = (
   getPosition: number,
   partObject: string,
   stringObjectMounted: string,
+  // eslint-disable-next-line max-params
 ): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, MOCK_LEVEL);
@@ -42,6 +43,7 @@ const handleEndLevel = (
   value: contentRequestType,
   stringObjectMounted: string,
   partObject: string,
+  // eslint-disable-next-line max-params
 ): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, value);

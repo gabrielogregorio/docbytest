@@ -1,7 +1,9 @@
+/* eslint-disable max-depth */
+/* eslint-disable max-lines */
 import { dynamicAssembly } from './dynamicAssembly';
 import { mergeRecursive } from './mergeRecursive';
 import { BIG_SORT_NUMBER, LIMIT_PREVENT_INFINITE_LOOPS } from '../constants/variables';
-import { contentRequestType, IParameters, parametersExampleType, parametersInEnum } from '../interfaces/extractData';
+import { contentRequestType, IParameters, parametersExampleType, ParametersInEnum } from '../interfaces/extractData';
 import { findValueInCode } from './findValueInCode';
 
 const REGEX_GROUP_STRING: string = `\\(['"\`](.*?)['"\`]\\)`;
@@ -33,6 +35,7 @@ const mountDynamicObject = (
   completeObject: object,
   oneTestText: string,
   pathFull: string,
+  // eslint-disable-next-line max-params
 ): object => {
   let valueExtracted: contentRequestType = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[START_POSITION] !== '"') {
@@ -269,7 +272,7 @@ export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): 
       queryParameters.push({
         name: property,
         variable: isVariable ? valueWithinVariableStart : '',
-        in: parametersInEnum.query,
+        in: ParametersInEnum.query,
         type: getTypeVariable(valueWithinVariableStart, testCaseText).type,
         example: isVariable ? getTypeVariable(valueWithinVariableStart, testCaseText).content : value,
       });
@@ -307,7 +310,7 @@ export const getParameters = ({
       parameters.push({
         name: nameTag,
         variable: nameTag,
-        in: parametersInEnum.param,
+        in: ParametersInEnum.param,
         type: getTypeVariable(nameTag, textFileTest).type,
         example: getTypeVariable(nameTag, textFileTest).content,
       });
