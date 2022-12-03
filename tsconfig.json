@@ -21,7 +21,10 @@
     "baseUrl": ".",
     "paths": {
       "@/example/*": ["src/example/*"],
+      "@/constants/*": ["src/constants/*"],
       "@/mocksExample/*": ["src/mocksExample/*"],
+      "@/helpers/*": ["src/helpers/*"],
+      "@/interfaces/*": ["src/interfaces/*"],
       "mocksExample/*": ["src/mocksExample/*"]
     }
   },

@@ -1,4 +1,4 @@
-import { getTypeVariable, getVariable } from '../helpers/handlers/getTypeVariable';
+import { getTypeVariable, getVariable } from '@/helpers/handlers/getTypeVariable';
 
 const exampleCode: string = `
 const theString = 'Santos'

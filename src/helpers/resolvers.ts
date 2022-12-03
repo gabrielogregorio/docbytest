@@ -1,6 +1,7 @@
 import fsNode from 'fs';
 import path from 'path';
-import { configTsconfigType } from '../interfaces/configFile';
+import { configTsconfigType } from '@/interfaces/configFile';
+import { contentRequestType } from '@/interfaces/extractData';
 import { resolvePathAlias } from './resolvePathAlias';
 import { loadTsConfig } from './tsconfigReader';
 
@@ -10,7 +11,7 @@ export const resolverJsonFiles = (
   fullCode: string,
   importDefaultName: string,
   pathTests: string,
-): { error: string; content: object | null } => {
+): { error: string; content: contentRequestType | null } => {
   const reImport: RegExp = new RegExp(`^\\s*import\\s*${importDefaultName}\\s*from\\s*['"]([\\w@\\.\\/]*)['"]`, 'm');
 
   const result: RegExpExecArray | null = reImport.exec(fullCode);

@@ -1,4 +1,4 @@
-import { ITestCase } from './interfaces/extractData';
+import { ITestCase } from '@/interfaces/extractData';
 import { extractTestCasesFromFileType } from './extractTestCasesFromFile';
 
 export type allTestCasesType = {

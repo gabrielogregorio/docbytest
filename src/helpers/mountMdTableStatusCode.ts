@@ -1,6 +1,6 @@
-import { statusCodeConfigType } from '../interfaces/inputLib';
+import { statusCodeConfigType } from '@/interfaces/inputLib';
 
-export const mountMdTableStatusCode = (statusCodeFile: { [key: string]: statusCodeConfigType } | null): string => {
+export const mountMdTableStatusCode = (statusCodeFile: statusCodeConfigType | null): string => {
   let mountDocsLocal: string = '| statusCode | description |\n|---------|----------|\n';
 
   if (statusCodeFile === null) {

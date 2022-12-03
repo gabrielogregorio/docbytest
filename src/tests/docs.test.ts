@@ -1,4 +1,4 @@
-import { mountMdDocs } from '../helpers/mountMdDocs';
+import { mountMdDocs } from '@/helpers/mountMdDocs';
 
 const documentation: string = `
 # Bem vindo a documentação

@@ -1,5 +1,5 @@
 import path from 'path';
-import { configTsconfigType, configTsConfigPathsType } from '../interfaces/configFile';
+import { configTsconfigType, configTsConfigPathsType } from '@/interfaces/configFile';
 
 const FIRST_OPTION_ALIAS: number = 0;
 

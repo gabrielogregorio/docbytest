@@ -1,18 +1,16 @@
-import { loadConfigFile } from './helpers/loadConfigFile';
-import { configFileType } from './interfaces/configFile';
-import { statusCodeConfigType } from './interfaces/inputLib';
+import { loadConfigFile } from '@/helpers/loadConfigFile';
+import { sortOrder } from '@/helpers/sortOrder';
+import { configFileType } from '@/interfaces/configFile';
+import { statusCodeConfigType } from '@/interfaces/inputLib';
+import { dataDocsType, getDocsType } from '@/interfaces/docs';
 import { extractContentDocFiles } from './extractContentDocFiles';
-import { sortOrder } from './helpers/sortOrder';
 import { BIG_SORT_NUMBER } from './constants/variables';
-import { dataDocsType, getDocsType } from './interfaces/docs';
 import { getPathAndInfoDocs, getPathAndInfoDocsType } from './getPathAndInfoDocs';
 
 const GROUP_TITLE: number = 3;
 const GROUP_ORDER: number = 2;
 
-export const handleMarkdownFiles = async (
-  statusCode: { [key: string]: statusCodeConfigType } | null,
-): Promise<getDocsType[]> => {
+export const handleMarkdownFiles = async (statusCode: statusCodeConfigType | null): Promise<getDocsType[]> => {
   const { docFile: routeDocs }: configFileType = loadConfigFile();
   const pathAndInfoDocs: getPathAndInfoDocsType[] = await getPathAndInfoDocs({ routeDocs });
 

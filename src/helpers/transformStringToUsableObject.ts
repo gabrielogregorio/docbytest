@@ -1,4 +1,4 @@
-import { contentRequestType } from '../interfaces/extractData';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const RE_REMOVE_LAST_COMMA_IN_ARRAYS: RegExp = /]\s*,[\s{0,4}\n]{0,20}\]/g;
 const RE_REMOVE_LAST_COMMA_IN_OBJECT: RegExp = /,[\s{0,4}\n]{0,20}\}/g;
@@ -9,7 +9,7 @@ const IS_BOOLEAN: RegExp = /(true|false)/;
 
 const convertToBoolean = (value: string): boolean => value === 'true';
 
-const normalizeTextJson = (value: string): object => {
+const normalizeTextJson = (value: string): contentRequestType => {
   let jsonObject: string = value.replace(RE_ADD_QUOTES_AROUND_AN_JSON_BRACES, '"$1": ');
   jsonObject = jsonObject.replace(RE_REMOVE_LAST_COMMA_IN_OBJECT, '}');
   jsonObject = jsonObject.replace(RE_REMOVE_LAST_COMMA_IN_ARRAYS, ']]');

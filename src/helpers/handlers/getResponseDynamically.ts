@@ -1,10 +1,18 @@
-import { LIMIT_PREVENT_INFINITE_LOOPS } from '../../constants/variables';
-import { contentRequestType } from '../../interfaces/extractData';
-import { dynamicAssembly } from '../dynamicAssembly';
-import { findValueInCode } from '../findValueInCode';
-import { mergeRecursive } from '../mergeRecursive';
+import { dynamicAssembly } from '@/helpers/dynamicAssembly';
+import { findValueInCode } from '@/helpers/findValueInCode';
+import { mergeRecursive } from '@/helpers/mergeRecursive';
+import { contentRequestType } from '@/interfaces/extractData';
+import { LIMIT_PREVENT_INFINITE_LOOPS } from '@/constants/variables';
 
 const START_POSITION: number = 0;
+
+type mountDynamicObjectType = {
+  expectedResponse: string;
+  command: string;
+  completeObject: contentRequestType;
+  oneTestText: string;
+  pathFull: string;
+};
 
 const mountDynamicObject = ({
   expectedResponse,
@@ -12,13 +20,7 @@ const mountDynamicObject = ({
   completeObject,
   oneTestText,
   pathFull,
-}: {
-  expectedResponse: string;
-  command: string;
-  completeObject: object;
-  oneTestText: string;
-  pathFull: string;
-}): object => {
+}: mountDynamicObjectType): contentRequestType => {
   let valueExtracted: contentRequestType = findValueInCode(expectedResponse.replace(/'/gi, '"'), oneTestText, pathFull);
   if (typeof valueExtracted === 'string' && valueExtracted[START_POSITION] !== '"') {
     valueExtracted = `"${valueExtracted}"`;
@@ -35,7 +37,7 @@ const GROUP_VALUE_POSITION: number = 2;
 type tryIncrementOrReturnSelfType = {
   expectedResponse: string;
   command: string;
-  completeObject: object;
+  completeObject: contentRequestType;
   textFileTest: string;
   directoryAllTests: string;
 };
@@ -46,7 +48,7 @@ const tryIncrementOrReturnSelf = ({
   completeObject,
   textFileTest,
   directoryAllTests,
-}: tryIncrementOrReturnSelfType): object => {
+}: tryIncrementOrReturnSelfType): contentRequestType => {
   try {
     return mountDynamicObject({
       expectedResponse,
@@ -60,18 +62,20 @@ const tryIncrementOrReturnSelf = ({
   }
 };
 
+type getResponseDynamicallyType = {
+  testCaseText: string;
+  textFileTest: string;
+  object: contentRequestType;
+  directoryAllTests: string;
+};
+
 export const getResponseDynamically = ({
   testCaseText,
   textFileTest,
   object,
   directoryAllTests,
-}: {
-  testCaseText: string;
-  textFileTest: string;
-  object: object;
-  directoryAllTests: string;
-}): object => {
-  const completeObject: object = object;
+}: getResponseDynamicallyType): contentRequestType => {
+  let completeObject: contentRequestType = object;
   const regexDynamicBody: RegExp = /expect\(\w{1,300}\.(body[^)]+)\)\.toEqual\(([^)]{1,9999})/gi;
 
   for (let increment: number = 0; increment <= LIMIT_PREVENT_INFINITE_LOOPS; increment += INCREMENT_DYNAMIC_POSITION) {
@@ -83,7 +87,13 @@ export const getResponseDynamically = ({
 
       const isFunctionFromObject: boolean = !command.endsWith('length');
       if (isFunctionFromObject) {
-        tryIncrementOrReturnSelf({ expectedResponse, command, completeObject, textFileTest, directoryAllTests });
+        completeObject = tryIncrementOrReturnSelf({
+          expectedResponse,
+          command,
+          completeObject,
+          textFileTest,
+          directoryAllTests,
+        });
       }
     }
 

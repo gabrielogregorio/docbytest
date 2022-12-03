@@ -1,4 +1,4 @@
-import { contentRequestType } from '../interfaces/extractData';
+import { contentRequestType } from '@/interfaces/extractData';
 
 const RE_MOCK_LEVEL: RegExp = /["']?__DOC_BY_TEST__MOCK_LEVEL__["']?/;
 const RE_REMOVE_ARRAY_LEVEL: RegExp = /\[\d{1,100}\]/;
@@ -21,24 +21,35 @@ const handleStartLevel = (hasArrayLevel: boolean, arr: string[], getPosition: nu
   return `{ "${partObject}": ${MOCK_LEVEL} }`;
 };
 
+type handleMediumLevelType = {
+  hasArrayLevel: boolean;
+  arr: string[];
+  getPosition: number;
+  partObject: string;
+  stringObjectMounted: string;
+};
+
 const handleMediumLevel = ({
   hasArrayLevel,
   arr,
   getPosition,
   partObject,
   stringObjectMounted,
-}: {
-  hasArrayLevel: boolean;
-  arr: string[];
-  getPosition: number;
-  partObject: string;
-  stringObjectMounted: string;
-}): string => {
+}: handleMediumLevelType): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, MOCK_LEVEL);
     return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${removeArrayLevel(partObject)}": ${endArray} }`);
   }
   return stringObjectMounted.replace(RE_MOCK_LEVEL, `{ "${partObject}": ${MOCK_LEVEL} }`);
+};
+
+type handleEndLevelType = {
+  hasArrayLevel: boolean;
+  arr: string[];
+  getPosition: number;
+  value: contentRequestType;
+  stringObjectMounted: string;
+  partObject: string;
 };
 
 const handleEndLevel = ({
@@ -48,14 +59,7 @@ const handleEndLevel = ({
   value,
   stringObjectMounted,
   partObject,
-}: {
-  hasArrayLevel: boolean;
-  arr: string[];
-  getPosition: number;
-  value: contentRequestType;
-  stringObjectMounted: string;
-  partObject: string;
-}): string => {
+}: handleEndLevelType): string => {
   if (hasArrayLevel) {
     const endArray: string = handleEndArray(arr, getPosition, value);
 

@@ -1,20 +1,19 @@
-import { ITestCase, IParameters, contentRequestType } from './interfaces/extractData';
-
-import { getFirstKeyObject } from './helpers/getFirstKeyObject';
+import { getFirstKeyObject } from '@/helpers/getFirstKeyObject';
+import { getNameTest } from '@/helpers/handlers/getNameTest';
+import { getContentSendTestCase } from '@/helpers/handlers/getContentSendTestCase';
+import { getStatusCode } from '@/helpers/handlers/getStatusCode';
+import { getQueryParameters } from '@/helpers/handlers/getQueryParameters';
+import { getParameters } from '@/helpers/handlers/getParameters';
+import { getHeader } from '@/helpers/handlers/getHeader';
+import { getDescriptionTest } from '@/helpers/handlers/getDescriptionTest';
+import { getRouterParameters } from '@/helpers/handlers/getRouterParameters';
+import { getMethod } from '@/helpers/handlers/getMethod';
+import { getResponseDynamically } from '@/helpers/handlers/getResponseDynamically';
+import { getResponseSimple } from '@/helpers/handlers/getResponseSimple';
+import { getTitleSuite, getTitleSuiteType } from '@/helpers/handlers/getTitleSuite';
+import { getDescriptionSuite } from '@/helpers/handlers/getDescriptionSuite';
+import { ITestCase, IParameters, contentRequestType } from '@/interfaces/extractData';
 import { extractTestCasesText } from './extractTestCasesText';
-import { getNameTest } from './helpers/handlers/getNameTest';
-import { getContentSendTestCase } from './helpers/handlers/getContentSendTestCase';
-import { getStatusCode } from './helpers/handlers/getStatusCode';
-import { getQueryParameters } from './helpers/handlers/getQueryParameters';
-import { getParameters } from './helpers/handlers/getParameters';
-import { getHeader } from './helpers/handlers/getHeader';
-import { getDescriptionTest } from './helpers/handlers/getDescriptionTest';
-import { getRouterParameters } from './helpers/handlers/getRouterParameters';
-import { getMethod } from './helpers/handlers/getMethod';
-import { getResponseDynamically } from './helpers/handlers/getResponseDynamically';
-import { getResponseSimple } from './helpers/handlers/getResponseSimple';
-import { getTitleSuite, getTitleSuiteType } from './helpers/handlers/getTitleSuite';
-import { getDescriptionSuite } from './helpers/handlers/getDescriptionSuite';
 
 export type extractTestCasesFromFileType = {
   cases: ITestCase[];

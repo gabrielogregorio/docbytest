@@ -1,11 +1,12 @@
-import { mergeRecursive } from '../helpers/mergeRecursive';
-import { dynamicAssembly } from '../helpers/dynamicAssembly';
-import { getFirstKeyObject } from '../helpers/getFirstKeyObject';
+import { mergeRecursive } from '@/helpers/mergeRecursive';
+import { dynamicAssembly } from '@/helpers/dynamicAssembly';
+import { getFirstKeyObject } from '@/helpers/getFirstKeyObject';
+import { contentRequestType } from '@/interfaces/extractData';
 
 describe('Dynamic assembly', () => {
   it('should mount dynamic payload', () => {
     const transform1: string = dynamicAssembly('body.message.name.age', '"25 years"');
-    let response: object = JSON.parse(transform1);
+    let response: contentRequestType = JSON.parse(transform1);
 
     const transform2: string = dynamicAssembly('body.anyItem.magic', true);
     response = mergeRecursive(response, JSON.parse(transform2));
@@ -46,7 +47,7 @@ describe('Dynamic assembly', () => {
     const transform11: string = dynamicAssembly('body.city[0]', { otherItem: 'valueOther' });
     response = mergeRecursive(response, JSON.parse(transform11));
 
-    const responseInside: object = getFirstKeyObject(response);
+    const responseInside: contentRequestType = getFirstKeyObject(response);
 
     expect(responseInside).toEqual({
       message: { name: { age: '25 years' } },
@@ -78,7 +79,7 @@ describe('Dynamic assembly', () => {
 
   it('should mount dynamic payload with start list', () => {
     const transform1: string = dynamicAssembly('body[0].name', '"lucas"');
-    let response: object = JSON.parse(transform1);
+    let response: contentRequestType = JSON.parse(transform1);
 
     const EXAMPLE_NUMBER4: number = 22;
     const transform2: string = dynamicAssembly('body[0].age', EXAMPLE_NUMBER4);
@@ -94,7 +95,7 @@ describe('Dynamic assembly', () => {
     const transform5: string = dynamicAssembly('body[2].movies[1].name', '"best"');
     response = mergeRecursive(response, JSON.parse(transform5));
 
-    const responseInside: object = getFirstKeyObject(response);
+    const responseInside: contentRequestType = getFirstKeyObject(response);
 
     expect(responseInside).toEqual([
       { name: 'lucas', age: 22 },

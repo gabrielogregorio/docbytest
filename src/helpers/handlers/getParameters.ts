@@ -1,16 +1,16 @@
-import { LIMIT_PREVENT_INFINITE_LOOPS } from '../../constants/variables';
-import { IParameters, ParametersInEnum } from '../../interfaces/extractData';
-import { getTypeVariable } from './getTypeVariable';
+import { LIMIT_PREVENT_INFINITE_LOOPS } from '@/constants/variables';
+import { IParameters, ParametersInEnum } from '@/interfaces/extractData';
+import { getTypeVariable } from '@/helpers/handlers/getTypeVariable';
 
 const INCREMENT_PREVENT_LOOP: number = 1;
 const GROUP_POSITION_NAME_TAG: number = 1;
-export const getParameters = ({
-  testCaseText,
-  textFileTest,
-}: {
+
+type getParametersType = {
   testCaseText: string;
   textFileTest: string;
-}): IParameters[] => {
+};
+
+export const getParameters = ({ testCaseText, textFileTest }: getParametersType): IParameters[] => {
   const parameters: IParameters[] = [];
   const regexParameters: RegExp = /\/\$\{(\w*)\}/gi;
 

@@ -1,9 +1,14 @@
-import { IParameters, ParametersInEnum } from '../../interfaces/extractData';
-import { getTypeVariable } from './getTypeVariable';
+import { IParameters, ParametersInEnum } from '@/interfaces/extractData';
+import { getTypeVariable } from '@/helpers/handlers/getTypeVariable';
 
 const RE_GET_FULL_URL: RegExp = /\(['"`](.{3,600}?)['"`]\)/;
 const GROUP_POSITION_TEXT_INSIDE_URL: number = 1;
-export const getQueryParameters = ({ testCaseText }: { testCaseText: string }): IParameters[] => {
+
+type getQueryParametersType = {
+  testCaseText: string;
+};
+
+export const getQueryParameters = ({ testCaseText }: getQueryParametersType): IParameters[] => {
   const matchGetFullUrl: RegExpExecArray | null = RE_GET_FULL_URL.exec(testCaseText);
   const fullUrlRequest: string | undefined = matchGetFullUrl?.[GROUP_POSITION_TEXT_INSIDE_URL];
   const queryParameters: IParameters[] = [];

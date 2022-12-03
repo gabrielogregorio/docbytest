@@ -1,4 +1,4 @@
-import { BIG_SORT_NUMBER } from '../../constants/variables';
+import { BIG_SORT_NUMBER } from '@/constants/variables';
 
 const GROUP_TEXT_POSITION: number = 3;
 const GROUP_POSITION_ORDER: number = 2;
@@ -7,7 +7,12 @@ export type getTitleSuiteType = {
   text: string;
   order: number;
 };
-export const getTitleSuite = ({ textFileTest }: { textFileTest: string }): getTitleSuiteType => {
+
+type getTitleSuiteTypeType = {
+  textFileTest: string;
+};
+
+export const getTitleSuite = ({ textFileTest }: getTitleSuiteTypeType): getTitleSuiteType => {
   const regex: RegExp = /describe\(['"`]\s{0,12}(\[\s{0,12}(\d{1,10})?\s{0,12}\]\s{0,12}:?)?\s{0,12}(.*)['"`]/;
   const match: RegExpExecArray | null = regex.exec(textFileTest);
   if (match) {
