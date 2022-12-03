@@ -1,14 +1,12 @@
-import {
-  getStatusCode,
-  getResponseSimple,
-  getContentSendTestCase,
-  getDescriptionTest,
-  getDescriptionSuite,
-  getHeader,
-  getQueryParameters,
-  getParameters,
-  getResponseDynamically,
-} from '../helpers/helpers';
+import { getContentSendTestCase } from '../helpers/handlers/getContentSendTestCase';
+import { getDescriptionSuite } from '../helpers/handlers/getDescriptionSuite';
+import { getDescriptionTest } from '../helpers/handlers/getDescriptionTest';
+import { getHeader } from '../helpers/handlers/getHeader';
+import { getParameters } from '../helpers/handlers/getParameters';
+import { getQueryParameters } from '../helpers/handlers/getQueryParameters';
+import { getResponseDynamically } from '../helpers/handlers/getResponseDynamically';
+import { getResponseSimple } from '../helpers/handlers/getResponseSimple';
+import { getStatusCode } from '../helpers/handlers/getStatusCode';
 
 const usernameTest: string = 'Lucas Santos';
 
