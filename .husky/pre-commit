@@ -42,6 +42,10 @@ npm run check
 echo "\n${Yellow}...................ESLINT CHECKING.......................${NOCOLOR}"
 npm run lint
 
+echo "\n${Yellow}.....................BUILDING APP........................${NOCOLOR}"
+npm run build
+
+
 echo "\n${Yellow}...............UNIT TEST AND COVERAGE....................${NOCOLOR}"
 npm run jest:coverage
 
