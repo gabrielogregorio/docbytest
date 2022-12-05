@@ -23,4 +23,5 @@ jobs:
 
       - name: Install dependencies and check
         run: npm install --ignore-optional --frozen-lockfile
+      - run: npm run check
       - run: npm run lint

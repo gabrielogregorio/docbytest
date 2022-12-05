@@ -27,10 +27,14 @@
     "start": "node dist/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts",
     "jest": "jest  --passWithNoTests",
+    "clear:dirt":"rm -rf coverage dist build",
+    "audit":"npm audit",
     "jest:coverage": "jest --coverage",
     "publish-npm": "npm run jest && rm -rf ./build && npm run build && npm publish",
     "prepare": "husky install",
-    "lint": "tsc --noEmit && eslint -c ./.eslintrc.json --ext '.ts' 'src/**'"
+    "check": "tsc --noEmit",
+    "lint": "eslint -c ./.eslintrc.json --ext '.ts' 'src/**'",
+    "format": "prettier src/* --write"
   },
   "engines": {
     "node": ">=8",
@@ -74,11 +78,5 @@
     "tsc-alias": "^1.8.1",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.6.4"
-  },
-  "lint-staged": {
-    "src/**/*.{js,ts}": [
-      "npm run lint",
-      "npm run jest"
-    ]
   }
 }

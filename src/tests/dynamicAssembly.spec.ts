@@ -11,7 +11,7 @@ describe('Dynamic assembly', () => {
     const transform2: string = dynamicAssembly('body.anyItem.magic', true);
     response = mergeRecursive(response, JSON.parse(transform2));
 
-    const EXAMPLE_NUMBER: number = 99;
+    const EXAMPLE_NUMBER: number = 966;
     const transform3: string = dynamicAssembly('body.walking[1].validate', EXAMPLE_NUMBER);
     response = mergeRecursive(response, JSON.parse(transform3));
 
@@ -71,7 +71,7 @@ describe('Dynamic assembly', () => {
       ],
       walking: [
         { agency: true, running: [null, { id: 'running', test: [null, null, false] }], anyTestItem: { id: 1234 } },
-        { validate: 99 },
+        { validate: 966 },
         { agency: 'apple' },
       ],
     });
