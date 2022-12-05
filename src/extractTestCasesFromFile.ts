@@ -49,7 +49,7 @@ export const extractTestCasesFromFile = ({
 
     let dynamicBody: contentRequestType = getResponseDynamically({
       testCaseText,
-      textFileTest,
+      textFileTest, ///
       object: {},
       directoryAllTests,
     });
