@@ -1,4 +1,4 @@
-name: Unit tests
+name: unit testing
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    environment: tests
+    environment: codacy
     runs-on: ubuntu-latest
 
     env:
@@ -20,12 +20,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: using node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
+
+      - name: install dependencies
         run: npm install --frozen-lockfile
-      - run: npm run jest:coverage
+
+      - name: running tests and generate coverage
+        run: npm run jest:coverage
+
       - name: up coverage to codacy
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
