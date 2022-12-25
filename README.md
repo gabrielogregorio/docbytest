@@ -8,7 +8,7 @@
 ![Eslint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
 
-<a href="https://backend-valorant.herokuapp.com/docs" target="blank">Example in api valorant tips (heroku) </a>
+<a href="https://gabrielogregorio.github.io/docbytest-ui-example/docs/" target="blank">Example in Github Pages (Heroku API is down)</a>
 </div>
 
 ![version 0.2](/docs/v0.2.png)
@@ -23,21 +23,19 @@
 ## Introduction
 This is a library that generates the documentation of an API based initially on integration tests with supertest!
 
-🚀 [Example in pratic](https://github.com/gabrielogregorio/docbytest-example-api)
+🚀 [Example Code in pratic](https://github.com/gabrielogregorio/docbytest-example-api)
 
 ## For NPM/Yarn users
 Do you need install docbytest and docbytest-ui
 
 ```bash
-npm i docbytest
-npm i docbytest-ui
+npm i docbytest docbytest-ui
 ```
 
 or
 
 ```bash
-yarn add docbytest
-yarn add docbytest-ui
+yarn add docbytest docbytest-ui
 ```
 
 Use [docbytest example api](https://github.com/gabrielogregorio/docbytest-example-api) for reference for project.
