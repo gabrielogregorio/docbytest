@@ -1,4 +1,4 @@
-name: quality checking
+name: linting
 
 on:
   push:
